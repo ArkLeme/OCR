@@ -8,8 +8,11 @@ int main(int argc, char** argv)
 		errx(1, "Error, bad input : expected path to image");
 
 	SDL_Surface* InputImage = LoadImage(argv[1]);
-	SDL_Surface* OutPutImage = GrayScale(InputImage);
+	SDL_Surface* GrayImage = GrayScale(InputImage);
+	SDL_Surface* ContrastImage = Contrast(InputImage);
 
-	SaveImage(OutPutImage, "image_data/epitaGray.bmp");
+	SaveImage(GrayImage, "image_data/GrayEpita.bmp");
+	SaveImage(ContrastImage, "image_data/ContrastEpita.bmp");
+	SDL_FreeSurface(InputImage);
 	return 0;
 }

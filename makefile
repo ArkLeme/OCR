@@ -2,8 +2,9 @@
 
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -std=c99
+CFLAGS = -fsanitize=address -g -Wall -Wextra -Werror -std=c99
 LDLIBS = -lSDL -lSDL_image -lm
+LDFLAGS = -fsanitize=address
 
 # SRC contain all the file we must built
 SRC = main.c preprocessing/preprocessing.c sdl_tools/sdl_tools.c
@@ -19,6 +20,6 @@ clean:
 	$(RM) $(OBJ) $(DEP)
 
 properclean: clean
-	rm $(EXEC)
+	rm $(EXEC) 
 
 -include $(DEP)
