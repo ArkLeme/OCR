@@ -3,7 +3,6 @@
  */
 
 #include <stdint.h>
-#include <SDL/SDL_image.h>
 #include <err.h>
 #include "sdl_tools.h"
 
@@ -22,6 +21,12 @@ SDL_Surface* LoadImage(char* path)
 	}
 
 	return image;
+}
+
+void SaveImage(SDL_Surface* InputImage, char* name)
+{
+	SDL_SaveBMP(InputImage, name);
+	SDL_FreeSurface(InputImage);
 }
 
 Uint32 GetPixel(SDL_Surface* InputImage, int x, int y)

@@ -7,7 +7,10 @@
 //Load Image
 SDL_Surface* LoadImage(char* path);
 
-//get a pixel
+//Save Image
+void SaveImage(SDL_Surface* InputImage, char* name);
+
+//Get a pixel
 Uint32 GetPixel(SDL_Surface* InputImage, int x, int y);
 
 //Put a pixel
