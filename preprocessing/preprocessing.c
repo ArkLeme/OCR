@@ -12,13 +12,9 @@ SDL_Surface* GrayScale(SDL_Surface* InputImage)
 
 	float average;
 	int w = InputImage -> w, h = InputImage -> h;
-	
-	SDL_PixelFormat* format = InputImage -> format;
-	Uint8 bpp = format -> BytesPerPixel;
 
-	SDL_Surface* OutputImage = 
-	SDL_CreateRGBSurface(0, w, h, bpp, 0, 0, 0, 0);
-	SDL_BlitSurface(InputImage, NULL, OutputImage, NULL);
+	SDL_PixelFormat* format = InputImage -> format;
+	SDL_Surface* OutputImage = CopySurface(InputImage);
 
 	for(int i = 0; i < w; i++)
 	{
@@ -47,15 +43,10 @@ SDL_Surface* Contrast(SDL_Surface* InputImage)
 
 	int w = InputImage -> w, h = InputImage -> h, sum = 0;
 	int histogram[256], newValue[256];
-	float multiplicator = 255 / (w * h);
-
+	float multiplicator = 1 / (w * h);
 
 	SDL_PixelFormat* format = InputImage -> format;
-	Uint8 bpp = format -> BytesPerPixel;
-
-	SDL_Surface* OutputImage = 
-		SDL_CreateRGBSurface(0, w, h, bpp, 0, 0, 0, 0);
-	SDL_BlitSurface(InputImage, NULL, OutputImage, NULL);
+	SDL_Surface* OutputImage = CopySurface(InputImage);
 
 	for(int i = 0; i < 256; i++)
 		histogram[i] = 0;
@@ -73,7 +64,7 @@ SDL_Surface* Contrast(SDL_Surface* InputImage)
 	for(int i = 0; i < 256; i++)
 	{
 	sum += histogram[i];
-	newValue[i] = (int)  sum * multiplicator;
+	newValue[i] = (int) (sum * multiplicator);
 	}
 
 	for(int i = 0; i < w; i++)
