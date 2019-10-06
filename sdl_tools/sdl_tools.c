@@ -4,6 +4,8 @@
 
 #include <stdint.h>
 #include <err.h>
+#include <SDL/SDL_image.g>
+#include <SDL/SDL.h>
 #include "sdl_tools.h"
 
 static inline Uint8* PixelRef(SDL_Surface * InputImage, int x, int y)
