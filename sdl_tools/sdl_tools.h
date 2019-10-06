@@ -2,9 +2,15 @@
 #define SDL_TOOLS
 
 #include <SDL/SDL.h>
-//#include <SDL/SDL_image.h>
+#include <SDL/SDL_image.h>
 
-Uint32 getpixel(SDL_Surface* InputImage, int x, int y);
-void putpixel(SDL_Surface* InputImage, int x, int y, Uint32 pixel);
+//Load Image
+SDL_Surface* LoadImage(char* path);
+
+//get a pixel
+Uint32 GetPixel(SDL_Surface* InputImage, int x, int y);
+
+//Put a pixel
+void PutPixel(SDL_Surface* InputImage, int x, int y, Uint32 pixel);
 
 #endif

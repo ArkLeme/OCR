@@ -7,7 +7,7 @@
 
 SDL_Surface* grayscale(SDL_Surface* InputImage)
 {
-	Uint32 var = getpixel(InputImage, 0, 0);
+	Uint32 var = GetPixel(InputImage, 0, 0);
 	printf("W = %i, var = %ui", InputImage -> w, var);
 	return InputImage;
 }

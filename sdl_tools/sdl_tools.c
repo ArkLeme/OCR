@@ -2,19 +2,31 @@
  *Contain sdl function's required for the image treatments.
  */
 
-#include "sdl_tools.h"
 #include <stdint.h>
 #include <SDL/SDL_image.h>
+#include <err.h>
+#include "sdl_tools.h"
 
-static inline Uint8* pixelref(SDL_Surface * InputImage, int x, int y)
+static inline Uint8* PixelRef(SDL_Surface * InputImage, int x, int y)
 {
 	int bpp = InputImage->format->BytesPerPixel;
         return (Uint8*)InputImage->pixels + y * InputImage->pitch + x * bpp;
 }
 
-Uint32 getpixel(SDL_Surface* InputImage, int x, int y)
+SDL_Surface* LoadImage(char* path)
 {
-	Uint8* p = pixelref(InputImage, x, y);
+	SDL_Surface* image = IMG_Load(path);
+	if(!image)
+	{
+		errx(1,"Error path not found: %s\n", path);
+	}
+
+	return image;
+}
+
+Uint32 GetPixel(SDL_Surface* InputImage, int x, int y)
+{
+	Uint8* p = PixelRef(InputImage, x, y);
 
 	switch(InputImage->format->BytesPerPixel)
 	{
@@ -37,9 +49,9 @@ Uint32 getpixel(SDL_Surface* InputImage, int x, int y)
 	}
 }
 
-void putpixel(SDL_Surface* InputImage, int x, int y, Uint32 pixel)
+void PutPixel(SDL_Surface* InputImage, int x, int y, Uint32 pixel)
 {
-	Uint8* p = pixelref(InputImage, x, y);
+	Uint8* p = PixelRef(InputImage, x, y);
 
 	switch(InputImage->format->BytesPerPixel)
 	{
