@@ -7,7 +7,9 @@ int main(int argc, char** argv)
 	if(argc != 2)
 		errx(1, "Error, bad input : expected path to image");
 
-	printf("W = %s", argv[1]);
+	SDL_Surface* InputImage = LoadImage(argv[1]);
+	SDL_Surface* OutPutImage = GrayScale(InputImage);
 
+	SaveImage(OutPutImage, "image_data/epitaGray.bmp");
 	return 0;
 }
