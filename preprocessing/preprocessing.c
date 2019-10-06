@@ -85,7 +85,7 @@ SDL_Surface* Contrast(SDL_Surface* InputImage)
 
 	return OutputImage;
 }
-/*
+
 SDL_Surface* Otsu(SDL_Surface* InputImage)
 {
 	Uint32 pixel;
@@ -99,22 +99,20 @@ SDL_Surface* Otsu(SDL_Surface* InputImage)
 	SDL_Surface* OutputImage = CopySurface(InputImage);
 
 	//Set array to 0
-	for(int i = 0, i < 256; i++)
+	for(int i = 0; i < 256; i++)
 	{
 		histogram[i] = 0;
 		newValue[i] = 0;
 	}
 
-	for(i = 0; i < w; i++)
+	for(int i = 0; i < w; i++)
 	{
-		for(j = 0; j < h; j++)
+		for(int j = 0; j < h; j++)
 		{
 			pixel = GetPixel(InputImage, i, j);
-			SDL_GetRgb(pixel, format, &r, &g, &b);
+			SDL_GetRGB(pixel, format, &r, &g, &b);
 
 			histogram[(int) r]++;
 		}
-
-
 	}
-}*/
+}
