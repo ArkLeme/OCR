@@ -12,8 +12,7 @@ SDL_Surface* GrayScale(SDL_Surface* InputImage)
 	Uint32 pixel;
 	Uint8 r,g,b;
 	float average;
-	int w = InputImage -> w;
-	int h = InputImage -> h;
+	int w = InputImage -> w, h = InputImage -> h;
 
 	for(int i = 0; i < w; i++)
 	{
@@ -26,10 +25,8 @@ SDL_Surface* GrayScale(SDL_Surface* InputImage)
 			average = r * 0.2126 + g * 0.7152 + b * 0.0722;
 			r = (Uint8) average;
 
-			PutPixel(InputImage, 
-							i,
-							j,
-							SDL_MapRGB(InputImage -> format, r, r, r));
+			pixel = SDL_MapRGB(InputImage -> format, r, r, r);
+			PutPixel(InputImage, i, j, pixel);
 		}
 	}
 
