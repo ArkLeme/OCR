@@ -80,7 +80,7 @@ SDL_Surface* Contrast(SDL_Surface* InputImage)
 	return OutputImage;
 }
 
-int Otsu(SDL_Surface* InputImage)
+SDL_Surface* Otsu(SDL_Surface* InputImage)
 {
 	Uint32 pixel;
 	Uint8 r,g,b;
@@ -142,7 +142,7 @@ int Otsu(SDL_Surface* InputImage)
 		}
 	}
 
-	return threshold;
+	return Binarization(InputImage, threshold);
 }
 
 
