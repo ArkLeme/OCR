@@ -8,9 +8,9 @@ int main(int argc, char** argv)
 		errx(1, "Error, bad input : expected path to image");
 
 	SDL_Surface* InputImage = LoadImage(argv[1]);
+
 	SDL_Surface* GrayImage = GrayScale(InputImage);
 	//SDL_Surface* ContrastImage = Contrast(InputImage);
-
 	SDL_Surface* BinImage = Otsu(GrayImage);
 
 	SaveImage(GrayImage, "image_data/GrayImage.bmp");

@@ -31,10 +31,10 @@ void SaveImage(SDL_Surface* InputImage, char* name)
 
 SDL_Surface* CopySurface(SDL_Surface* InputImage)
 {
-SDL_Surface* OutputImage =
+	SDL_Surface* OutputImage =
 		SDL_CreateRGBSurface(0,
-						InputImage -> w, InputImage ->h,
-						32, 0, 0, 0, 0);
+				InputImage -> w, InputImage ->h,
+				32, 0x000000ff, 0x000000ff, 0x000000ff, 0x00000000);
 	SDL_BlitSurface(InputImage, NULL, OutputImage, NULL);
 	return OutputImage;
 }
