@@ -11,6 +11,8 @@ int main(int argc, char** argv)
 	SDL_Surface* GrayImage = GrayScale(InputImage);
 	//SDL_Surface* ContrastImage = Contrast(InputImage);
 
+	Otsu(InputImage);
+
 	SaveImage(GrayImage, "image_data/GrayEpita.bmp");
 	//SaveImage(ContrastImage, "image_data/ContrastEpita.bmp");
 	SDL_FreeSurface(InputImage);

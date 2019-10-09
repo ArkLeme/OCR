@@ -42,18 +42,12 @@ SDL_Surface* Contrast(SDL_Surface* InputImage)
 	Uint8 r,g,b;
 
 	int w = InputImage -> w, h = InputImage -> h, sum = 0;
-	int histogram[256], newValue[256];
+	int histogram[256] = {0}, newValue[256] = {0};
 	float multiplicator = (float) 255 / (w * h);
 
 	SDL_PixelFormat* format = InputImage -> format;
 	SDL_Surface* OutputImage = CopySurface(InputImage);
 
-	//Set array to 0 
-	for(int i = 0; i < 256; i++)
-	{
-		histogram[i] = 0;
-		newValue[i] = 0;
-	}
 	for(int i = 0; i < w; i++)
 	{
 		for(int j = 0; j < h; j++)
@@ -86,25 +80,23 @@ SDL_Surface* Contrast(SDL_Surface* InputImage)
 	return OutputImage;
 }
 
-SDL_Surface* Otsu(SDL_Surface* InputImage)
+int Otsu(SDL_Surface* InputImage)
 {
 	Uint32 pixel;
 	Uint8 r,g,b;
 
-	int w = InputImage -> w, h = InputImage -> h, sum = 0;
-	int histogram[256], newValue[256];
+	int w = InputImage -> w, h = InputImage -> h, totalPixel = w * h;
+	int histogram[256] = {0};
+	int weight1 = 0, weight2 = 0;
+	float summTotal = 0, summ1 = 0;
+	float varMax, varAct;
+	int mean1 = 0, mean2 = 0;
+	int threshold = 0;
 
 	//Create copy of Surface and save format
 	SDL_PixelFormat* format = InputImage -> format;
-	SDL_Surface* OutputImage = CopySurface(InputImage);
 
-	//Set array to 0
-	for(int i = 0; i < 256; i++)
-	{
-		histogram[i] = 0;
-		newValue[i] = 0;
-	}
-
+	//Create the histogram of our image
 	for(int i = 0; i < w; i++)
 	{
 		for(int j = 0; j < h; j++)
@@ -115,4 +107,40 @@ SDL_Surface* Otsu(SDL_Surface* InputImage)
 			histogram[(int) r]++;
 		}
 	}
+
+	//Compute the global Mean (Esperance)
+	for(int i = 0; i < 256; i++)
+	{
+		summTotal += i * histogram[i];
+	}
+
+	//Compute Variance (ecart-type) between class Variance
+	//We can show that's finding the bigger between class
+	//variance for a Threshold T is the same than finding
+	//the lower within class variance but it's faster to compute.
+	for(int i = 0; i < 256; i++)
+	{
+		weight1 += histogram[i];
+		if(weight1 == 0) 
+			continue;	//Variance will be 0
+
+		weight2 = totalPixel - weight1;
+		if(weight2 == 0)
+			break;		//Variance will stay at 0
+
+		summ1 = i * histogram[i];
+
+		mean1 = summ1/weight1;
+		mean2 = (summTotal - summ1)/weight2;
+
+		varAct = weight1 * weight2 * (mean1 - mean2) * (mean1 - mean2);
+
+		if(varAct > varMax)
+		{
+			varMax = varAct;
+			threshold = i;
+		}
+	}
+
+	return threshold;
 }
