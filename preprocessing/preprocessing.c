@@ -93,7 +93,7 @@ int Otsu(SDL_Surface* InputImage)
 	int mean1 = 0, mean2 = 0;
 	int threshold = 0;
 
-	//Create copy of Surface and save format
+	//Save format
 	SDL_PixelFormat* format = InputImage -> format;
 
 	//Create the histogram of our image
@@ -143,4 +143,38 @@ int Otsu(SDL_Surface* InputImage)
 	}
 
 	return threshold;
+}
+
+
+SDL_Surface* Binarization(SDL_Surface* InputImage, int threshold)
+{
+	Uint32 pixel;
+	Uint8 r, g, b;
+
+	//Save format and copy Surface
+	SDL_PixelFormat* format = InputImage -> format;
+	SDL_Surface* OutputImage = CopySurface(InputImage);
+
+	int w = InputImage -> w, h = InputImage -> h;
+
+	for(int i = 0; i < w; i++)
+	{
+		for(int j = 0; j < h; j++)
+		{
+			pixel = GetPixel(InputImage, i, j);
+			SDL_GetRGB(pixel, format, &r, &g, &b);
+			if(r <= threshold)
+			{
+				pixel = SDL_MapRGB(format, 0, 0, 0);
+				PutPixel(OutputImage, i, j, pixel);
+			}
+			else
+			{
+				pixel = SDL_MapRGB(format, 255, 255, 255);
+				PutPixel(OutputImage, i, j, pixel);
+			}
+		}
+	}
+
+	return OutputImage;
 }
