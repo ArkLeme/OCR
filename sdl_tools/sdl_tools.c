@@ -31,6 +31,16 @@ void SaveImage(SDL_Surface* InputImage, char* name)
 	SDL_FreeSurface(InputImage);
 }
 
+SDL_Surface* CopySurface(SDL_Surface* InputImage)
+{
+	SDL_Surface* OutputImage =
+		SDL_CreateRGBSurface(0,
+				InputImage -> w, InputImage ->h,
+				32, 0x000000ff, 0x000000ff, 0x000000ff, 0x00000000);
+	SDL_BlitSurface(InputImage, NULL, OutputImage, NULL);
+	return OutputImage;
+}
+
 Uint32 GetPixel(SDL_Surface* InputImage, int x, int y)
 {
 	Uint8* p = PixelRef(InputImage, x, y);
