@@ -1,13 +1,24 @@
 #include <err.h>
 #include "sdl_tools/sdl_tools.h"
 #include "preprocessing/preprocessing.h"
+#include "matrix/matrix.h"
+
+void testBin(char* path);
+void testM();
 
 int main(int argc, char** argv)
 {
-	if(argc != 2)
-		errx(1, "Error, bad input : expected path to image");
+	if(argc == 2)
+		testBin(argv[1]);
 
-	SDL_Surface* InputImage = LoadImage(argv[1]);
+	testM();
+
+	return 0;
+}
+
+void testBin(char* path)
+{
+	SDL_Surface* InputImage = LoadImage(path);
 
 	SDL_Surface* GrayImage = GrayScale(InputImage);
 	//SDL_Surface* ContrastImage = Contrast(InputImage);
@@ -18,5 +29,15 @@ int main(int argc, char** argv)
 	SaveImage(BinImage, "image_data/BinImage.bmp");
 
 	SDL_FreeSurface(InputImage);
-	return 0;
+}
+
+void testM()
+{
+	Matrix m = InitM(2, 2);
+	PutM(m, 0, 0, 1);
+	PutM(m, 1, 1, 1);
+
+	DisplayM(m);
+
+	FreeM(m);
 }
