@@ -1,6 +1,9 @@
 #ifndef SDL_TOOLS
 #define SDL_TOOLS
 
+#include <SDL.h>
+#include <SDL_image.h>
+
 //Load Image
 SDL_Surface* LoadImage(char* path);
 
