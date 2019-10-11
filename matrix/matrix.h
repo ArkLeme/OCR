@@ -4,8 +4,8 @@
 //Define matrix struct in header to avoid error
 typedef struct Matrix
 {
-	int width;
-	int height;
+	int line;
+	int col;
 	int size;
 	int* matrix;
 }Matrix;
@@ -29,4 +29,7 @@ void FreeM(Matrix m);
 
 //Addition Matrix
 void AddM(Matrix m1, Matrix m2);
+
+//Multiplication Matrix
+Matrix MultM(Matrix m1, Matrix m2);
 #endif

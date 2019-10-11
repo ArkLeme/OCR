@@ -33,12 +33,23 @@ void testBin(char* path)
 
 void testM()
 {
-	Matrix m = InitM(3, 3);
-	PutM(m, 0, 0, 1);
-	PutM(m, 1, 0, 1);
-	PutPosM(m, 5, 2);
-	AddM(m, m);
-	DisplayM(m);
+	Matrix m1 = InitM(3, 2);
+	Matrix m2 = InitM(2, 3);
 
-	FreeM(m);
+	for(int i = 1; i < 7; i++)
+	{
+		PutPosM(m1, i-1, i);
+		PutPosM(m2, i-1, i);
+	}
+
+	Matrix t = MultM(m1,m2);
+
+	DisplayM(m1);
+	DisplayM(m2);
+
+	FreeM(m1);
+	FreeM(m2);
+
+	DisplayM(t);
+	FreeM(t);
 }
