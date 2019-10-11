@@ -70,22 +70,6 @@ void FreeM(Matrix m)
 }
 
 //Addition Matrix
-Matrix AddM(Matrix m1, Matrix m2)
-{
-	if(m1.col != m2.col || m1.line != m2.line)
-		errx(1, "Add Matrix do not have the same dimension :\
-						m1w=%i, mw2=%i, m1h=%i, m2h=%i\n",
-						m1.col, m2.col, m1.line, m2.line);
-
-	Matrix m = InitM(m1.line, m2.col);
-	for(int i = 0; i < m1.size; i++)
-	{
-		PutPosM(m, i, GetPosM(m1, i) + GetPosM(m2, i));
-	}
-
-	return m;
-}
-
 Matrix AddMM(Matrix m1, Matrix m2)
 {
 	if(m1.col != m2.col || m1.line != m2.line)
