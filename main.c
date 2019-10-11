@@ -33,10 +33,11 @@ void testBin(char* path)
 
 void testM()
 {
-	Matrix m = InitM(2, 2);
+	Matrix m = InitM(3, 3);
 	PutM(m, 0, 0, 1);
-	PutM(m, 1, 1, 1);
-
+	PutM(m, 1, 0, 1);
+	PutPosM(m, 5, 2);
+	AddM(m, m);
 	DisplayM(m);
 
 	FreeM(m);

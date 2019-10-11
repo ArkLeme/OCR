@@ -6,6 +6,7 @@ typedef struct Matrix
 {
 	int width;
 	int height;
+	int size;
 	int* matrix;
 }Matrix;
 
@@ -14,9 +15,11 @@ Matrix InitM(int w, int h);
 
 //Put element in Matrix
 void PutM(Matrix m, int i, int j, int e);
+void PutPosM(Matrix m, int pos, int e);
 
 //Get element in Matrix
 int GetM(Matrix m, int i, int j);
+int GetPosM(Matrix m, int pos);
 
 //Display Matrix
 void DisplayM(Matrix m);
@@ -24,4 +27,6 @@ void DisplayM(Matrix m);
 //Free Matrix
 void FreeM(Matrix m);
 
+//Addition Matrix
+void AddM(Matrix m1, Matrix m2);
 #endif
