@@ -34,16 +34,16 @@ void testBin(char* path)
 void testM()
 {
 	Matrix m1 = InitM(3, 2);
-	Matrix m2 = InitM(2, 3);
+	Matrix m2 = InitM(3, 2);
 
 	for(int i = 1; i < 7; i++)
 	{
-		PutPosM(m1, i-1, i);
-		PutPosM(m2, i-1, i);
+		PutPosM(m1, i-1, 1);
+		PutPosM(m2, i-1, rand() % 2);
 	}
 
-	Matrix m = MultM(m1,m2);
 	Matrix t = TransM(m1);
+	Matrix a = AndM(m1, m2);
 
 	DisplayM(m1);
 	DisplayM(m2);
@@ -54,6 +54,8 @@ void testM()
 	DisplayM(t);
 	FreeM(t);
 
-	DisplayM(m);
-	FreeM(m);
+	DisplayM(a);
+	FreeM(a);
+
+	printf("test : %i\n", 1 == 1);
 }

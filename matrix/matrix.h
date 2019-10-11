@@ -36,4 +36,7 @@ Matrix MultM(Matrix m1, Matrix m2);
 //Transpose Matrix
 Matrix TransM(Matrix m1);
 
+//And Matrix
+Matrix AndM(Matrix m1, Matrix m2);
+
 #endif
