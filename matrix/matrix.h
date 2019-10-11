@@ -32,4 +32,8 @@ void AddM(Matrix m1, Matrix m2);
 
 //Multiplication Matrix
 Matrix MultM(Matrix m1, Matrix m2);
+
+//Transpose Matrix
+Matrix TransM(Matrix m1);
+
 #endif

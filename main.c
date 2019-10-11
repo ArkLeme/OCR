@@ -42,7 +42,8 @@ void testM()
 		PutPosM(m2, i-1, i);
 	}
 
-	Matrix t = MultM(m1,m2);
+	Matrix m = MultM(m1,m2);
+	Matrix t = TransM(m1);
 
 	DisplayM(m1);
 	DisplayM(m2);
@@ -52,4 +53,7 @@ void testM()
 
 	DisplayM(t);
 	FreeM(t);
+
+	DisplayM(m);
+	FreeM(m);
 }

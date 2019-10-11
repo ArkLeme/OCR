@@ -119,3 +119,18 @@ Matrix MultM(Matrix m1, Matrix m2)
 
 	return m;
 }
+
+//Transpose Matrix
+Matrix TransM(Matrix m1)
+{
+	Matrix m = InitM(m1.col, m1.line);
+	for(int i = 0; i < m1.line; i++)
+	{
+		for(int j = 0; j < m1.col; j++)
+		{
+			PutM(m, j, i, GetM(m1, i, j));
+		}
+	}
+
+	return m;
+}
