@@ -28,7 +28,7 @@ void DisplayM(Matrix m);
 void FreeM(Matrix m);
 
 //Addition Matrix
-void AddM(Matrix m1, Matrix m2);
+Matrix AddM(Matrix m1, Matrix m2);
 
 //Multiplication Matrix
 Matrix MultM(Matrix m1, Matrix m2);
@@ -38,5 +38,11 @@ Matrix TransM(Matrix m1);
 
 //And Matrix
 Matrix AndM(Matrix m1, Matrix m2);
+
+//Mutliple 2 Matrix value by value
+Matrix MultValM(Matrix m1, Matrix m2);
+
+//Multiply Matrix by scalar
+Matrix MultScalM(Matrix m1, int v);
 
 #endif

@@ -70,16 +70,20 @@ void FreeM(Matrix m)
 }
 
 //Addition Matrix
-void AddM(Matrix m1, Matrix m2)
+Matrix AddM(Matrix m1, Matrix m2)
 {
 	if(m1.col != m2.col || m1.line != m2.line)
 		errx(1, "Add Matrix do not have the same dimension :\
 						m1w=%i, mw2=%i, m1h=%i, m2h=%i\n",
 						m1.col, m2.col, m1.line, m2.line);
+
+	Matrix m = InitM(m1.line, m2.col);
 	for(int i = 0; i < m1.size; i++)
 	{
-		PutPosM(m1, i, GetPosM(m1, i) + GetPosM(m2, i));
+		PutPosM(m, i, GetPosM(m1, i) + GetPosM(m2, i));
 	}
+
+	return m;
 }
 
 Matrix AddMM(Matrix m1, Matrix m2)
@@ -151,6 +155,42 @@ Matrix AndM(Matrix m1, Matrix m2)
 		{
 			if(GetM(m1, i, j)  == 1 && GetM(m2, i, j))
 					PutM(m, i, j, 1);
+		}
+	}
+
+	return m;
+}
+
+//Multiple 2 Matrix value by value
+Matrix MultValM(Matrix m1, Matrix m2)
+{
+	if(m1.col != m2.col || m1.line != m2.line)
+		errx(1, "Add Matrix do not have the same dimension :\
+						m1w=%i, mw2=%i, m1h=%i, m2h=%i\n",
+						m1.col, m2.col, m1.line, m2.line);
+
+	Matrix m = InitM(m1.line, m1.col);
+	for(int i = 0; i < m1.line; i++)
+	{
+		for(int j = 0; j < m1.col; j++)
+		{
+			PutM(m, i, j, GetM(m1, i, j) * GetM(m2, i, j));
+		}
+	}
+
+	return m;
+}
+
+//Multiple Matrix by scalar
+Matrix MultScalM(Matrix m1, int v)
+{
+	Matrix m = InitM(m1.line, m1.col);
+
+	for(int i = 0; i < m1.line; i++)
+	{
+		for(int j = 0; j < m1.col; j++)
+		{
+			PutM(m, i, j, v * GetM(m1, i, j));
 		}
 	}
 
