@@ -13,6 +13,9 @@ void SaveImage(SDL_Surface* InputImage, char* name);
 //Copy Surface
 SDL_Surface* CopySurface(SDL_Surface*);
 
+//Create Surface
+SDL_Surface* CreateSurface();
+
 //Get a pixel
 Uint32 GetPixel(SDL_Surface* InputImage, int x, int y);
 
