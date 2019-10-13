@@ -10,6 +10,12 @@ typedef struct Matrix
 	int* matrix;
 }Matrix;
 
+typedef struct List
+{
+	int x;
+	struct list *next;
+} List;
+
 //init Matrix
 Matrix InitM(int w, int h);
 

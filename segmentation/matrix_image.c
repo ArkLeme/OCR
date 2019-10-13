@@ -10,7 +10,10 @@ void SaveMatAsIm(Matrix m, char* path)
 	{
 		for(int j = 0; j < m.col; j++)
 		{
-			r = GetM(m, i, j) ? 0 : 255;
+			int v = GetM(m, i, j);
+			if(v == 0) r = 255;
+			if(v == 1) r = 0;
+			if(v == 2) r = 127;
 			pixel = SDL_MapRGB(temp -> format, r, r, r); 
 			PutPixel(temp, j, i, pixel);
 		}
@@ -18,7 +21,6 @@ void SaveMatAsIm(Matrix m, char* path)
 
 	SaveImage(temp, path);
 }
-
 
 Matrix GetMatFromIm(SDL_Surface* InputImage)
 {
@@ -38,5 +40,3 @@ Matrix GetMatFromIm(SDL_Surface* InputImage)
 
 	return temp;
 }
-
-

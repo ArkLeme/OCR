@@ -9,7 +9,7 @@ LDFLAGS = -fsanitize=address
 LDLIBS = -lSDL -lSDL_image -lm `pkg-config --libs sdl`
 
 # SRC contain all the file we must built
-SRC = main.c preprocessing/preprocessing.c sdl_tools/sdl_tools.c segmentation/segmentation.c matrix/matrix.c segmentation/matrix_image.c segmentation/rlsa.c
+SRC = main.c preprocessing/preprocessing.c sdl_tools/sdl_tools.c segmentation/segmentation.c matrix/matrix.c segmentation/matrix_image.c segmentation/rlsa.c segmentation/xy_cut.c
 OBJ = $(SRC:.c=.o)
 DEP = ${SRC:.c=.d}
 EXEC = main

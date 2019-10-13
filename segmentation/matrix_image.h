@@ -8,6 +8,6 @@
 void SaveMatAsIm(Matrix m, char* path);
 
 //Load matrix from image
-Matrix GetMatFromIm(SDL_Surface* InputImag);
+Matrix GetMatFromIm(SDL_Surface* InputImage);
 
 #endif
