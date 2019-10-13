@@ -41,7 +41,7 @@ SDL_Surface* CreateSurface(int w, int h)
 {
 	SDL_Surface* OutputImage =
 		SDL_CreateRGBSurface(0, w, h,
-				32, 0x000000ff, 0x000000ff, 0x000000ff, 0x00000000);
+				32, 0, 0, 0, 0);
 	return OutputImage;
 }
 

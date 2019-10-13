@@ -1,40 +1,90 @@
 #include "rlsa.h"
+#include <stdio.h>
 
-void SaveMatAsIm(Matrix m, char* path)
+Matrix Hrlsa(Matrix m, int limit)
 {
-	SDL_Surface* temp = CreateSurface(m.col, m.line);
-	Uint32 pixel;
-	Uint8 r;
+	Matrix output = InitM(m.line, m.col);
+	int zero_count = 0; //Number of 0 aside
 
 	for(int i = 0; i < m.line; i++)
 	{
+		if(zero_count <= limit)
+		{
+			for(int k = zero_count; k >=0; k--)
+			{
+				PutM(output, i, m.col - k, 1);
+			}
+		}
+		zero_count = 0;
 		for(int j = 0; j < m.col; j++)
 		{
-			r = GetM(m, i, j) ? 0 : 255;
-			pixel = SDL_MapRGB(temp -> format, r, r, r); 
-			PutPixel(temp, j, i, pixel);
+			if(GetM(m, i, j))
+			{
+				if(zero_count <= limit)
+				{
+					for(int k = zero_count; k >= 0; k--)
+					{
+						PutM(output, i, j - k, 1);
+					}
+				}
+				zero_count = 0;
+			}
+			else
+			{
+				zero_count++;
+			}
 		}
 	}
 
-	SaveImage(temp, path);
+	return output;
 }
 
-
-Matrix GetMatFromIm(SDL_Surface* InputImage)
+Matrix Vrlsa(Matrix m, int limit)
 {
-	Matrix temp = InitM(InputImage -> h, InputImage -> w);
-	Uint8 r;
-	Uint32 pixel;
+	Matrix output = InitM(m.line, m.col);
+	int zero_count = 0; //Number of 0 aside
 
-	for(int i = 0; i < temp.line; i++)
+	for(int j = 0; j < m.col; j++)
 	{
-		for(int j = 0; j < temp.col; j++)
+		if(zero_count <= limit)
 		{
-			pixel = GetPixel(InputImage, j, i);
-			SDL_GetRGB(pixel, InputImage -> format, &r, &r, &r);
-			PutM(temp, i, j, r == 0);
+			for(int k = zero_count; k >=0; k--)
+			{
+				PutM(output, m.line - k - 1, j, 1);
+			}
+		}
+		zero_count = 0;
+		for(int i = 0; i < m.line; i++)
+		{
+			if(GetM(m, i, j) == 1)
+			{
+				if(zero_count <= limit)
+				{
+					for(int k = zero_count; k >= 0; k--)
+					{
+						PutM(output, i - k, j, 1);
+					}
+				}
+				zero_count = 0;
+			}
+			else
+			{
+				zero_count++;
+			}
 		}
 	}
 
-	return temp;
+
+	return output;
+}
+
+Matrix rlsa(Matrix m, int limit)
+{
+	Matrix v = Vrlsa(m, limit);
+	Matrix h = Hrlsa(m, limit);
+	Matrix a = AndM(v, h);
+
+	FreeM(v);
+	FreeM(h);
+	return a;
 }
