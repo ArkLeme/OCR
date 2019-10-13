@@ -27,7 +27,7 @@ Matrix InitStringM(int l, int c, char* str)
 
 	for(int i = 0; i < output.size; i++)
 	{
-		PutPosM(output, i, (int) str[i]);
+		PutPosM(output, i, '1' == str[i]);
 	}
 
 	return output;

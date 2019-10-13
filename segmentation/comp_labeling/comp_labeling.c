@@ -3,16 +3,11 @@
 Matrix FirstPass(Matrix m, int* maxLabel)
 {
 	Matrix output = InitM(m.line, m.col);
-	
-	int label = 1;
+
+	int label = 0;
 
 	for(int i = 0; i < m.line ; i ++)
 	{
-		if(label > *maxLabel)
-		{
-			*maxLabel = label;
-		}
-
 		for(int j = 0; j < m.col; j++)
 		{
 			if(GetM(m, i, j) != 0)
@@ -22,18 +17,17 @@ Matrix FirstPass(Matrix m, int* maxLabel)
 
 				if(top == 0 && left == 0)
 				{
-					label++;
+					*maxLabel += 1;
+					label = *maxLabel;
 				}
+				else if(top == 0)
+					label = left;
+				else if(left == 0)
+					label = top;
 				else
-				{
-					label = top < left ? left : top;
-				}
+					label = top < left ? top : left;
 
 				PutM(output, i, j, label);
-			}
-			else
-			{
-				label++;
 			}
 		}
 	}

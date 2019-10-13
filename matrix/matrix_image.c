@@ -44,14 +44,15 @@ Matrix GetMatFromIm(SDL_Surface* InputImage)
 void SaveMatAsImRand(Matrix m, char* path, int label)
 {
 
-	Uint32* labelColor = (Uint32 *) calloc(label, sizeof(Uint32));
+	Uint32* labelColor = (Uint32 *) calloc(label + 1, sizeof(Uint32));
 
 	SDL_Surface* temp = CreateSurface(m.col, m.line);
 
-	for(int i = 0; i < label; i++)
+	labelColor[0] = SDL_MapRGB(temp -> format, 255, 255, 255);
+	for(int i = 1; i < label + 1; i++)
 	{
 		labelColor[i] = SDL_MapRGB(temp -> format,
-						rand() % 256, rand() % 256, rand() % 256);
+						rand() % 255, rand() % 255, rand() % 255);
 	}
 
 	for(int i = 0; i < m.line; i++)
