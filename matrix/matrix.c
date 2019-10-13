@@ -11,13 +11,6 @@ Matrix InitM(int l, int c)
 	return temp;
 }
 
-
-//Add element to list
-void AddL(List* tail, List* node)
-{
-	
-}
-
 //Put element e in matrix at [i,j]
 void PutM(Matrix m, int i, int j, int e)
 {
