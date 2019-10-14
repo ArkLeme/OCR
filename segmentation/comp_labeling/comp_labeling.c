@@ -68,12 +68,6 @@ Graph *CreateGraph(Matrix *m, int maxLabel)
 {
 	Graph *g = InitG(maxLabel + 1);
 
-	for(int i = 0; i < g -> size; i++)
-	{
-		g -> subsets[i].parent = i;
-		g -> subsets[i].rank = 0;
-	}
-
 	for(int i = 0; i < m -> line; i++)
 	{
 		for(int j = 0; j < m -> col; j++)
@@ -92,4 +86,17 @@ Graph *CreateGraph(Matrix *m, int maxLabel)
 	}
 
 	return g;
+}
+
+int NumberLabel(Matrix *m)
+{
+	int label = 0;
+
+	for(int i = 0; i < m -> size; i ++)
+	{
+		if(GetPosM(m, i) > label)
+			label++;
+	}
+
+	return label;
 }

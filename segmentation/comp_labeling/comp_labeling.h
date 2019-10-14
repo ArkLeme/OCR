@@ -17,4 +17,6 @@ Matrix *SecondPass(Matrix *m, Graph *g);
 //Create graph of subset
 Graph *CreateGraph(Matrix *m, int maxLabel);
 
+//Count label
+int NumberLabel(Matrix *m);
 #endif

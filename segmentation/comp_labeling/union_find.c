@@ -4,8 +4,16 @@
 Graph *InitG(int size)
 {
 	Graph *g = malloc(sizeof(Graph));
-	g -> size = size + 1;
-	g -> subsets = malloc((g -> size) * sizeof(Subset));
+	g -> size = size;
+	g -> subsets = malloc(size * sizeof(Subset));
+
+	for(int i = 0; i < size; i++)
+	{
+		g -> subsets[i].parent = i;
+		g -> subsets[i].rank = 0;
+	}
+
+	return g;
 }
 
 //Find parent of a node and reduce heightof the tree
