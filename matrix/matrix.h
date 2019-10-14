@@ -88,4 +88,7 @@ List* RemoveFL(List *l);
 //Remove last element
 List * RemoveLL(List* l);
 
+//Delete list
+void DeleteL(List* l);
+
 #endif

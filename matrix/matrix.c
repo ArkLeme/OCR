@@ -309,3 +309,11 @@ List* RemoveLL(List *l)
 
 	return l;
 }
+
+void DeleteL(List *l)
+{
+	while(l)
+	{
+		l = RemoveFL(l);
+	}
+}
