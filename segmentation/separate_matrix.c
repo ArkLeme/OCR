@@ -4,9 +4,9 @@
 
 PosM** FindPosMat(Matrix *m, int maxLabel)
 {
-	PosM **posM = malloc((maxLabel + 1) * sizeof(PosM*));
+	PosM **posM = malloc(maxLabel * sizeof(PosM*));
 
-	for(int i = 0; i < maxLabel + 1; i++)
+	for(int i = 0; i < maxLabel; i++)
 	{
 		posM[i] = InitP(-1, -1, -1, -1);
 	}
