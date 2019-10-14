@@ -70,14 +70,23 @@ void SaveMatAsImRand(Matrix m, char* path, int label)
 	SaveImage(temp, path);
 }
 
-void SaveMatsAsIm(List *l)
+void SaveMatsAsIm(List *l, int stop)
 {
-	List *first = l;
-	int value = 0;
-	while(l != NULL)
+	char* s = "image_data/test";
+
+	List* actual = l;
+	while(actual != NULL && stop > 0)
 	{
-		//char *num = 
-		char c[4] = {'0', '1', '2'};
-		SaveMatAsIm(*( (Matrix *) (l -> mat)), "image_data/s");
+		char* s1 = Concatene(s, Itoa(stop));
+		char* s2 = Concatene(s, ".bmp");
+
+		SaveMatAsIm(*( (Matrix *) (l -> mat)), s2);
+
+		actual = actual -> next;
+
+		free(s1);
+		free(s2);
+
+		stop--;
 	}
 }

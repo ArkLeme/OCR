@@ -244,8 +244,9 @@ PosM* InitP(int mx, int my, int Mx, int My)
 //Preprend a element to our list
 List* PrependL(List* old, void *m, void *p)
 {
+
 	if(!old)
-		errx(1, "Can not preprend to NULL");
+		return InitL(m, p);
 
 	List *l = InitL(m, p);
 	if(l)
@@ -259,13 +260,14 @@ List* AppendL(List* old, void *m, void *p)
 {
 	if(!old)
 	{
-		return InitL(m, p);
+		old = InitL(m, p);
+		return old;
 	}
 
 	List *l = InitL(m, p);
 	List *current = old;
 
-	while(current -> next )
+	while(current -> next)
 	{
 		current = current -> next;
 	}

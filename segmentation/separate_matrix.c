@@ -50,7 +50,7 @@ PosM* FindPosMat(Matrix m, int maxLabel)
 List* ListOfMat(Matrix *m, PosM *p, int maxLabel)
 {
 
-		List *l = NULL;
+	List *l = NULL;
 
 	for(int i = 0; i < maxLabel; i++)
 	{
@@ -62,7 +62,7 @@ List* ListOfMat(Matrix *m, PosM *p, int maxLabel)
 			int sizeY = p[i].My - y;
 
 			Matrix mat = InitM(sizeY, sizeX);
-			AppendL(l, &mat, &p[i]);
+			l = PrependL(l, &mat, &p[i]);
 
 		}
 	}
