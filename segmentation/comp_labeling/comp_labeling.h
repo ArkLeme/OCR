@@ -19,4 +19,10 @@ Graph *CreateGraph(Matrix *m, int maxLabel);
 
 //Count label
 int NumberLabel(Matrix *m);
+
+int* LabelReduceList(Matrix *m, int nbl, int ml);
+
+void ReduceLabel(Matrix *m, int *label, int len);
+
+int BinSearch(int* list, int x, int len);
 #endif

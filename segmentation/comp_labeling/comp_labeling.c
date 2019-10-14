@@ -100,3 +100,54 @@ int NumberLabel(Matrix *m)
 
 	return label;
 }
+
+int* LabelReduceList (Matrix *m, int nbl, int ml)
+{
+	int* list = malloc(nbl * sizeof(int));
+	int place = 1;
+	int* listPlaced = calloc(ml, sizeof(int));
+	listPlaced[0] = 1; //Save label 0 as white and do not change is label
+	list[0] = 0;
+
+	for(int i = 0; i < m -> size; i++)
+	{
+		int pos = GetPosM(m, i);
+		if(listPlaced[pos] == 0)
+		{
+			list[place] = pos;
+			place++;
+			listPlaced[pos] = 1;
+		}
+	}
+
+	free(listPlaced);
+	return list;
+}
+
+void ReduceLabel(Matrix *m, int* lab, int len)
+{
+	for(int i = 0; i < m -> size; i++)
+	{
+		PutPosM(m, i, BinSearch(lab, GetPosM(m, i), len));
+	}
+
+	free(lab);
+}
+
+int BinSearch(int* list, int x, int len)
+{
+	int l = 0, r = len, m = 0;
+
+	while(l <= r)
+	{
+		m = l + (r - l)/2;
+		if(list[m] == x)
+			return m;
+		if(x < list[m])
+			r = m;
+		else
+			l = m + 1;
+	}
+
+	return r;
+}
