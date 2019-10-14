@@ -1,5 +1,5 @@
-#ifndef SEGM_H
-#define SEGM_H
+#ifndef SEGMENTATION
+#define SEGMENTATION
 
 #include <stdio.h>
 #include <stdint.h>
