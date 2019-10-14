@@ -216,3 +216,56 @@ Matrix MultScalM(Matrix m1, double v)
 
 	return m;
 }
+
+//Initiate List of struct
+List* InitL(void *m, void *p)
+{
+	List *l =  malloc(sizeof(List));
+	if(l)
+	{
+		l -> mat = m;
+		l -> pos = p;
+		l -> next = NULL;
+	}
+
+	return l;
+}
+
+PosM* InitP(int x, int y, int sizeY, int sizeX)
+{
+	PosM* pos = malloc(sizeof(PosM));
+	pos -> x = x;
+	pos -> y = y;
+	pos -> sizeY = sizeY;
+	pos -> sizeX = sizeX;
+
+	return pos;
+}
+
+//Preprend a element to our list
+List* PrependL(List* old, void *m, void *p)
+{
+	List *l = InitL(m, p);
+	if(l)
+		l -> next = old;
+
+	return l;
+}
+
+//Append to a list
+List* AppendL(List* old, void *m, void *p)
+{
+	List *l = InitL(m, p);
+	List *current = old;
+
+	if(!current)
+		return l;
+
+	while(current -> next )
+	{
+		current = current -> next;
+	}
+
+	current -> next = l;
+	return old;
+}

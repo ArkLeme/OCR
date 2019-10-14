@@ -10,11 +10,21 @@ typedef struct Matrix
 	double* matrix;
 }Matrix;
 
-typedef struct List
+//Position of matrix
+typedef struct PosM
 {
-	int x;
-	struct list *next;
-}List;
+	int x, y, sizeX,sizeY;
+}PosM;
+
+//List of Matrix
+typedef struct  List List;
+struct List
+{
+	PosM* pos;
+	void* mat;
+
+	List* next;
+};
 
 //init Matrix
 Matrix InitM(int w, int h);
@@ -57,4 +67,15 @@ Matrix MultValM(Matrix m1, Matrix m2);
 //Multiply Matrix by scalar
 Matrix MultScalM(Matrix m1, double v);
 
+//Init Pos
+PosM* InitP(int x,int y, int sizeX, int sizeY);
+
+//Init list
+List* InitL(void *m, void *p);
+
+//Append an element to the list
+List* AppendL(List* old, void *m, void *p);
+
+//Prepend an element to the list
+List* PrependL(List* old, void *m, void *p);
 #endif
