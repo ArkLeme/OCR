@@ -73,11 +73,12 @@ void SaveMatAsImRand(Matrix *m, char* path, int label)
 void SaveMatsAsIm(List *l, int stop)
 {
 	char* s = "image_data/char";
-
 	List* actual = l;
+	
 	while(actual != NULL && stop > 0)
 	{
-		char* s1 = Concatene(s, Itoa(stop));
+		char* sint = Itoa(stop);
+		char* s1 = Concatene(s, sint);
 		char* s2 = Concatene(s, ".bmp");
 
 		Matrix *m = (Matrix *) (actual -> mat);
@@ -87,6 +88,7 @@ void SaveMatsAsIm(List *l, int stop)
 
 		free(s1);
 		free(s2);
+		free(sint);
 
 		stop--;
 	}
