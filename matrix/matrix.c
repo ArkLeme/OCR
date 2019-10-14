@@ -245,6 +245,9 @@ PosM* InitP(int x, int y, int sizeY, int sizeX)
 //Preprend a element to our list
 List* PrependL(List* old, void *m, void *p)
 {
+	if(!old)
+		errx(1, "Can not preprend to NULL");
+
 	List *l = InitL(m, p);
 	if(l)
 		l -> next = old;
@@ -255,11 +258,11 @@ List* PrependL(List* old, void *m, void *p)
 //Append to a list
 List* AppendL(List* old, void *m, void *p)
 {
+	if(!old)
+		errx(1, "Can not append to NULL");
+
 	List *l = InitL(m, p);
 	List *current = old;
-
-	if(!current)
-		return l;
 
 	while(current -> next )
 	{
@@ -268,4 +271,41 @@ List* AppendL(List* old, void *m, void *p)
 
 	current -> next = l;
 	return old;
+}
+
+void FreeL(List *l)
+{
+	free(l -> pos);
+	FreeM(*((Matrix*) (l -> mat)));
+	free(l);
+}
+
+//Remove first
+List* RemoveFL(List *l)
+{
+	if(!l)
+		errx(1, "Can not remove NULL");
+
+	List *first = l;
+	l = l -> next;
+	FreeL(first);
+
+	return l;
+}
+
+//Remove last
+List* RemoveLL(List *l)
+{
+	if(!l)
+		errx(1, "Can not remove NULL");
+
+	List *last = l;
+	while(last -> next)
+	{
+		last = last -> next;
+	}
+
+	FreeL(last);
+
+	return l;
 }

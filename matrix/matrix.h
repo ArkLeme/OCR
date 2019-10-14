@@ -73,9 +73,19 @@ PosM* InitP(int x,int y, int sizeX, int sizeY);
 //Init list
 List* InitL(void *m, void *p);
 
+//Free list
+void FreeL(List *l);
+
 //Append an element to the list
 List* AppendL(List* old, void *m, void *p);
 
 //Prepend an element to the list
 List* PrependL(List* old, void *m, void *p);
+
+//Remove first element
+List* RemoveFL(List *l);
+
+//Remove last element
+List * RemoveLL(List* l);
+
 #endif
