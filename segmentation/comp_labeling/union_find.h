@@ -1,5 +1,5 @@
-#ifndef UNION_LABELING
-#define UNION_LABELING
+#ifndef UNION_FIND
+#define UNION_FIND
 
 typedef struct Subset
 {
@@ -15,5 +15,9 @@ typedef struct Graph
 	//Our label grpah is represented as subset
 	Subset* subsets;
 }Graph;
+
+int FindParent(Subset* subsets, int i);
+
+void Union(Subset* subsets, int i, int j);
 
 #endif

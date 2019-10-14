@@ -35,8 +35,48 @@ Matrix FirstPass(Matrix m, int* maxLabel)
 	return output;
 }
 
-Graph CreateGraph(int size)
+Matrix SecondPass(Matrix m, Graph g)
 {
-	Graph graph = {size, malloc(size * sizeof(struct Subset))};
-	return graph;
+	Matrix output = InitM(m.line, m.col);
+	
+	for(int i = 0; i < m.line; i++)
+	{
+		for(int j = 0; j < m.col; j++)
+		{
+			int value = FindParent(g.subsets, GetM(m, i, j));
+			PutM(output, i, j, value);
+		}
+	}
+
+	return output;
+}
+
+Graph CreateGraph(Matrix m, int maxLabel)
+{
+	Graph g = {maxLabel + 1, malloc((maxLabel + 1) * sizeof(Subset))};
+
+	for(int i = 0; i < g.size; i++)
+	{
+		g.subsets[i].parent = i;
+		g.subsets[i].rank = 0;
+	}
+
+	for(int i = 0; i < m.line; i++)
+	{
+		for(int j = 0; j < m.col; j++)
+		{
+			int top = i > 0 ? GetM(m, i - 1, j) : 0;
+			int left = j > 0 ? GetM(m, i, j - 1) : 0;
+
+			if(top != 0 && left != 0 && top != left)
+			{
+				if(top > left)
+					Union(g.subsets, top, left);
+				else
+					Union(g.subsets, left, top);
+			}
+		}
+	}
+
+	return g;
 }

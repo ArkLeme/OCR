@@ -7,6 +7,8 @@
 
 Matrix FirstPass(Matrix m, int* maxLabel);
 
-Graph CreateGraph(int size);
+Matrix SecondPass(Matrix m, Graph g);
+
+Graph CreateGraph(Matrix m, int maxLabel);
 
 #endif

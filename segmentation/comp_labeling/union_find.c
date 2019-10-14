@@ -1,6 +1,5 @@
 #include "union_find.h"
 
-
 //Find parent of a node and reduce heightof the tree
 int FindParent(Subset subsets[], int i)
 {
@@ -12,23 +11,23 @@ int FindParent(Subset subsets[], int i)
 	return subsets[i].parent;
 }
 
-//Create union of 2 sets (union by rank)
+//Create union of 2 sets (union bj rank)
 void Union(Subset subsets[], int i, int j)
 {
-	int xParent = FindParent(subsets, i);
-	int yParent = FindParent(subsets, j);
+	int iParent = FindParent(subsets, i);
+	int jParent = FindParent(subsets, j);
 
-	if(subsets[xParent].rank > subsets[yParent].rank)
+	if(subsets[iParent].rank > subsets[jParent].rank)
 	{
-		subsets[yParent].parent = xParent;
+		subsets[jParent].parent = iParent;
 	}
-	else if (subsets[xParent].rank < subsets[yParent].rank)
+	else if (subsets[iParent].rank < subsets[jParent].rank)
 	{
-		subsets[xParent].parent = yParent;
+		subsets[iParent].parent = jParent;
 	}
 	else
 	{
-		subsets[xParent].parent = yParent;
-		subsets[yParent].rank++;
+		subsets[iParent].parent = jParent;
+		subsets[jParent].rank++;
 	}
 }
