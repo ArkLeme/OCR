@@ -20,6 +20,19 @@ void PutM(Matrix m, int i, int j, int e)
 	*(m.matrix + m.col * i + j) = e;
 }
 
+//Create Matrix from string
+Matrix InitStringM(int l, int c, char* str)
+{
+	Matrix output = InitM(l, c);
+
+	for(int i = 0; i < output.size; i++)
+	{
+		PutPosM(output, i, (int) str[i]);
+	}
+
+	return output;
+}
+
 //Put element e in matrix at [i/col, i%col]
 void PutPosM(Matrix m, int pos, int e)
 {
