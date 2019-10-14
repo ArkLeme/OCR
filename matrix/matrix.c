@@ -231,13 +231,11 @@ List* InitL(void *m, void *p)
 	return l;
 }
 
-PosM* InitP(int x, int y, int sizeY, int sizeX)
+PosM* InitP(int x, int y)
 {
 	PosM* pos = malloc(sizeof(PosM));
 	pos -> x = x;
 	pos -> y = y;
-	pos -> sizeY = sizeY;
-	pos -> sizeX = sizeX;
 
 	return pos;
 }
