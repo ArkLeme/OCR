@@ -217,6 +217,24 @@ Matrix MultScalM(Matrix m1, double v)
 	return m;
 }
 
+Matrix CopyMatrix(Matrix m, int mx, int my, int Mx, int My)
+{
+	int diffX = Mx - mx + 1;
+	int diffY = My - my + 1;
+	Matrix output = InitM(diffY, diffX);
+
+	for(int i = 0; i < diffY; i++)
+	{
+		for(int j = 0; j < diffX; j++)
+		{
+			int value = GetM(m, my + i, mx + j);
+			PutM(output, i, j, value > 0 ? 1 : 0);
+		}
+	}
+
+	return output;
+}
+
 //Initiate List of struct
 List* InitL(void *m, void *p)
 {

@@ -67,6 +67,9 @@ Matrix MultValM(Matrix m1, Matrix m2);
 //Multiply Matrix by scalar
 Matrix MultScalM(Matrix m1, double v);
 
+//Copy matrix from index
+Matrix CopyMatrix(Matrix m, int mx, int my, int Mx, int My);
+
 //Init Pos
 PosM* InitP(int mx, int my, int Mx, int My);
 

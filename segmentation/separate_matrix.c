@@ -56,12 +56,7 @@ List* ListOfMat(Matrix *m, PosM *p, int maxLabel)
 	{
 		if(p[i].mx != -1)
 		{
-			int x = p[i].mx;
-			int y = p[i].my;
-			int sizeX = p[i].Mx - x;
-			int sizeY = p[i].My - y;
-
-			Matrix mat = InitM(sizeY, sizeX);
+			Matrix mat = CopyMatrix(*m, p[i].mx, p[i].my, p[i].Mx, p[i].My);
 			l = PrependL(l, &mat, &p[i]);
 
 		}
