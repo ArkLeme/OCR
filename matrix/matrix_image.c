@@ -12,7 +12,7 @@ void SaveMatAsIm(Matrix m, char* path)
 		{
 			int v = GetM(m, i, j);
 			if(v == 0) r = 255;
-			if(v == 2) r = 127;
+			else if(v == 2) r = 127;
 			else r = 0;
 			pixel = SDL_MapRGB(temp -> format, r, r, r); 
 			PutPixel(temp, j, i, pixel);
