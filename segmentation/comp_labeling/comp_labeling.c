@@ -7,6 +7,7 @@ Matrix *CompLabeling(Matrix *m, int* maxLabel)
 	Matrix *sp = SecondPass(fp, g);
 
 	free(g -> subsets);
+	free(g);
 	FreeM(fp);
 
 	return sp;
