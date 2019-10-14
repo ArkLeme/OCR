@@ -258,7 +258,9 @@ List* PrependL(List* old, void *m, void *p)
 List* AppendL(List* old, void *m, void *p)
 {
 	if(!old)
-		errx(1, "Can not append to NULL");
+	{
+		return InitL(m, p);
+	}
 
 	List *l = InitL(m, p);
 	List *current = old;

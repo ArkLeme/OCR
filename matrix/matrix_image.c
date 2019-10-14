@@ -1,4 +1,6 @@
+#include <stdlib.h>
 #include "matrix_image.h"
+#include "../string/string_operation.h"
 
 void SaveMatAsIm(Matrix m, char* path)
 {
@@ -66,4 +68,16 @@ void SaveMatAsImRand(Matrix m, char* path, int label)
 
 	free(labelColor);
 	SaveImage(temp, path);
+}
+
+void SaveMatsAsIm(List *l)
+{
+	List *first = l;
+	int value = 0;
+	while(l != NULL)
+	{
+		//char *num = 
+		char c[4] = {'0', '1', '2'};
+		SaveMatAsIm(*( (Matrix *) (l -> mat)), "image_data/s");
+	}
 }
