@@ -62,7 +62,10 @@ void SaveMatAsImRand(Matrix *m, char* path, int label)
 		for(int j = 0; j < m -> col; j++)
 		{
 			int v = GetM(m, i, j);
-			PutPixel(temp, j, i, labelColor[v]);
+			if(label == 1)
+				PutPixel(temp, j, i, labelColor[v != 0]);
+			else
+				PutPixel(temp, j, i, labelColor[v]);
 		}
 	}
 
@@ -79,10 +82,10 @@ void SaveMatsAsIm(List *l, int stop)
 	{
 		char* sint = Itoa(stop);
 		char* s1 = Concatene(s, sint);
-		char* s2 = Concatene(s, ".bmp");
+		char* s2 = Concatene(s1, ".bmp");
 
 		Matrix *m = (Matrix *) (actual -> mat);
-		SaveMatAsIm(m, s2);
+		SaveMatAsImRand(m, s2, 1);
 
 		actual = actual -> next;
 

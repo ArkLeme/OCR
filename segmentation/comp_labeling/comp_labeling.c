@@ -1,4 +1,5 @@
 #include "comp_labeling.h"
+#include <err.h>
 
 Matrix *CompLabeling(Matrix *m, int* maxLabel)
 {
@@ -88,16 +89,20 @@ Graph *CreateGraph(Matrix *m, int maxLabel)
 	return g;
 }
 
-int NumberLabel(Matrix *m)
+int NumberLabel(Matrix *m, int ml)
 {
-	int label = 0;
+	int* histo = calloc(ml + 1, sizeof(int));
 
-	for(int i = 0; i < m -> size; i ++)
+	for(int i = 0; i < m -> size; i++)
 	{
-		if(GetPosM(m, i) > label)
-			label++;
+		histo[(int) GetPosM(m, i)] = 1;
 	}
 
+	int label = 0;
+	for(int i = 0; i < ml + 1; i++)
+		if(histo[i] == 1) label++;
+
+	free(histo);
 	return label;
 }
 
@@ -105,14 +110,14 @@ int* LabelReduceList (Matrix *m, int nbl, int ml)
 {
 	int* list = malloc(nbl * sizeof(int));
 	int place = 1;
-	int* listPlaced = calloc(ml, sizeof(int));
+	int* listPlaced = calloc(ml + 1, sizeof(int));
 	listPlaced[0] = 1; //Save label 0 as white and do not change is label
 	list[0] = 0;
 
 	for(int i = 0; i < m -> size; i++)
 	{
 		int pos = GetPosM(m, i);
-		if(listPlaced[pos] == 0)
+		if(listPlaced[(int) pos] == 0)
 		{
 			list[place] = pos;
 			place++;
@@ -136,18 +141,11 @@ void ReduceLabel(Matrix *m, int* lab, int len)
 
 int BinSearch(int* list, int x, int len)
 {
-	int l = 0, r = len, m = 0;
-
-	while(l <= r)
+	for(int i = 0; i < len; i++)
 	{
-		m = l + (r - l)/2;
-		if(list[m] == x)
-			return m;
-		if(x < list[m])
-			r = m;
-		else
-			l = m + 1;
+		if(list[i] == x)
+			return i;
 	}
 
-	return r;
+	errx(1, "SHould have found a value for th binsearch");
 }

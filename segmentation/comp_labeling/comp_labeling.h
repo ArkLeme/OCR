@@ -18,7 +18,7 @@ Matrix *SecondPass(Matrix *m, Graph *g);
 Graph *CreateGraph(Matrix *m, int maxLabel);
 
 //Count label
-int NumberLabel(Matrix *m);
+int NumberLabel(Matrix *m, int ml);
 
 int* LabelReduceList(Matrix *m, int nbl, int ml);
 

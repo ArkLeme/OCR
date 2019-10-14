@@ -15,7 +15,7 @@ PosM** FindPosMat(Matrix *m, int maxLabel)
 	{
 		for(int j = 0; j < m -> col; j++)
 		{
-			int label = GetM(m, i, j);
+			int label = (int) GetM(m, i, j);
 			if(label != 0)
 			{
 				PosM *p = posM[label];
