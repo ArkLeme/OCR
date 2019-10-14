@@ -1,26 +1,26 @@
 #include "comp_labeling.h"
 
-Matrix CompLabeling(Matrix m, int* maxLabel)
+Matrix *CompLabeling(Matrix *m, int* maxLabel)
 {
-	Matrix fp = FirstPass(m, maxLabel);
-	Graph g = CreateGraph(fp, *maxLabel);
-	Matrix sp = SecondPass(fp, g);
+	Matrix *fp = FirstPass(m, maxLabel);
+	Graph *g = CreateGraph(fp, *maxLabel);
+	Matrix *sp = SecondPass(fp, g);
 
-	free(g.subsets);
+	free(g -> subsets);
 	FreeM(fp);
 
 	return sp;
 }
 
-Matrix FirstPass(Matrix m, int* maxLabel)
+Matrix* FirstPass(Matrix* m, int* maxLabel)
 {
-	Matrix output = InitM(m.line, m.col);
+	Matrix *output = InitM(m -> line, m -> col);
 
 	int label = 0;
 
-	for(int i = 0; i < m.line ; i ++)
+	for(int i = 0; i < m -> line ; i ++)
 	{
-		for(int j = 0; j < m.col; j++)
+		for(int j = 0; j < m -> col; j++)
 		{
 			if(GetM(m, i, j) != 0)
 			{
@@ -47,15 +47,15 @@ Matrix FirstPass(Matrix m, int* maxLabel)
 	return output;
 }
 
-Matrix SecondPass(Matrix m, Graph g)
+Matrix *SecondPass(Matrix *m, Graph *g)
 {
-	Matrix output = InitM(m.line, m.col);
+	Matrix *output = InitM(m -> line, m -> col);
 	
-	for(int i = 0; i < m.line; i++)
+	for(int i = 0; i < m -> line; i++)
 	{
-		for(int j = 0; j < m.col; j++)
+		for(int j = 0; j < m -> col; j++)
 		{
-			int value = FindParent(g.subsets, GetM(m, i, j));
+			int value = FindParent(g -> subsets, GetM(m, i, j));
 			PutM(output, i, j, value);
 		}
 	}
@@ -63,19 +63,19 @@ Matrix SecondPass(Matrix m, Graph g)
 	return output;
 }
 
-Graph CreateGraph(Matrix m, int maxLabel)
+Graph *CreateGraph(Matrix *m, int maxLabel)
 {
-	Graph g = {maxLabel + 1, malloc((maxLabel + 1) * sizeof(Subset))};
+	Graph *g = InitG(maxLabel + 1);
 
-	for(int i = 0; i < g.size; i++)
+	for(int i = 0; i < g -> size; i++)
 	{
-		g.subsets[i].parent = i;
-		g.subsets[i].rank = 0;
+		g -> subsets[i].parent = i;
+		g -> subsets[i].rank = 0;
 	}
 
-	for(int i = 0; i < m.line; i++)
+	for(int i = 0; i < m -> line; i++)
 	{
-		for(int j = 0; j < m.col; j++)
+		for(int j = 0; j < m -> col; j++)
 		{
 			int top = i > 0 ? GetM(m, i - 1, j) : 0;
 			int left = j > 0 ? GetM(m, i, j - 1) : 0;
@@ -83,9 +83,9 @@ Graph CreateGraph(Matrix m, int maxLabel)
 			if(top != 0 && left != 0 && top != left)
 			{
 				if(top > left)
-					Union(g.subsets, top, left);
+					Union(g -> subsets, top, left);
 				else
-					Union(g.subsets, left, top);
+					Union(g -> subsets, left, top);
 			}
 		}
 	}

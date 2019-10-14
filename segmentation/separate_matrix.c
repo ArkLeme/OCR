@@ -2,26 +2,23 @@
 #include "../matrix/matrix.h"
 #include "separate_matrix.h"
 
-PosM* FindPosMat(Matrix m, int maxLabel)
+PosM** FindPosMat(Matrix *m, int maxLabel)
 {
-	PosM *posM = malloc((maxLabel + 1) * sizeof(PosM));
+	PosM **posM = malloc((maxLabel + 1) * sizeof(PosM*));
 
 	for(int i = 0; i < maxLabel + 1; i++)
 	{
-		posM[i].mx = -1;
-		posM[i].my = -1;
-		posM[i].Mx = -1;
-		posM[i].My = -1;
+		posM[i] = InitP(-1, -1, -1, -1);
 	}
 
-	for(int i = 0; i < m.line; i++)
+	for(int i = 0; i < m -> line; i++)
 	{
-		for(int j = 0; j < m.col; j++)
+		for(int j = 0; j < m -> col; j++)
 		{
 			int label = GetM(m, i, j);
 			if(label != 0)
 			{
-				PosM *p = &posM[label];
+				PosM *p = posM[label];
 				if(p -> mx < 0)
 				{
 					p -> mx = j;
@@ -47,17 +44,22 @@ PosM* FindPosMat(Matrix m, int maxLabel)
 	return posM;
 }
 
-List* ListOfMat(Matrix *m, PosM *p, int maxLabel)
+List* ListOfMat(Matrix *m, PosM **p, int maxLabel)
 {
 
 	List *l = NULL;
 
 	for(int i = 0; i < maxLabel; i++)
 	{
-		if(p[i].mx != -1)
+		if(p[i] -> mx != -1)
 		{
-			Matrix mat = CopyMatrix(*m, p[i].mx, p[i].my, p[i].Mx, p[i].My);
-			l = PrependL(l, &mat, &p[i]);
+			int mx = p[i] -> mx;
+			int my = p[i] -> my;
+			int Mx = p[i] -> Mx;
+			int My = p[i] -> My;
+
+			Matrix *mat = CopyMatrix(m, mx, my, Mx, My);
+			l = PrependL(l, mat, p[i]);
 
 		}
 	}

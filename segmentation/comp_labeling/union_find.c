@@ -1,4 +1,12 @@
 #include "union_find.h"
+#include <stdlib.h>
+
+Graph *InitG(int size)
+{
+	Graph *g = malloc(sizeof(Graph));
+	g -> size = size + 1;
+	g -> subsets = malloc((g -> size) * sizeof(Subset));
+}
 
 //Find parent of a node and reduce heightof the tree
 int FindParent(Subset subsets[], int i)

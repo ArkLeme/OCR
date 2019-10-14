@@ -16,6 +16,8 @@ typedef struct Graph
 	Subset* subsets;
 }Graph;
 
+Graph *InitG(int size);
+
 int FindParent(Subset* subsets, int i);
 
 void Union(Subset* subsets, int i, int j);
