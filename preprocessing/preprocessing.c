@@ -24,11 +24,11 @@ SDL_Surface* GrayScale(SDL_Surface* InputImage)
 
 			//Apply grayscale formule (REC. 709)
 			
-			avg = r * 0.2126 + g * 0.7152 + b * 0.0722;
+			//avg = r * 0.2126 + g * 0.7152 + b * 0.0722;
 			avg = (g+b+r)/3;
 
-			r = r > g ? g : r;
-			avg = r > b ? b : r;
+			//r = r > g ? g : r;
+			//avg = r > b ? b : r;
 
 			pixel = SDL_MapRGB(OutputImage -> format, avg, avg, avg);
 			PutPixel(OutputImage, i, j, pixel);
@@ -74,7 +74,7 @@ SDL_Surface* Contrast(SDL_Surface* InputImage)
 		{
 			pixel = GetPixel(InputImage, i, j);
 			SDL_GetRGB(pixel, InputImage -> format, &r, &g, &b);
-			r = r < 200 ? newValue[r] : 255;
+			r = r < 220 ? newValue[r] : 255;
 			pixel = SDL_MapRGB(OutputImage -> format, r, r, r);
 			PutPixel(OutputImage, i, j, pixel);
 		}

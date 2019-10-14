@@ -1,5 +1,17 @@
 #include "comp_labeling.h"
 
+Matrix CompLabeling(Matrix m, int* maxLabel)
+{
+	Matrix fp = FirstPass(m, maxLabel);
+	Graph g = CreateGraph(fp, *maxLabel);
+	Matrix sp = SecondPass(fp, g);
+
+	free(g.subsets);
+	FreeM(fp);
+
+	return sp;
+}
+
 Matrix FirstPass(Matrix m, int* maxLabel)
 {
 	Matrix output = InitM(m.line, m.col);
