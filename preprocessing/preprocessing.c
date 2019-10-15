@@ -10,10 +10,9 @@ SDL_Surface* GrayScale(SDL_Surface* InputImage)
 	Uint32 pixel;
 	Uint8 r,g,b;
 
-	float average;
+	float avg;
 	int w = InputImage -> w, h = InputImage -> h;
 
-	SDL_PixelFormat* format = InputImage -> format;
 	SDL_Surface* OutputImage = CopySurface(InputImage);
 
 	for(int i = 0; i < w; i++)
@@ -21,13 +20,11 @@ SDL_Surface* GrayScale(SDL_Surface* InputImage)
 		for(int j = 0; j < h; j++)
 		{
 			pixel = GetPixel(InputImage, i, j);
-			SDL_GetRGB(pixel, format, &r, &g, &b);
+			SDL_GetRGB(pixel, InputImage -> format, &r, &g, &b);
 
 			//Apply grayscale formule (REC. 709)
-			average = r * 0.2126 + g * 0.7152 + b * 0.0722;
-			r = (Uint8) average;
-
-			pixel = SDL_MapRGB(format, r, r, r);
+			avg = r * 0.2126 + g * 0.7152 + b * 0.0722;
+			pixel = SDL_MapRGB(OutputImage -> format, avg, avg, avg);
 			PutPixel(OutputImage, i, j, pixel);
 		}
 	}
@@ -87,10 +84,10 @@ SDL_Surface* Otsu(SDL_Surface* InputImage)
 
 	int w = InputImage -> w, h = InputImage -> h, totalPixel = w * h;
 	int histogram[256] = {0};
-	int weight1 = 0, weight2 = 0;
-	float summTotal = 0, summ1 = 0;
-	float varMax, varAct;
-	int mean1 = 0, mean2 = 0;
+	double weight1 = 0, weight2 = 0;
+	double summTotal = 0, summ1 = 0;
+	double varMax, varAct;
+	double mean1 = 0, mean2 = 0;
 	int threshold = 0;
 
 	//Save format
@@ -103,7 +100,6 @@ SDL_Surface* Otsu(SDL_Surface* InputImage)
 		{
 			pixel = GetPixel(InputImage, i, j);
 			SDL_GetRGB(pixel, format, &r, &g, &b);
-
 			histogram[(int) r]++;
 		}
 	}
@@ -121,14 +117,12 @@ SDL_Surface* Otsu(SDL_Surface* InputImage)
 	for(int i = 0; i < 256; i++)
 	{
 		weight1 += histogram[i];
-		if(weight1 == 0) 
-			continue;	//Variance will be 0
+		if(weight1 == 0) continue;
 
 		weight2 = totalPixel - weight1;
-		if(weight2 == 0)
-			break;		//Variance will stay at 0
+		if(weight2 == 0) continue;
 
-		summ1 = i * histogram[i];
+		summ1 = (double) i * histogram[i];
 
 		mean1 = summ1/weight1;
 		mean2 = (summTotal - summ1)/weight2;
@@ -141,7 +135,6 @@ SDL_Surface* Otsu(SDL_Surface* InputImage)
 			threshold = i;
 		}
 	}
-
 	return Binarization(InputImage, threshold);
 }
 

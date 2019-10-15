@@ -10,6 +10,12 @@ typedef struct Matrix
 	int* matrix;
 }Matrix;
 
+typedef struct List
+{
+	int x;
+	struct list *next;
+} List;
+
 //init Matrix
 Matrix InitM(int w, int h);
 
@@ -38,6 +44,9 @@ Matrix TransM(Matrix m1);
 
 //And Matrix
 Matrix AndM(Matrix m1, Matrix m2);
+
+//Or Matrix
+Matrix OrM(Matrix m1, Matrix m2);
 
 //Mutliple 2 Matrix value by value
 Matrix MultValM(Matrix m1, Matrix m2);
