@@ -36,7 +36,7 @@ Matrix Hrlsa(Matrix m, int limit)
 		}
 	}
 
-	return output;
+return output;
 }
 
 Matrix Vrlsa(Matrix m, int limit)
@@ -65,15 +65,14 @@ Matrix Vrlsa(Matrix m, int limit)
 						PutM(output, i - k, j, 1);
 					}
 				}
-				zero_count = 0;
+			zero_count = 0;
 			}
-			else
+				else
 			{
 				zero_count++;
 			}
 		}
 	}
-
 
 	return output;
 }
