@@ -7,7 +7,7 @@ typedef struct Matrix
 	int line;
 	int col;
 	int size;
-	int* matrix;
+	double* matrix;
 }Matrix;
 
 typedef struct List
@@ -24,8 +24,8 @@ void PutM(Matrix m, int i, int j, int e);
 void PutPosM(Matrix m, int pos, int e);
 
 //Get element in Matrix
-int GetM(Matrix m, int i, int j);
-int GetPosM(Matrix m, int pos);
+double GetM(Matrix m, int i, int j);
+double GetPosM(Matrix m, int pos);
 
 //Display Matrix
 void DisplayM(Matrix m);
@@ -52,6 +52,6 @@ Matrix OrM(Matrix m1, Matrix m2);
 Matrix MultValM(Matrix m1, Matrix m2);
 
 //Multiply Matrix by scalar
-Matrix MultScalM(Matrix m1, int v);
+Matrix MultScalM(Matrix m1, double v);
 
 #endif

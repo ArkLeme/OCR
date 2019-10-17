@@ -7,7 +7,7 @@
 Matrix InitM(int l, int c)
 {
 	int size = l * c;
-	Matrix temp = {l, c, size, calloc(size, sizeof(int* ))};
+	Matrix temp = {l, c, size, calloc(size, sizeof(double))};
 	return temp;
 }
 
@@ -31,7 +31,7 @@ void PutPosM(Matrix m, int pos, int e)
 
 
 //Get element e in matrix at [i,j]
-int GetM(Matrix m, int i, int j)
+double GetM(Matrix m, int i, int j)
 {
 	if(i < 0 || i >= m.line || j < 0 || j > m.col)
 		errx(1, "Get Index outside of matrix i=%i, j=%i, h=%i, w=%i\n",
@@ -40,7 +40,7 @@ int GetM(Matrix m, int i, int j)
 }
 
 //Get element e in matrix at [i/col, i%col]
-int GetPosM(Matrix m, int pos)
+double GetPosM(Matrix m, int pos)
 {
 	if(pos < 0 || pos >= m.size)
 		errx(1, "Get Index outside of matrix pos=%i, size=%i\n",
@@ -189,7 +189,7 @@ Matrix MultValM(Matrix m1, Matrix m2)
 }
 
 //Multiple Matrix by scalar
-Matrix MultScalM(Matrix m1, int v)
+Matrix MultScalM(Matrix m1, double v)
 {
 	Matrix m = InitM(m1.line, m1.col);
 
