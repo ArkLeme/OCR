@@ -19,6 +19,9 @@ typedef struct List
 //init Matrix
 Matrix InitM(int w, int h);
 
+//init matrix from string
+Matrix InitStringM(int line, int col, char* string);
+
 //Put element in Matrix
 void PutM(Matrix m, int i, int j, int e);
 void PutPosM(Matrix m, int pos, int e);
