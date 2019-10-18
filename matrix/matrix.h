@@ -14,7 +14,7 @@ typedef struct List
 {
 	int x;
 	struct list *next;
-} List;
+}List;
 
 //init Matrix
 Matrix InitM(int w, int h);
