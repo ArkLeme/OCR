@@ -13,7 +13,7 @@ typedef struct Matrix
 //Position of matrix
 typedef struct PosM
 {
-	int x, y, sizeX,sizeY;
+	int x, y;
 }PosM;
 
 //List of Matrix
@@ -68,7 +68,7 @@ Matrix MultValM(Matrix m1, Matrix m2);
 Matrix MultScalM(Matrix m1, double v);
 
 //Init Pos
-PosM* InitP(int x,int y, int sizeX, int sizeY);
+PosM* InitP(int x, int y);
 
 //Init list
 List* InitL(void *m, void *p);
