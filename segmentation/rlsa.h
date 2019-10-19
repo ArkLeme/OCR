@@ -11,4 +11,6 @@ Matrix Vrlsa(Matrix m, int limit);
 
 //Apply lrsa
 Matrix rlsa(Matrix m, int limit);
+
+Matrix rlsa_vertical(Matrix m, int limit);
 #endif

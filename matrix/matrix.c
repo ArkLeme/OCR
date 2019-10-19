@@ -20,6 +20,19 @@ void PutM(Matrix m, int i, int j, int e)
 	*(m.matrix + m.col * i + j) = e;
 }
 
+//Create Matrix from string
+Matrix InitStringM(int l, int c, char* str)
+{
+	Matrix output = InitM(l, c);
+
+	for(int i = 0; i < output.size; i++)
+	{
+		PutPosM(output, i, '1' == str[i]);
+	}
+
+	return output;
+}
+
 //Put element e in matrix at [i/col, i%col]
 void PutPosM(Matrix m, int pos, int e)
 {
@@ -56,7 +69,7 @@ void DisplayM(Matrix m)
 		printf("[ ");
 		for(int j = 0; j < m.col; j++)
 		{
-			printf("%i ", GetM(m, i, j));
+			printf("%i ", (int) GetM(m, i, j));
 		}
 		printf("]\n");
 	}
@@ -202,4 +215,105 @@ Matrix MultScalM(Matrix m1, double v)
 	}
 
 	return m;
+}
+
+//Initiate List of struct
+List* InitL(void *m, void *p)
+{
+	List *l =  malloc(sizeof(List));
+	if(l)
+	{
+		l -> mat = m;
+		l -> pos = p;
+		l -> next = NULL;
+	}
+
+	return l;
+}
+
+PosM* InitP(int x, int y, int sizeY, int sizeX)
+{
+	PosM* pos = malloc(sizeof(PosM));
+	pos -> x = x;
+	pos -> y = y;
+	pos -> sizeY = sizeY;
+	pos -> sizeX = sizeX;
+
+	return pos;
+}
+
+//Preprend a element to our list
+List* PrependL(List* old, void *m, void *p)
+{
+	if(!old)
+		errx(1, "Can not preprend to NULL");
+
+	List *l = InitL(m, p);
+	if(l)
+		l -> next = old;
+
+	return l;
+}
+
+//Append to a list
+List* AppendL(List* old, void *m, void *p)
+{
+	if(!old)
+		errx(1, "Can not append to NULL");
+
+	List *l = InitL(m, p);
+	List *current = old;
+
+	while(current -> next )
+	{
+		current = current -> next;
+	}
+
+	current -> next = l;
+	return old;
+}
+
+void FreeL(List *l)
+{
+	free(l -> pos);
+	FreeM(*((Matrix*) (l -> mat)));
+	free(l);
+}
+
+//Remove first
+List* RemoveFL(List *l)
+{
+	if(!l)
+		errx(1, "Can not remove NULL");
+
+	List *first = l;
+	l = l -> next;
+	FreeL(first);
+
+	return l;
+}
+
+//Remove last
+List* RemoveLL(List *l)
+{
+	if(!l)
+		errx(1, "Can not remove NULL");
+
+	List *last = l;
+	while(last -> next)
+	{
+		last = last -> next;
+	}
+
+	FreeL(last);
+
+	return l;
+}
+
+void DeleteL(List *l)
+{
+	while(l)
+	{
+		l = RemoveFL(l);
+	}
 }

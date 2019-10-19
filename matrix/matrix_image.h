@@ -10,4 +10,6 @@ void SaveMatAsIm(Matrix m, char* path);
 //Load matrix from image
 Matrix GetMatFromIm(SDL_Surface* InputImage);
 
+//Save matrix as image and set random color
+void SaveMatAsImRand(Matrix m, char* path, int label);
 #endif
