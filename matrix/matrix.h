@@ -13,7 +13,7 @@ typedef struct Matrix
 //Position of matrix
 typedef struct PosM
 {
-	int x, y;
+	int mx, my, Mx, My;
 }PosM;
 
 //List of Matrix
@@ -27,48 +27,51 @@ struct List
 };
 
 //init Matrix
-Matrix InitM(int w, int h);
+Matrix* InitM(int w, int h);
 
 //init matrix from string
-Matrix InitStringM(int line, int col, char* string);
+Matrix* InitStringM(int line, int col, char* string);
 
 //Put element in Matrix
-void PutM(Matrix m, int i, int j, int e);
-void PutPosM(Matrix m, int pos, int e);
+void PutM(Matrix *m, int i, int j, int e);
+void PutPosM(Matrix *m, int pos, int e);
 
 //Get element in Matrix
-double GetM(Matrix m, int i, int j);
-double GetPosM(Matrix m, int pos);
+double GetM(Matrix *m, int i, int j);
+double GetPosM(Matrix *m, int pos);
 
 //Display Matrix
-void DisplayM(Matrix m);
+void DisplayM(Matrix *m);
 
 //Free Matrix
-void FreeM(Matrix m);
+void FreeM(Matrix *m);
 
 //Addition Matrix
-Matrix AddM(Matrix m1, Matrix m2);
+Matrix *AddM(Matrix *m1, Matrix *m2);
 
 //Multiplication Matrix
-Matrix MultM(Matrix m1, Matrix m2);
+Matrix *MultM(Matrix *m1, Matrix *m2);
 
 //Transpose Matrix
-Matrix TransM(Matrix m1);
+Matrix *TransM(Matrix *m1);
 
 //And Matrix
-Matrix AndM(Matrix m1, Matrix m2);
+Matrix *AndM(Matrix *m1, Matrix *m2);
 
 //Or Matrix
-Matrix OrM(Matrix m1, Matrix m2);
+Matrix *OrM(Matrix *m1, Matrix *m2);
 
 //Mutliple 2 Matrix value by value
-Matrix MultValM(Matrix m1, Matrix m2);
+Matrix *MultValM(Matrix *m1, Matrix *m2);
 
 //Multiply Matrix by scalar
-Matrix MultScalM(Matrix m1, double v);
+Matrix *MultScalM(Matrix *m1, double v);
+
+//Copy matrix from index
+Matrix* CopyMatrix(Matrix *m, int mx, int my, int Mx, int My);
 
 //Init Pos
-PosM* InitP(int x, int y);
+PosM* InitP(int mx, int my, int Mx, int My);
 
 //Init list
 List* InitL(void *m, void *p);

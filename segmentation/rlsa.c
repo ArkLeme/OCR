@@ -1,22 +1,22 @@
 #include "rlsa.h"
 #include <stdio.h>
 
-Matrix Hrlsa(Matrix m, int limit)
+Matrix *Hrlsa(Matrix *m, int limit)
 {
-	Matrix output = InitM(m.line, m.col);
+	Matrix* output = InitM(m -> line, m -> col);
 	int zero_count = 0; //Number of 0 aside
 
-	for(int i = 0; i < m.line; i++)
+	for(int i = 0; i < m -> line; i++)
 	{
 		if(zero_count <= limit)
 		{
 			for(int k = zero_count; k >=0; k--)
 			{
-				PutM(output, i, m.col - k, 1);
+				PutM(output, i, m -> col - k, 1);
 			}
 		}
 		zero_count = 0;
-		for(int j = 0; j < m.col; j++)
+		for(int j = 0; j < m -> col; j++)
 		{
 			if(GetM(m, i, j))
 			{
@@ -39,22 +39,22 @@ Matrix Hrlsa(Matrix m, int limit)
 return output;
 }
 
-Matrix Vrlsa(Matrix m, int limit)
+Matrix *Vrlsa(Matrix *m, int limit)
 {
-	Matrix output = InitM(m.line, m.col);
+	Matrix *output = InitM(m -> line, m -> col);
 	int zero_count = 0; //Number of 0 aside
 
-	for(int j = 0; j < m.col; j++)
+	for(int j = 0; j < m -> col; j++)
 	{
 		if(zero_count <= limit)
 		{
 			for(int k = zero_count; k >=0; k--)
 			{
-				PutM(output, m.line - k - 1, j, 1);
+				PutM(output, m -> line - k - 1, j, 1);
 			}
 		}
 		zero_count = 0;
-		for(int i = 0; i < m.line; i++)
+		for(int i = 0; i < m -> line; i++)
 		{
 			if(GetM(m, i, j) == 1)
 			{
@@ -77,11 +77,11 @@ Matrix Vrlsa(Matrix m, int limit)
 	return output;
 }
 
-Matrix rlsa(Matrix m, int limit)
+Matrix *rlsa(Matrix *m, int limit)
 {
-	Matrix v = Vrlsa(m, limit);
-	Matrix h = Hrlsa(m, limit);
-	Matrix a = AndM(v, h);
+	Matrix *v = Vrlsa(m, limit);
+	Matrix *h = Hrlsa(m, limit);
+	Matrix *a = AndM(v, h);
 
 	FreeM(v);
 	FreeM(h);

@@ -1,26 +1,28 @@
 #include "comp_labeling.h"
+#include <err.h>
 
-Matrix CompLabeling(Matrix m, int* maxLabel)
+Matrix *CompLabeling(Matrix *m, int* maxLabel)
 {
-	Matrix fp = FirstPass(m, maxLabel);
-	Graph g = CreateGraph(fp, *maxLabel);
-	Matrix sp = SecondPass(fp, g);
+	Matrix *fp = FirstPass(m, maxLabel);
+	Graph *g = CreateGraph(fp, *maxLabel);
+	Matrix *sp = SecondPass(fp, g);
 
-	free(g.subsets);
+	free(g -> subsets);
+	free(g);
 	FreeM(fp);
 
 	return sp;
 }
 
-Matrix FirstPass(Matrix m, int* maxLabel)
+Matrix* FirstPass(Matrix* m, int* maxLabel)
 {
-	Matrix output = InitM(m.line, m.col);
+	Matrix *output = InitM(m -> line, m -> col);
 
 	int label = 0;
 
-	for(int i = 0; i < m.line ; i ++)
+	for(int i = 0; i < m -> line ; i ++)
 	{
-		for(int j = 0; j < m.col; j++)
+		for(int j = 0; j < m -> col; j++)
 		{
 			if(GetM(m, i, j) != 0)
 			{
@@ -47,15 +49,15 @@ Matrix FirstPass(Matrix m, int* maxLabel)
 	return output;
 }
 
-Matrix SecondPass(Matrix m, Graph g)
+Matrix *SecondPass(Matrix *m, Graph *g)
 {
-	Matrix output = InitM(m.line, m.col);
+	Matrix *output = InitM(m -> line, m -> col);
 	
-	for(int i = 0; i < m.line; i++)
+	for(int i = 0; i < m -> line; i++)
 	{
-		for(int j = 0; j < m.col; j++)
+		for(int j = 0; j < m -> col; j++)
 		{
-			int value = FindParent(g.subsets, GetM(m, i, j));
+			int value = FindParent(g -> subsets, GetM(m, i, j));
 			PutM(output, i, j, value);
 		}
 	}
@@ -63,19 +65,13 @@ Matrix SecondPass(Matrix m, Graph g)
 	return output;
 }
 
-Graph CreateGraph(Matrix m, int maxLabel)
+Graph *CreateGraph(Matrix *m, int maxLabel)
 {
-	Graph g = {maxLabel + 1, malloc((maxLabel + 1) * sizeof(Subset))};
+	Graph *g = InitG(maxLabel + 1);
 
-	for(int i = 0; i < g.size; i++)
+	for(int i = 0; i < m -> line; i++)
 	{
-		g.subsets[i].parent = i;
-		g.subsets[i].rank = 0;
-	}
-
-	for(int i = 0; i < m.line; i++)
-	{
-		for(int j = 0; j < m.col; j++)
+		for(int j = 0; j < m -> col; j++)
 		{
 			int top = i > 0 ? GetM(m, i - 1, j) : 0;
 			int left = j > 0 ? GetM(m, i, j - 1) : 0;
@@ -83,12 +79,73 @@ Graph CreateGraph(Matrix m, int maxLabel)
 			if(top != 0 && left != 0 && top != left)
 			{
 				if(top > left)
-					Union(g.subsets, top, left);
+					Union(g -> subsets, top, left);
 				else
-					Union(g.subsets, left, top);
+					Union(g -> subsets, left, top);
 			}
 		}
 	}
 
 	return g;
+}
+
+int NumberLabel(Matrix *m, int ml)
+{
+	int* histo = calloc(ml + 1, sizeof(int));
+
+	for(int i = 0; i < m -> size; i++)
+	{
+		histo[(int) GetPosM(m, i)] = 1;
+	}
+
+	int label = 0;
+	for(int i = 0; i < ml + 1; i++)
+		if(histo[i] == 1) label++;
+
+	free(histo);
+	return label;
+}
+
+int* LabelReduceList (Matrix *m, int nbl, int ml)
+{
+	int* list = malloc(nbl * sizeof(int));
+	int place = 1;
+	int* listPlaced = calloc(ml + 1, sizeof(int));
+	listPlaced[0] = 1; //Save label 0 as white and do not change is label
+	list[0] = 0;
+
+	for(int i = 0; i < m -> size; i++)
+	{
+		int pos = GetPosM(m, i);
+		if(listPlaced[(int) pos] == 0)
+		{
+			list[place] = pos;
+			place++;
+			listPlaced[pos] = 1;
+		}
+	}
+
+	free(listPlaced);
+	return list;
+}
+
+void ReduceLabel(Matrix *m, int* lab, int len)
+{
+	for(int i = 0; i < m -> size; i++)
+	{
+		PutPosM(m, i, BinSearch(lab, GetPosM(m, i), len));
+	}
+
+	free(lab);
+}
+
+int BinSearch(int* list, int x, int len)
+{
+	for(int i = 0; i < len; i++)
+	{
+		if(list[i] == x)
+			return i;
+	}
+
+	errx(1, "SHould have found a value for th binsearch");
 }

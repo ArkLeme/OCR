@@ -5,11 +5,14 @@
 #include "../sdl_tools/sdl_tools.h"
 
 //Save matrix as image
-void SaveMatAsIm(Matrix m, char* path);
+void SaveMatAsIm(Matrix *m, char* path);
 
 //Load matrix from image
-Matrix GetMatFromIm(SDL_Surface* InputImage);
+Matrix* GetMatFromIm(SDL_Surface* InputImage);
 
 //Save matrix as image and set random color
-void SaveMatAsImRand(Matrix m, char* path, int label);
+void SaveMatAsImRand(Matrix *m, char* path, int label);
+
+//Save list of matrix
+void SaveMatsAsIm(List* l, int stop);
 #endif
