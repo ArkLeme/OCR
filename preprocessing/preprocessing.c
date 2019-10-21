@@ -81,7 +81,7 @@ SDL_Surface* Contrast(SDL_Surface* InputImage)
 		{
 			pixel = GetPixel(InputImage, i, j);
 			SDL_GetRGB(pixel, InputImage -> format, &r, &g, &b);
-			r = r < 230 ? newValue[r] : 255;
+			r = r < 232 ? newValue[r] : 255;
 			pixel = SDL_MapRGB(OutputImage -> format, r, r, r);
 			PutPixel(OutputImage, i, j, pixel);
 		}
@@ -169,8 +169,6 @@ SDL_Surface* Binarization(SDL_Surface* InputImage, int threshold)
 {
 	Uint32 pixel;
 	Uint8 r, g, b;
-
-	printf("%i\n",threshold);
 
 	//Save format and copy Surface
 	SDL_PixelFormat* format = InputImage -> format;
