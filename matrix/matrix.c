@@ -222,6 +222,7 @@ Matrix* MultScalM(Matrix *m1, double v)
 	return m;
 }
 
+//Copy one matrix from position to another position
 Matrix* CopyMatrix(Matrix *m, int mx, int my, int Mx, int My)
 {
 	int diffX = Mx - mx + 1;
@@ -241,6 +242,7 @@ Matrix* CopyMatrix(Matrix *m, int mx, int my, int Mx, int My)
 }
 
 //Initiate List of struct
+//We use it to stock our list of matrix and their position
 List* InitL(void *m, void *p)
 {
 	List *l = malloc(sizeof(List));
@@ -254,6 +256,8 @@ List* InitL(void *m, void *p)
 	return l;
 }
 
+//Initiate Position structure
+//Position of the matrix in the original matrix
 PosM* InitP(int mx, int my, int Mx, int My)
 {
 	PosM* pos = malloc(sizeof(PosM));
@@ -267,7 +271,6 @@ PosM* InitP(int mx, int my, int Mx, int My)
 //Preprend a element to our list
 List* PrependL(List* old, void *m, void *p)
 {
-
 	if(!old)
 		return InitL(m, p);
 
@@ -299,6 +302,7 @@ List* AppendL(List* old, void *m, void *p)
 	return old;
 }
 
+//Free our list
 void FreeL(List *l)
 {
 	free(l -> pos);
@@ -336,6 +340,7 @@ List* RemoveLL(List *l)
 	return l;
 }
 
+//Delete all the list
 void DeleteL(List *l)
 {
 	while(l)
