@@ -84,16 +84,15 @@ void SaveMatAsImRand(Matrix *m, char* path, int label)
 }
 
 //Save a list of matrix
-void SaveMatsAsIm(List *l, int stop)
+void SaveMatsAsIm(List *l, int stop, char* path)
 {
-	char* s = "image_data/char";
 	List* actual = l;
 	
 	while(actual != NULL && stop > 0)
 	{
 		//Create the string to sve all our image
 		char* sint = Itoa(stop);
-		char* s1 = Concatene(s, sint);
+		char* s1 = Concatene(path, sint);
 		char* s2 = Concatene(s1, ".bmp");
 
 		//Save the matrix as an image with random color

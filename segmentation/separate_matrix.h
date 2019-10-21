@@ -1,6 +1,8 @@
 #ifndef SEPARATE_MATRIX
 #define SEPARATE_MATRIX
 
+#include "../matrix/matrix.h"
+
 /*
  * Find the position of all matrix and return a pointeur to the list of pos
  * m is the initial matrix

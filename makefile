@@ -1,6 +1,5 @@
 #Makefile
 
-
 CC = gcc
 
 CPPFLAGS= `pkg-config --cflags sdl` -MMD

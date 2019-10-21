@@ -30,5 +30,5 @@ void SaveMatAsImRand(Matrix *m, char* path, int label);
  * l is a list of matrix
  * stop is the number of matrix we want to save
 */
-void SaveMatsAsIm(List* l, int stop);
+void SaveMatsAsIm(List* l, int stop, char* path);
 #endif
