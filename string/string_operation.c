@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include "string_operation.h"
 
+//Find the length of a string
 int LengthStr(char* s)
 {
 	int i = 0;
@@ -12,6 +13,7 @@ int LengthStr(char* s)
 	return i;
 }
 
+//Concatene two string and return the new one
 char* Concatene(char *s1, char* s2)
 {
 	int l1 = LengthStr(s1);
@@ -29,6 +31,7 @@ char* Concatene(char *s1, char* s2)
 	return result;
 }
 
+//Find the length of an int
 int LengthInt(int i)
 {
 	int n = 0;
@@ -45,6 +48,7 @@ int LengthInt(int i)
 	return n;
 }
 
+//Reverse a string
 char* Reverse(char *s)
 {
 	int length = LengthStr(s);
@@ -59,6 +63,7 @@ char* Reverse(char *s)
 	return s;
 }
 
+//Conversion int to string
 char* Itoa(int n)
 {
 	int length = LengthInt(n);

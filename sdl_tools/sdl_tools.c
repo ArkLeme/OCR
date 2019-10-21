@@ -7,12 +7,14 @@
 #include <SDL/SDL.h>
 #include "sdl_tools.h"
 
+//Get the reference of a pixel
 static inline Uint8* PixelRef(SDL_Surface * InputImage, int x, int y)
 {
 	int bpp = InputImage->format->BytesPerPixel;
         return (Uint8*)InputImage->pixels + y * InputImage->pitch + x * bpp;
 }
 
+//Load an iamge
 SDL_Surface* LoadImage(char* path)
 {
 	SDL_Surface* image = IMG_Load(path);
@@ -24,12 +26,14 @@ SDL_Surface* LoadImage(char* path)
 	return image;
 }
 
+//Save and image and free its surface
 void SaveImage(SDL_Surface* InputImage, char* name)
 {
 	SDL_SaveBMP(InputImage, name);
 	SDL_FreeSurface(InputImage);
 }
 
+//Copy a surface
 SDL_Surface* CopySurface(SDL_Surface* InputImage)
 {
 	SDL_Surface* OutputImage = CreateSurface(InputImage -> w, InputImage -> h);
@@ -37,6 +41,7 @@ SDL_Surface* CopySurface(SDL_Surface* InputImage)
 	return OutputImage;
 }
 
+//Create a surface from nothing
 SDL_Surface* CreateSurface(int w, int h)
 {
 	SDL_Surface* OutputImage =
@@ -45,6 +50,7 @@ SDL_Surface* CreateSurface(int w, int h)
 	return OutputImage;
 }
 
+//Get pixel in a surface
 Uint32 GetPixel(SDL_Surface* InputImage, int x, int y)
 {
 	Uint8* p = PixelRef(InputImage, x, y);
@@ -70,6 +76,7 @@ Uint32 GetPixel(SDL_Surface* InputImage, int x, int y)
 	}
 }
 
+//Put pixel in a surface
 void PutPixel(SDL_Surface* InputImage, int x, int y, Uint32 pixel)
 {
 	Uint8* p = PixelRef(InputImage, x, y);

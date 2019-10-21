@@ -1,6 +1,7 @@
 #include "union_find.h"
 #include <stdlib.h>
 
+//Init our graph of subset
 Graph *InitG(int size)
 {
 	Graph *g = malloc(sizeof(Graph));

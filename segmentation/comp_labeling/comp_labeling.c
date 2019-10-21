@@ -1,6 +1,7 @@
 #include "comp_labeling.h"
 #include <err.h>
 
+//Apply connecting component labeling algorithm (two pass)
 Matrix *CompLabeling(Matrix *m, int* maxLabel)
 {
 	Matrix *fp = FirstPass(m, maxLabel);
@@ -14,6 +15,7 @@ Matrix *CompLabeling(Matrix *m, int* maxLabel)
 	return sp;
 }
 
+//First pass of the two pass algorithm
 Matrix* FirstPass(Matrix* m, int* maxLabel)
 {
 	Matrix *output = InitM(m -> line, m -> col);
@@ -26,14 +28,17 @@ Matrix* FirstPass(Matrix* m, int* maxLabel)
 		{
 			if(GetM(m, i, j) != 0)
 			{
+				//Get top and left pixel
 				int top = i > 0 ? GetM(output, i - 1, j) : 0;
 				int left = j > 0 ? GetM(output, i, j - 1) : 0;
 
+				//Incremete label if there is no adjacent black pixel
 				if(top == 0 && left == 0)
 				{
 					*maxLabel += 1;
 					label = *maxLabel;
 				}
+				//Place the minimal label to our pixel
 				else if(top == 0)
 					label = left;
 				else if(left == 0)
@@ -49,6 +54,7 @@ Matrix* FirstPass(Matrix* m, int* maxLabel)
 	return output;
 }
 
+//Second pass of the two pass algorithm
 Matrix *SecondPass(Matrix *m, Graph *g)
 {
 	Matrix *output = InitM(m -> line, m -> col);
@@ -65,6 +71,7 @@ Matrix *SecondPass(Matrix *m, Graph *g)
 	return output;
 }
 
+//Create the graph of our matrix
 Graph *CreateGraph(Matrix *m, int maxLabel)
 {
 	Graph *g = InitG(maxLabel + 1);
@@ -89,6 +96,7 @@ Graph *CreateGraph(Matrix *m, int maxLabel)
 	return g;
 }
 
+//Find the number of different label in our image
 int NumberLabel(Matrix *m, int ml)
 {
 	int* histo = calloc(ml + 1, sizeof(int));
@@ -106,6 +114,7 @@ int NumberLabel(Matrix *m, int ml)
 	return label;
 }
 
+//reduce the number of label (replace bigger label by lower one)
 int* LabelReduceList (Matrix *m, int nbl, int ml)
 {
 	int* list = malloc(nbl * sizeof(int));
@@ -129,6 +138,7 @@ int* LabelReduceList (Matrix *m, int nbl, int ml)
 	return list;
 }
 
+//Reduce the number of label in our matrix
 void ReduceLabel(Matrix *m, int* lab, int len)
 {
 	for(int i = 0; i < m -> size; i++)
@@ -139,6 +149,7 @@ void ReduceLabel(Matrix *m, int* lab, int len)
 	free(lab);
 }
 
+//BinSearch not working (might be the comparaison between double and int)
 int BinSearch(int* list, int x, int len)
 {
 	for(int i = 0; i < len; i++)
@@ -147,5 +158,5 @@ int BinSearch(int* list, int x, int len)
 			return i;
 	}
 
-	errx(1, "SHould have found a value for th binsearch");
+	errx(1, "Should have found a value for th binsearch");
 }
