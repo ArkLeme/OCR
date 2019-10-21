@@ -69,7 +69,6 @@ List* ListOfMat(Matrix *m, PosM **p, int maxLabel)
 		Matrix *mat = CopyMatrix(m, mx, my, Mx, My);
 		l = PrependL(l, mat, p[i]);
 
-		}
 	}
 
 	return l;

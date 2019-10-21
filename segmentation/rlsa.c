@@ -12,7 +12,7 @@ Matrix *Hrlsa(Matrix *m, int limit)
 		//End of col
 		if(zero_count <= limit)
 		{
-			for(int k = zero_count; k >=0; k--)
+			for(int k = zero_count; k > 0; k--)
 			{
 				PutM(output, i, m -> col - k, 1);
 			}
@@ -57,9 +57,9 @@ Matrix *Vrlsa(Matrix *m, int limit)
 		//To handle the case of the end line
 		if(zero_count <= limit)
 		{
-			for(int k = zero_count; k >=0; k--)
+			for(int k = zero_count; k > 0; k--)
 			{
-				PutM(output, m -> line - k - 1, j, 1);
+				PutM(output, m -> line - k, j, 1);
 			}
 		}
 		//Reset the number of zero found of the col
