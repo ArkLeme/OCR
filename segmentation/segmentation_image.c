@@ -133,7 +133,7 @@ void image_char_segmentation(SDL_Surface* img, int begin, int end)
             {
                 if(x - 1 > 0) //previous column
                 {
-                    pixel = SDL_MapRGB(img->format, 0, 0, 255); //change color of pixel
+                    pixel = SDL_MapRGB(img->format, 0, 0,255); //change color of pixel
 		    PutPixel(img,x-1,y,pixel); // put pixel
 		}
             }
@@ -144,7 +144,7 @@ void image_char_segmentation(SDL_Surface* img, int begin, int end)
             
 	    for(y = begin; y < end; y++)
             {
-                pixel = SDL_MapRGB(img->format, 0, 0, 255); //change color of pixel
+                pixel = SDL_MapRGB(img->format, 0, 0,255); //change color of pixel
                 PutPixel(img,x,y,pixel); // put pixel
 		
             }

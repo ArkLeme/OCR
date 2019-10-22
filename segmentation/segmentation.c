@@ -114,7 +114,7 @@ void char_segmentation(Matrix *m, int begin, int end,List *listofchar)
 	    j = begin;
 	    i = posX1;
 
-	    Matrix *charM = InitM(end-begin,posX2-posX1);
+	    Matrix *charM = InitM(end-begin,posX2-posX1); //Create the Matrix of the char
 	    while(i < posX2 && l < posX2-posX1)
 	    {
 		while(j < end && k < end-begin)
@@ -129,9 +129,10 @@ void char_segmentation(Matrix *m, int begin, int end,List *listofchar)
 		k = 0;
 		j = begin;
 	    }
-	    PosM *pos = InitP(posX1,begin,posX2,end);
-	    AppendL(listofchar,charM,pos);
-	    listofchar = listofchar -> next;
+
+	    PosM *pos = InitP(posX1,begin,posX2,end); //Pos of the matrix on the image
+	    AppendL(listofchar,charM,pos); // Add the Matrix to the list
+	    listofchar = listofchar -> next; 
         }
 	
     }
