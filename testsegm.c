@@ -41,13 +41,15 @@ void testBin(char* path)
 
 	//LRSA
 	Matrix *mm = GetMatFromIm(BinImage);
+	SwapColor(mm);
+	
 	//4 = word, 10 = phrase
 	Matrix *hw = Hrlsa(mm, 4);
 	Matrix *hp = Hrlsa(mm, 12);
 	Matrix *v = Vrlsa(mm, 80);
 	Matrix *r = rlsa(mm, 80);
 
-	SaveMatAsIm(v, "image_data/rlsa/Vrlsa.bmp");
+	SaveMatAsIm(v, "image_data/rlsa/VHrlsa.bmp");
 
 	//Save RLSA
 	int mlw = 0;

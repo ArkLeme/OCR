@@ -109,3 +109,30 @@ void SaveMatsAsIm(List *l, int stop, char* path)
 		stop--;
 	}
 }
+
+//Swap pixel color
+void SwapColor(Matrix *m)
+{
+	int black = 0;
+	int white = 0;
+
+	for(int i = 0; i < m -> size; i++)
+	{
+		if(GetPosM(m, i))
+		{
+			black++;
+		}
+		else
+		{
+			white++;
+		}
+	}
+
+	if(black > white)
+	{
+		for(int i = 0; i < m -> size; i++)
+		{
+			PutPosM(m, i, !GetPosM(m, i));
+		}
+	}
+}
