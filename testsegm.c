@@ -41,13 +41,17 @@ void testBin(char* path)
 
 	//LRSA
 	Matrix *mm = GetMatFromIm(BinImage);
+	SwapColor(mm);
+	
 	//4 = word, 10 = phrase
 	Matrix *hw = Hrlsa(mm, 4);
 	Matrix *hp = Hrlsa(mm, 12);
 	Matrix *v = Vrlsa(mm, 80);
 	Matrix *r = rlsa(mm, 80);
+	Matrix *rv = Vrlsa(r, 15);
+	Matrix *rr = Hrlsa(rv, 15);
 
-	SaveMatAsIm(v, "image_data/rlsa/Vrlsa.bmp");
+	SaveMatAsIm(v, "image_data/rlsa/VHrlsa.bmp");
 
 	//Save RLSA
 	int mlw = 0;
@@ -57,8 +61,8 @@ void testBin(char* path)
 	Matrix * twopassp = CompLabeling(hp, &mlp);
 	SaveMatAsImRand(twopassp, "image_data/rlsa/HPrlsa.bmp", mlp);
 
-	Matrix * twopassw = CompLabeling(hw, &mlw);
-	SaveMatAsImRand(twopassw, "image_data/rlsa/HWrlsa.bmp", mlw);
+	Matrix * twopassw = CompLabeling(rr, &mlw);
+	SaveMatAsImRand(twopassw, "image_data/rlsa/RRrlsa.bmp", mlw);
 
 	Matrix * twopassr = CompLabeling(r, &mlr);
 	SaveMatAsImRand(twopassr, "image_data/rlsa/rlsa.bmp", mlr);
@@ -91,6 +95,8 @@ void testBin(char* path)
 	FreeM(hp);
 	FreeM(v);
 	FreeM(r);
+	FreeM(rv);
+	FreeM(rr);
 	FreeM(mm);
 
 	//FreeM(compLabel);

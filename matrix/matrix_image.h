@@ -31,4 +31,10 @@ void SaveMatAsImRand(Matrix *m, char* path, int label);
  * stop is the number of matrix we want to save
 */
 void SaveMatsAsIm(List* l, int stop, char* path);
+
+/*
+ * Swap matrix pixel if there is more black than white
+ * m is the matrix
+ */
+void SwapColor(Matrix *m);
 #endif
