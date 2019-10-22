@@ -51,6 +51,9 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
+# Avoid conflict
 main.c
-*.png
+main
+
+# Remove test from exec
 *.bmp

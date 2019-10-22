@@ -4,7 +4,7 @@
 #include <err.h>
 #include "preprocessing.h"
 
-//Grayscale REC.709
+//Grayscale weight of r g and b
 SDL_Surface* GrayScale(SDL_Surface* InputImage)
 {
 	Uint32 pixel;
@@ -23,7 +23,13 @@ SDL_Surface* GrayScale(SDL_Surface* InputImage)
 			SDL_GetRGB(pixel, InputImage -> format, &r, &g, &b);
 
 			//Apply grayscale formule (REC. 709)
-			avg = r * 0.2126 + g * 0.7152 + b * 0.0722;
+			
+			//avg = r * 0.2126 + g * 0.7152 + b * 0.0722;
+			avg = (g+b+r)/3;
+
+			//r = r > g ? g : r;
+			//avg = r > b ? b : r;
+
 			pixel = SDL_MapRGB(OutputImage -> format, avg, avg, avg);
 			PutPixel(OutputImage, i, j, pixel);
 		}
@@ -39,12 +45,17 @@ SDL_Surface* Contrast(SDL_Surface* InputImage)
 	Uint8 r,g,b;
 
 	int w = InputImage -> w, h = InputImage -> h, sum = 0;
+
+	//histogram of the image and new output of the image
 	int histogram[256] = {0}, newValue[256] = {0};
+
+	//Multiplicator to apply our weight
 	float multiplicator = (float) 255 / (w * h);
 
 	SDL_PixelFormat* format = InputImage -> format;
 	SDL_Surface* OutputImage = CopySurface(InputImage);
 
+	//Create the histogram
 	for(int i = 0; i < w; i++)
 	{
 		for(int j = 0; j < h; j++)
@@ -56,19 +67,21 @@ SDL_Surface* Contrast(SDL_Surface* InputImage)
 		}
 	}
 
+	//Apply the equalization
 	for(int i = 0; i < 256; i++)
 	{
 		sum += histogram[i];
 		newValue[i] = (int) (sum * multiplicator);
 	}
 
+	//Create our new surface
 	for(int i = 0; i < w; i++)
 	{
 		for(int j = 0; j < h; j++)
 		{
 			pixel = GetPixel(InputImage, i, j);
 			SDL_GetRGB(pixel, InputImage -> format, &r, &g, &b);
-			r = newValue[r];
+			r = r < 232 ? newValue[r] : 255;
 			pixel = SDL_MapRGB(OutputImage -> format, r, r, r);
 			PutPixel(OutputImage, i, j, pixel);
 		}
@@ -77,17 +90,30 @@ SDL_Surface* Contrast(SDL_Surface* InputImage)
 	return OutputImage;
 }
 
+//Apply otsu method to binarize our image
 SDL_Surface* Otsu(SDL_Surface* InputImage)
 {
 	Uint32 pixel;
 	Uint8 r,g,b;
 
-	int w = InputImage -> w, h = InputImage -> h, totalPixel = w * h;
-	int histogram[256] = {0};
-	double weight1 = 0, weight2 = 0;
-	double summTotal = 0, summ1 = 0;
-	double varMax, varAct;
-	double mean1 = 0, mean2 = 0;
+	float w = InputImage -> w, h = InputImage -> h, totalPixel = w * h;
+
+	//Histogram of our image
+	unsigned long histogram[256] = {0};
+
+	//Weight of class 1 and class 2
+	unsigned long weight1 = 0, weight2 = 0;
+	
+	//Total summ is pt*t where pt is the probability of a pixel of t intensity
+	unsigned long summTotal = 0, summ1 = 0;
+
+	//Variance max and variance of the actual class
+	float varMax, varAct;
+
+	//Mean of class 1 and class 2
+	unsigned long mean1 = 0, mean2 = 0;
+
+	//Our threshold
 	int threshold = 0;
 
 	//Save format
@@ -120,10 +146,10 @@ SDL_Surface* Otsu(SDL_Surface* InputImage)
 		if(weight1 == 0) continue;
 
 		weight2 = totalPixel - weight1;
-		if(weight2 == 0) continue;
+		if(weight2 == 0) break;
 
-		summ1 = (double) i * histogram[i];
-
+		summ1 += i * histogram[i];
+		
 		mean1 = summ1/weight1;
 		mean2 = (summTotal - summ1)/weight2;
 
@@ -138,7 +164,7 @@ SDL_Surface* Otsu(SDL_Surface* InputImage)
 	return Binarization(InputImage, threshold);
 }
 
-
+//Apply otsu method to binazrize the image with a good threshold
 SDL_Surface* Binarization(SDL_Surface* InputImage, int threshold)
 {
 	Uint32 pixel;
@@ -150,13 +176,14 @@ SDL_Surface* Binarization(SDL_Surface* InputImage, int threshold)
 
 	int w = InputImage -> w, h = InputImage -> h;
 
+	//Create the new image
 	for(int i = 0; i < w; i++)
 	{
 		for(int j = 0; j < h; j++)
 		{
 			pixel = GetPixel(InputImage, i, j);
 			SDL_GetRGB(pixel, format, &r, &g, &b);
-			if(r <= threshold)
+			if(r < threshold)
 			{
 				pixel = SDL_MapRGB(format, 0, 0, 0);
 				PutPixel(OutputImage, i, j, pixel);
