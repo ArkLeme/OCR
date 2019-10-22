@@ -137,3 +137,42 @@ void char_segmentation(Matrix *m, int begin, int end,List *listofchar)
 	
     }
 }
+
+/*void charCenterinM(Matrix *charM)
+{
+    int i = 0;
+    int j = 0;
+    for(int k = 0; k < charM-> col; k ++)
+    {
+    }
+}
+
+
+void widthchar(Matrix *charM)
+{
+    int test = 0;
+    int width = 0;
+    int width_max = 0;
+    for(int i = 0; i < charM -> line ; i++)
+    {
+	for(int j =0; j< charM -> col;j++)
+	{
+	    if(test)
+	    {
+		width +=1
+	    if(GetM(charM,j,i) == 1) 
+	    {
+		width+=1;
+		test =1;
+	    }
+	}
+	width_max=max(width,width_max);
+    }
+    return width_max;
+}
+
+int max(int a, int b)
+{
+    if(b >= a) return b;
+    else return a;
+}*/
