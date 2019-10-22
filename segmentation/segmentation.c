@@ -1,37 +1,28 @@
 #include "segmentation.h"
 
-void lines_segmentation(SDL_Surface* img)
-{
-    int w = img -> w; // width of img
-    int h = img -> h; // height of img
-    
+void lines_segmentation(Matrix *m, List *listofchar)
+{   
     //variable for loop
     int x;
     int y;
 
-    int pos = 0; //position of the pixel
-
-    unsigned char r , g , b; // char = unsigned number from 0 to 255 included
+    //int pos = 0; //position of the pixel
     
-    Uint32 pixel;
+    int pixel;
     
-    int line = 0; // line = 1 if there is a line_segmentation
-
-    int black = 0; // presence of black pixel
-
+    int line = 0; // mark the presence of line, here it has not
+    int black = 0; // mark the presence of black pixel
     int begin; // line of the beginning of black pixel's presence
     int end; // line of end of it
 
-    for(y = 0; y < h; y++) // lines
+
+    for(y = 0; y < m->line; y++)// lines
     {
-        for(x = 0; x < w; x++) // columns
+        for(x = 0; x < m->col; x++)// columns
         {
-            pixel = GetPixel(img,x,y); 
+            pixel = GetM(m,y,x); // get pixel at x and y pos in matrix
 
-            // get colors of pixel
-            SDL_GetRGB(pixel, img->format, &r, &g, &b);
-
-            if(!r && !g && !b) // if pixel is black
+            if(pixel) // if pixel is black
             {
                 black = 1; // black = true
                 break; // exit the loop
@@ -42,52 +33,27 @@ void lines_segmentation(SDL_Surface* img)
         {
             line = 1; // line = true
             begin = y; // conserve the index of the line
-
-            for(x = 0; x < w; x++)
-            {
-		pixel = GetPixel(img,x,y); 
-                pos = y - 1; // previous line
-                if(pos >= 0) // verify if the height of previous line is positive
-                {
-                    pixel = SDL_MapRGB(img->format, 255, 0, 0); //change color of previous line
-                    PutPixel(img,x,pos,pixel);
-                }
-            }
         }
         if(!black && line) // if previous line had black pixels but now it is white
         {
             line = 0; // make back line = false
             end = y; // conserve the index of the end
 
-            for(x = 0; x < w; x++)
-            {
-		pixel = GetPixel(img,x,y); 
-                pos = y + 1; // next line
-                if(pos < h) // verify if next line can be reached
-                {
-                    pixel = SDL_MapRGB(img->format, 255, 0, 0);
-                    PutPixel(img,x,pos,pixel);
-                }
-            }
             // trace the char_segmentation
-            char_segmentation(img, begin, end);
+            char_segmentation(m, begin, end,listofchar);
         }
 
         black = 0; // black = false
     }
 }
 
-void char_segmentation(SDL_Surface* img, int begin, int end)
+void char_segmentation(Matrix *m, int begin, int end,List *listofchar)
 {
-    int w = img -> w;// the limits of columns = width of img
-
     //variable for loops
     int x;
     int y;
 
-    unsigned char r , g , b; // unsigned char = number from 0 to 255 included
-    
-    Uint32 pixel;
+    float pixel;
 
     int c = 0; // 0 = start and 1 = end of an encounter with a caracter
     
@@ -96,29 +62,36 @@ void char_segmentation(SDL_Surface* img, int begin, int end)
 
     int white = 0;// if all this columns is white -> white = 1
 
-    for(x = 0; x < w; x++) // columns
+    int posX1 = 0;
+    int posX2 = 0;
+    
+    int k = 0;
+    int l = 0;
+    int j = 0;
+    int i = 0;
+
+    for(x = 0; x < m->col; x++) // columns
     {
         white = 1; //reset
 
         for(y = begin; y < end; y++) // lines
         {
-            pixel = GetPixel(img,x,y);
-	    SDL_GetRGB(pixel, img->format, &r, &g, &b);   // get colors of pixel
+            pixel = GetM(m,y,x);
 
-            if(!r && !g && !b && !c) // encounter with a caracter
+            if(pixel && !c) // encounter with a caracter
             {
                 c = 1; // a caracter is here
                 draw = 1; // trace first line
                 break; // exit the loop
             }
 
-            if(!r && !b && !g) // if the caracter is not finished yet
+            if(pixel) // if the caracter is not finished yet
             {
                 white = 0;
                 break; // exit the loop
             }
 
-            if(r == 255 && b == 255 && g == 255 && c && white && y == end - 1)
+            if(pixel == 0 && c && white && y == end - 1)
             {
                 c = 0; // the end of caracter is here
                 end_draw = 1; // must trace the last line
@@ -129,25 +102,38 @@ void char_segmentation(SDL_Surface* img, int begin, int end)
         if(c && draw) // color the previous column of the caracter
         {
             draw = 0; // first line traced -> reset
-            for(y = begin; y < end; y++)
-            {
-                if(x - 1 > 0) //previous column
-                {
-                    pixel = SDL_MapRGB(img->format, 0, 0, 255); //change color of pixel
-		    PutPixel(img,x-1,y,pixel); // put pixel
-		}
-            }
+	    if(x-1 > 0)
+		posX1 = x-1;
         }
         if(!c && end_draw) // color the next column of the caracter
         {
             end_draw = 0;// last line traced -> reset
-            
-	    for(y = begin; y < end; y++)
-            {
-                pixel = SDL_MapRGB(img->format, 0, 0, 255); //change color of pixel
-                PutPixel(img,x,y,pixel); // put pixel
-		
-            }
+            posX2 = x;
+	    k =0;
+	    l = 0;
+	    j = begin;
+	    i = posX1;
+
+	    Matrix *charM = InitM(end-begin,posX2-posX1);
+	    while(i < posX2 && l < posX2-posX1)
+	    {
+		while(j < end && k < end-begin)
+		{
+		    double pix = GetM(m,j,i);
+		    PutM(charM,k,l,pix);
+		    j+=1;
+		    k+=1;
+		}
+		l+=1;
+		i+=1;
+		k = 0;
+		j = begin;
+	    }
+	    
+		PosM *pos = InitP(posX1,begin,posX2,end);
+		AppendL(listofchar,charM,pos);
+		listofchar = listofchar -> next;
         }
+	
     }
 }
