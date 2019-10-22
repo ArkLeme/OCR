@@ -54,6 +54,7 @@ dkms.conf
 # Avoid conflict
 main.c
 main
+*.swp
 
 # Remove test from exec
 *.bmp
