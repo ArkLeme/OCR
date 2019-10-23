@@ -58,7 +58,7 @@ layer *init_layer(int nbNeurons, int nbNeurons_prec)
     {
 	Layer->values = InitM(nbNeurons,1);
 	Layer->biases = InitM(nbNeurons,1);
-        Layer->outputs = InitM(nbNeurons,1);
+    Layer->outputs = InitM(nbNeurons,1);
       
       if(nbNeurons_prec)
 	Layer->weights = InitM(nbNeurons,nbNeurons_prec);

@@ -88,7 +88,7 @@ void FreeM(Matrix *m)
 }
 
 //Addition Matrix
-Matrix* AddMM(Matrix* m1, Matrix* m2)
+Matrix* AddM(Matrix* m1, Matrix* m2)
 {
 	if(m1 -> col != m2 -> col || m1 -> line != m2 -> line)
 		errx(1, "Add Matrix do not have the same dimension :\

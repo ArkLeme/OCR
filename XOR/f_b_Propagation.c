@@ -92,8 +92,31 @@ Matrix* Copy_Entire_Matrix(Matrix *m)
 	return out;
 }
 
+void UpdateBW(neuNet * n, int curLay, float learning_rate)
+{
+	layer *cL = n->layers[curLay];	//current layer	
+		//layer *nL =n->layers[curLay+1];	//next layer
 
 
+        Matrix *transpose = TransM(n->layers[curLay-1]->outputs);
+		Matrix *eXo = MultM(cL->errors,transpose);
+		Matrix *delta = MultScalM(eXo, -learning_rate);
+		Matrix *copy = Copy_Entire_Matrix(cL->weights);
+		FreeM(cL->weights);
+		cL->weights = AddM(copy, delta);
+
+		FreeM(transpose);
+		FreeM(delta);
+		FreeM(copy);
+
+
+		//Current Layer.bias -= learning_rate * output_error
+		Matrix *bXe = MultScalM(cL->errors, -learning_rate);        
+		copy = Copy_Entire_Matrix(cL->biases);
+		cL->biases = AddM(copy, bXe);
+		FreeM(bXe);
+		FreeM(copy);
+}
 
 
 void backprop(neuNet *network, int len_output, Matrix *expOutputs, float learning_rate)
@@ -117,104 +140,25 @@ void backprop(neuNet *network, int len_output, Matrix *expOutputs, float learnin
 	FreeM(ll->errors);
 
 	//updates errors martrix
-	ll->errors = MultM(minus, sPrimeValues);
+	ll->errors = MultValM(minus, sPrimeValues);
 	FreeM(minus);
 	FreeM(sPrimeValues);
-
+	UpdateBW(network, 2, learning_rate);
 	//Not optimal but easier to understand
 	for(int i = network->nbLay-2; i > 0; i--) //gradient descent de l'avant dernier layer au deuxieme (a l'envers)
-	{
-	        
-	        layer *cL = network->layers[i];	//current layer	
-		layer *nL =network->layers[i+1];	//next layer
-
-
+	{	
+			layer *cL = network->layers[i];	//current layer	
+		//layer *nL =network->layers[i+1];	//next layer
 		Matrix *transpose = TransM(network->layers[i+1] -> weights);
-     		Matrix *input_error = MultM(transpose,network->layers[i+1] -> errors); //si i+1 matrice pas multiple
-	
-        	transpose = TransM(network->layers[i-1]->outputs);
-		Matrix *weights_error = MultM(network->layers[i+1]->errors,transpose);
-
-        	//Current Layer.weights -=learning_rate * weights_error
-		Matrix *weights_x_lrate = MultScalM(weights_error, -learning_rate);
-        
-
-		Matrix *copy = Copy_Entire_Matrix(cL->weights);
-		//Update weights after erros calculs
-		network->layers[i]->weights = AddM(copy,weights_x_lrate); //Matrice pas de la même taille dnc fonctionne pas
-
-
-		//Current Layer.bias -= learning_rate * output_error
-		Matrix *bias_x_lrate = MultScalM(network->layers[i+1]->errors, -learning_rate);
-        
-		copy = Copy_Entire_Matrix(cL->biases);
-		//Updates biases after errors calcul 	
-		network->layers[i]->biases = AddM(copy,bias_x_lrate);
-
-		Matrix *sPrimeValues = SigPrime(cL->values);
+     	Matrix *wXE = MultM(transpose,network->layers[i+1] -> errors); //si i+1 matrice pas multiple
+		Matrix *Sprime = SigPrime(cL->values);
 		FreeM(cL->errors);
-
-		//Matrice errors du current layer = wXe x sPrimeValues
-		cL->errors = MultM(weights_error, sPrimeValues);
-		
-
-		FreeM(input_error);
-		FreeM(weights_error);
-		FreeM(weights_x_lrate);
+		cL->errors = MultValM(Sprime, wXE);
 		FreeM(transpose);
-        
-		FreeM(bias_x_lrate);
-		FreeM(copy);
+		FreeM(wXE);
+		FreeM(Sprime);
+		UpdateBW(network, i, learning_rate);
 	}
 
 	
 }
-
-/*
-		//Crée une copie de la matrice weights de current lyaer		
-		Matrix *trans = TransM(cL->weights);  
-
-		//Multiplie l'erreur du layer suivant avec le poids du curent layer
-		Matrix *wXe = MultM(nL -> errors, trans); //ATTENTION VALEUR INVERSE
-
-		//Applique la dérivée de Sigmoide à values du current layer
-		Matrix *sPrimeValues = SigPrime(cL->values);
-		FreeM(cL->errors);
-
-		//Matrice errors du current layer = wXe x sPrimeValues
-		cL->errors = MultValM(wXe, sPrimeValues);
-		FreeM(trans);
-		FreeM(wXe);
-		FreeM(sPrimeValues);	 
-	}
-	for(int i = 1; i < n->nbLay; i++) //Weights and bias correction
-	{
-	   	layer *cL = n->layers[i]; //current layer
-		layer *pL = n->layers[i-1]; //previous layer
-
-		Matrix *trans = TransM(pL->outputs);
-		Matrix *eXo = MultM(trans,cL->errors); //ATTENTION VALEUR INVERSE faut vérifier les formules, il faut peut etre transposer
-
-		Matrix *neg = MultScalM(eXo, -learningRate);
-		Matrix *final = AddM(cL->weights, neg);
-		FreeM(cL->weights);
-	 	cL->weights = final;
-
-		FreeM(trans);
-		FreeM(eXo);
-		FreeM(neg);
-		FreeM(final);
-//		cL->biases = AddM(cL.biases, MultScalM(cL.errors, -learningRate)); ancienne version mais memmory leaks
-		neg = MultScalM(cL->errors, -learningRate);
-		final = AddM(cL->biases, neg);
-		FreeM(cL->biases);
-		cL->biases = final;
-		FreeM(final);
-	}
-
-
-}*/
-
-
-
-

@@ -10,8 +10,8 @@ void freeNeuNet(neuNet *n)
 {
 	for(int i = 0; i < n->nbLay; i ++)
 	{
-		layer* cL = n->layers[i];
-		Freelayer(cL);
+		//layer* cL = n->layers[i];
+		Freelayer(n->layers[i]);
 	}
 	free(n);
 }
@@ -88,11 +88,16 @@ Matrix* SigPrime(Matrix *m)
 
 void Freelayer(layer *cL)
 {
-  FreeM(cL->biases);
-  FreeM(cL->values);
-  FreeM(cL->outputs);
-  FreeM(cL->weights);
-  FreeM(cL->errors);
+	if(cL->biases !=NULL)
+  		FreeM(cL->biases);
+	if(cL->values != NULL)
+  		FreeM(cL->values);
+	if(cL->outputs)
+  		FreeM(cL->outputs);
+  	if(cL->weights)
+  		FreeM(cL->weights);
+	if(cL->errors)
+  		FreeM(cL->errors);
   free(cL);
 }
 
