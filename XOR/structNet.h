@@ -9,7 +9,6 @@ typedef struct layer{
 	Matrix *weights; // weights going into this layer
 					// size: nbNeurons*layers[currentLayer-1].nbNeurons
 	Matrix *errors; //size : 1*n	
-	Matrix* test;
 	int nbNeurons; //numbers of neurons in this layer 
 } layer;
 

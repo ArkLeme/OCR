@@ -16,7 +16,7 @@ int random_int(int max_value)
 
 
 //Initialize biases and weights matrix with random it between 0 and 1
-void  Init_biases_weights(layer* Layer, layer* prec_layer)
+void  Init_biases_weights(layer* Layer)
 {
   int rnd = random_int(1);
   
@@ -45,7 +45,6 @@ void InitBW(Matrix* m1)
 			PutM(m1, i,j,rnd);
 		}
 	}
-	printf("ok matrix");
 }
 
 
@@ -56,16 +55,16 @@ layer *init_layer(int nbNeurons, int nbNeurons_prec)
 
   if(Layer)
     {
-	Layer->values = InitM(nbNeurons,1);
+	//Layer->values = InitM(nbNeurons,1);
 	Layer->biases = InitM(nbNeurons,1);
-    Layer->outputs = InitM(nbNeurons,1);
+    //Layer->outputs = InitM(nbNeurons,1);
       
       if(nbNeurons_prec)
 	Layer->weights = InitM(nbNeurons,nbNeurons_prec);
       
       else Layer->weights = InitM(nbNeurons,1);
       
-      Layer->errors = InitM(nbNeurons,1);
+     // Layer->errors = InitM(nbNeurons,1);
 
       Layer->nbNeurons = nbNeurons;
     }
@@ -85,18 +84,18 @@ neuNet* init_network(int layer_size[], size_t nbLayers)
 	size_t i = 0;
         
 	if(network)
-        {
+    {
 	    
-	  //init first layer with no weights biases
-	  network->layers[0] = init_layer(layer_size[i],0);
-	  i+=1;
-	  int k = 2;
-	  while(i<nbLayers)
+	  	//init first layer with no weights biases
+	  	network->layers[0] = init_layer(layer_size[i],0);
+	  	i+=1;
+	  	int k = 2;
+	  	while(i<nbLayers)
 	    {
-	      network->layers[i] = init_layer(layer_size[i],k);
-	      Init_biases_weights(network->layers[i],network->layers[i-1]);
-	      k+=1;
-	      i+=1;
+	      	network->layers[i] = init_layer(layer_size[i],k);
+	      	Init_biases_weights(network->layers[i]);
+	      	k+=1;
+			i+=1;
 	    }
 
 	    network -> nbLay = nbLayers;
