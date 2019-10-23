@@ -12,7 +12,6 @@ void ClearNeuNet(neuNet *n)
   	FreeM(cL->outputs);
 	for(int i = 1; i < n->nbLay; i++)
 	{
-		printf("%i\n", i);
 		layer* cL = n->layers[i];
   		FreeM(cL->values);
   		FreeM(cL->outputs);
@@ -75,16 +74,15 @@ void LoadNeuNet()
 }
 
 float sigmoid(float x)
-{
-        if(x == 0)
-	  return 1;
-	
-	return 1.0/(1.0 * exp(-x));
+{	
+	//return 1.0/(1.0 * exp(-x));
+	return log(1 + exp(x));
 }
 
 float sigPrime(float x)
 {
-	return sigmoid(x)*(1-sigmoid(x));
+	//return sigmoid(x)*(1-sigmoid(x));
+	return 1/(1+exp(-x));
 }
 
 Matrix* Sig(Matrix *m)

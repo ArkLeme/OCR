@@ -16,7 +16,7 @@ Matrix* InitM(int l, int c)
 }
 
 //Put element e in matrix at [i,j]
-void PutM(Matrix* m, int i, int j, int e)
+void PutM(Matrix* m, int i, int j, double e)
 {
 	if(i < 0 || i >= m -> line || j < 0 || j > m -> col)
 		errx(1, "Put Index outside of matrix i=%i, j=%i, h=%i, w=%i\n",
@@ -38,7 +38,7 @@ Matrix *InitStringM(int l, int c, char* str)
 }
 
 //Put element e in matrix at [i/col, i%col]
-void PutPosM(Matrix* m, int pos, int e)
+void PutPosM(Matrix* m, int pos, double e)
 {
 	if(pos < 0 || pos >= m -> size)
 		errx(1, "Put Index outside of matrix pos=%i, size=%i\n",
@@ -73,7 +73,7 @@ void DisplayM(Matrix* m)
 		printf("[ ");
 		for(int j = 0; j < m -> col; j++)
 		{
-			printf("%i ", (int) GetM(m, i, j));
+			printf("%f ", GetM(m, i, j));
 		}
 		printf("]\n");
 	}

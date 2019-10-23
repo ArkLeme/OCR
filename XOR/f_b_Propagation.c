@@ -16,9 +16,7 @@ void layer_forward_propa(layer* Layer, Matrix *input_data)
       Layer->values = AddM(multiplication_weights,Layer->biases);
 	  //FreeM(Layer->outputs);
       Layer->outputs = Sig(Layer->values);
-
       FreeM(multiplication_weights);
-      
 }
 	
 
@@ -42,7 +40,11 @@ Matrix* forward_prop(neuNet* network, Matrix* input_data)
       layer_forward_propa(current_layer,input_data);
       input_data = current_layer->outputs;
     }  
-
+	// for(int i = 0; i < network->nbLay; i++)
+	// {
+	// 	DisplayM(network->layers[i]->values);
+	// 	DisplayM(network->layers[i]->outputs);
+	// }	
   return input_data;
   
 }
@@ -116,6 +118,9 @@ void UpdateBW(neuNet * n, int curLay, float learning_rate)
 		Matrix *bXe = MultScalM(cL->errors, -learning_rate);        
 		copy = Copy_Entire_Matrix(cL->biases);
 		FreeM(cL->biases);
+/* 		Matrix*test = AddM(copy, bXe);
+		DisplayM(test);
+		FreeM(test); */
 		cL->biases = AddM(copy, bXe);
 		FreeM(bXe);
 		FreeM(copy);
