@@ -22,6 +22,7 @@ void layer_forward_propa(layer* Layer, Matrix *input_data)
 
 Matrix* forward_prop(neuNet* network, Matrix* input_data)
 {
+	DisplayM(input_data);
 	layer *current_layer;
 	//DisplayM(network->layers[0]->values);
 	//FreeM(network->layers[0]->values);
@@ -88,7 +89,7 @@ Matrix* Copy_Entire_Matrix(Matrix *m)
 	{
 		for(int j = 0; j < m->col; j++)
 		{
-			int value = GetM(m, i, j);
+			double value = GetM(m, i, j);
 			PutM(out, i, j, value);
 		}
 	}
@@ -168,5 +169,8 @@ void backprop(neuNet *network, int len_output, Matrix *expOutputs, float learnin
 		UpdateBW(network, i, learning_rate);
 	}
 
+	// for (int i = 2; i>0; i--){
+	// 	DisplayM(network->layers[i]->weights);
+	// }
 	
 }

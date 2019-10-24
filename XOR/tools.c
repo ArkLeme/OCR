@@ -76,13 +76,15 @@ void LoadNeuNet()
 float sigmoid(float x)
 {	
 	//return 1.0/(1.0 * exp(-x));
-	return log(1 + exp(x));
+	return log(1 + exp(x)); // relu soft plus
+	//return (exp(2*x) - 1)/(exp(2*x) + 1);
 }
 
 float sigPrime(float x)
 {
 	//return sigmoid(x)*(1-sigmoid(x));
-	return 1/(1+exp(-x));
+	return 1/(1+exp(-x)); //relu prime
+	//return 1- ( sigmoid( x)* sigmoid( x));
 }
 
 Matrix* Sig(Matrix *m)

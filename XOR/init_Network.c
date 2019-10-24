@@ -6,11 +6,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-double randFloat(float minValue, float maxValue)
-{
-	double rdm = (double) rand();
-	double res = minValue + rdm/((double) RAND_MAX/maxValue-minValue);
-	return res;
+double randFloat()
+{	
+	//random float between -1 and 1
+	double sign = rand() %2;
+	double rdm = (double) rand()/((double)(RAND_MAX)/2+ 1.0);
+	if(sign ==1)
+		rdm *= -1;
+	return rdm;
 }
 
 
@@ -29,12 +32,12 @@ void  Init_biases_weights(layer* Layer)
   
   for(int i = 0; i < Layer->weights->line; i++)
 	{
-		rnd = randFloat(-10,10);
+		rnd = randFloat(-0.5,0.5);
 	    PutM(Layer->biases, i, 0,rnd);
 	    for(int j = 0; j < Layer -> weights->col; j++)
 		{
 		    //rnd = random_int(1);
-		  	float rnd = randFloat(-10,10);
+		  	float rnd = randFloat(-0.5,0.5);
 		  	PutM(Layer->weights,i,j, rnd);
 		}
 	}
