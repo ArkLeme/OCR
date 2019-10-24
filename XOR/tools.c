@@ -5,10 +5,32 @@
 #include <stdlib.h>
 #include "tools.h"
 
+void ClearNeuNet(neuNet *n)
+{
+	layer* cL = n->layers[0];
+	FreeM(cL->values);
+  	FreeM(cL->outputs);
+	for(int i = 1; i < n->nbLay; i++)
+	{
+		layer* cL = n->layers[i];
+  		FreeM(cL->values);
+  		FreeM(cL->outputs);
+  		FreeM(cL->errors);
+	}
+}
+
 
 void freeNeuNet(neuNet *n)
 {
-	for(int i = 0; i < n->nbLay; i ++)
+	//free first layer
+	layer* fL = n->layers[0];
+	FreeM(fL->biases);
+	//FreeM(fL->errors);
+	//FreeM(fL->outputs);
+	//FreeM(fL->values);
+	FreeM(fL->weights);
+	free(fL);
+	for(int i = 1; i < n->nbLay; i ++)
 	{
 		//layer* cL = n->layers[i];
 		Freelayer(n->layers[i]);
@@ -52,16 +74,17 @@ void LoadNeuNet()
 }
 
 float sigmoid(float x)
-{
-        if(x == 0)
-	  return 1;
-	
-	return 1.0/(1.0 * exp(-x));
+{	
+	//return 1.0/(1.0 * exp(-x));
+	return log(1 + exp(x)); // relu soft plus
+	//return (exp(2*x) - 1)/(exp(2*x) + 1);
 }
 
 float sigPrime(float x)
 {
-	return sigmoid(x)*(1-sigmoid(x));
+	//return sigmoid(x)*(1-sigmoid(x));
+	return 1/(1+exp(-x)); //relu prime
+	//return 1- ( sigmoid( x)* sigmoid( x));
 }
 
 Matrix* Sig(Matrix *m)
@@ -88,16 +111,11 @@ Matrix* SigPrime(Matrix *m)
 
 void Freelayer(layer *cL)
 {
-	if(cL->biases !=NULL)
-  		FreeM(cL->biases);
-	if(cL->values != NULL)
-  		FreeM(cL->values);
-	if(cL->outputs)
-  		FreeM(cL->outputs);
-  	if(cL->weights)
-  		FreeM(cL->weights);
-	if(cL->errors)
-  		FreeM(cL->errors);
-  free(cL);
+  	FreeM(cL->biases);
+  	//FreeM(cL->values);
+  	//FreeM(cL->outputs);
+  	FreeM(cL->weights);
+  	//FreeM(cL->errors);
+	free(cL);
 }
 

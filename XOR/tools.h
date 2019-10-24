@@ -3,7 +3,7 @@
 #include "structNet.h"
 #include "../matrix/matrix.h"
 
-
+void ClearNeuNet(neuNet*n);
 void freeNeuNet(neuNet* n);
 void Freelayer(layer* cL);
 void SaveNeuNet(neuNet* n);

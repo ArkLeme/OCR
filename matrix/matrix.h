@@ -66,7 +66,7 @@ Matrix* InitStringM(int line, int col, char* string);
  * j the col
  * e the value
  */
-void PutM(Matrix *m, int i, int j, int e);
+void PutM(Matrix *m, int i, int j, double e);
 
 /*
  * Put a value in the matrix
@@ -74,7 +74,7 @@ void PutM(Matrix *m, int i, int j, int e);
  * pos the position (m + pos)
  * e is the value
  */
-void PutPosM(Matrix *m, int pos, int e);
+void PutPosM(Matrix *m, int pos, double e);
 
 /*
  * Get a value in a matrix
