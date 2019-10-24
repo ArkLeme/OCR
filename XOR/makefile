@@ -9,10 +9,10 @@ LDFLAGS = -fsanitize=address
 LDLIBS = -lSDL -lSDL_image -lm `pkg-config --libs sdl`
 
 # SRC contain all the file we must built
-SRC = ../matrix/matrix.c f_b_Propagation.c tools.c main.c init_Network.c 
+SRC = ../matrix/matrix.c f_b_Propagation.c tools.c xor.c init_Network.c 
 OBJ = $(SRC:.c=.o)
 DEP = ${SRC:.c=.d}
-EXEC = main 
+EXEC = xor 
 
 all: $(EXEC)
 
