@@ -1,7 +1,6 @@
 #Makefile
 
 CC = gcc
-
 CPPFLAGS= `pkg-config --cflags sdl` -MMD
 CFLAGS = -fsanitize=address -g -Wall -Wextra -std=c99
 LDFLAGS = -fsanitize=address
@@ -9,13 +8,26 @@ LDLIBS = -lSDL -lSDL_image -lm `pkg-config --libs sdl`
 
 # SRC contain all the file we must built
 
-SRC = preprocessing/preprocessing.c sdl_tools/sdl_tools.c segmentation/segmentation.c matrix/matrix.c matrix/matrix_image.c segmentation/rlsa.c segmentation/xy_cut.c segmentation/comp_labeling/union_find.c segmentation/comp_labeling/comp_labeling.c segmentation/separate_matrix.c string/string_operation.c segmentation/segmentation_image.c
+DIR = matrix preprocessing sdl_tools segmentation segmentation/comp_labeling string XOR
 
+DIR2 = $(shell find ./ -type f -name "*.c" \
+	|sed -r 's|/[^/]+$$||' \
+	|sed -r 's|\.+$$||' \
+	|sort \
+	|uniq )
+
+BMP = $(shell find . -type f -name "*.bmp") 
+
+SRC = $(foreach dir, $(DIR2), $(wildcard $(dir)/*.c))
 OBJ = $(SRC:.c=.o)
-DEP = ${SRC:.c=.d}
+DEP = $(SRC:.c=.d)
+
 EXEC = main testsegm segmA
 
 all: $(EXEC)
+
+test:
+	echo $(DIR2)
 
 main: main.c $(OBJ)
 
@@ -23,12 +35,10 @@ testsegm: testsegm.c $(OBJ)
 
 segmA: segmA.c $(OBJ)
 
-$(EXEC): $(OBJ)
-
 clean:
 	$(RM) $(OBJ) $(DEP) *.o *.d
 
-properclean: clean
-	$(RM) $(EXEC)
+mrproper: clean
+	$(RM) $(EXEC) $(BMP)
 
 -include $(DEP)

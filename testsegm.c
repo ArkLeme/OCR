@@ -4,8 +4,7 @@
 #include "matrix/matrix.h"
 #include "segmentation/rlsa.h"
 #include "matrix/matrix_image.h"
-#include "segmentation/xy_cut.h"
-#include "segmentation/comp_labeling/comp_labeling.h"
+#include "comp_labeling/comp_labeling.h"
 #include "string/string_operation.h"
 #include "segmentation/separate_matrix.h"
 
