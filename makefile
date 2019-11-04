@@ -18,8 +18,38 @@ BMP = $(shell find ./image_data -type f -name "*.bmp")
 # All exec we want to clean
 EXEC = main testsegm segmA
 
+# doxygen documentation
+define generate_doxygen
+	doxygen
+endef
+
+# Create shortcut to index.html
+define generate_shortcut
+	ln -s doxygen/html/index.html doc
+endef
+
+# Open documentation in browser
+define open_doc
+	x-www-browser doc
+endef
+
 # avoid make main
 all: main
+
+
+
+.PHONY: doxygen
+doxygen:
+ifeq ($(wildcard doc),)
+	$(call generate_doxygen)
+	$(call generate_shortcut)
+else
+	echo "You already generate doxygen"
+endif
+
+.PHONY: doc
+doc: doxygen
+	$(call open_doc)
 
 main: main.c $(OBJ)
 
