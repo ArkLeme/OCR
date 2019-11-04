@@ -8,19 +8,11 @@ LDLIBS = -lSDL -lSDL_image -lm `pkg-config --libs sdl`
 
 # SRC contain all the file we must built
 
-DIR = matrix preprocessing sdl_tools segmentation segmentation/comp_labeling string XOR
-
-DIR2 = $(shell find ./ -type f -name "*.c" \
-	|sed -r 's|/[^/]+$$||' \
-	|sed -r 's|\.+$$||' \
-	|sort \
-	|uniq )
-
-BMP = $(shell find . -type f -name "*.bmp") 
-
-SRC = $(foreach dir, $(DIR2), $(wildcard $(dir)/*.c))
+SRC = $(shell find ./src -type f -name "*.c")
 OBJ = $(SRC:.c=.o)
 DEP = $(SRC:.c=.d)
+
+BMP = $(shell find . -type f -name "*.bmp") 
 
 EXEC = main testsegm segmA
 
@@ -36,7 +28,8 @@ testsegm: testsegm.c $(OBJ)
 segmA: segmA.c $(OBJ)
 
 clean:
-	$(RM) $(OBJ) $(DEP) $(EXEC).c $(EXEC).o
+	$(RM) $(OBJ) $(DEP) *.o *.d
+
 
 mrproper: clean
 	$(RM) $(EXEC) $(BMP)
