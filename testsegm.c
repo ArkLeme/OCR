@@ -1,13 +1,12 @@
 #include <err.h>
-#include "sdl_tools/sdl_tools.h"
-#include "preprocessing/preprocessing.h"
-#include "matrix/matrix.h"
-#include "segmentation/rlsa.h"
-#include "matrix/matrix_image.h"
-#include "segmentation/xy_cut.h"
-#include "segmentation/comp_labeling/comp_labeling.h"
-#include "string/string_operation.h"
-#include "segmentation/separate_matrix.h"
+#include "src/sdl_tools/sdl_tools.h"
+#include "src/preprocessing/preprocessing.h"
+#include "src/matrix/matrix.h"
+#include "src/segmentation/rlsa.h"
+#include "src/matrix/matrix_image.h"
+#include "src/comp_labeling/comp_labeling.h"
+#include "src/string/string_operation.h"
+#include "src/segmentation/separate_matrix.h"
 
 void testBin(char* path);
 

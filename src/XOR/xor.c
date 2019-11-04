@@ -10,6 +10,7 @@
 
 void train(neuNet *Network,int steps,float learning_rate);
 
+/*
 int main()
 {
     int layerSizes[] = {2,2,1};
@@ -18,6 +19,7 @@ int main()
 	freeNeuNet(network);
 	return 0;
 }
+*/
 
 //predict answer with a network trained
 /*int calculate (neuNet* Network,Matrix *input_data)
@@ -26,7 +28,6 @@ int main()
 	forward_prop(Network, input_data);
 	return GetM(Network->layers[2]->outputs,0,0);	
 	}*/
-
 
 
 //train network with output_data and given output wanted

@@ -1,21 +1,25 @@
 #Makefile
 
 CC = gcc
-
 CPPFLAGS= `pkg-config --cflags sdl` -MMD
 CFLAGS = -fsanitize=address -g -Wall -Wextra -std=c99
 LDFLAGS = -fsanitize=address
 LDLIBS = -lSDL -lSDL_image -lm `pkg-config --libs sdl`
 
 # SRC contain all the file we must built
-
-SRC = preprocessing/preprocessing.c sdl_tools/sdl_tools.c segmentation/segmentation.c matrix/matrix.c matrix/matrix_image.c segmentation/rlsa.c segmentation/xy_cut.c segmentation/comp_labeling/union_find.c segmentation/comp_labeling/comp_labeling.c segmentation/separate_matrix.c string/string_operation.c segmentation/segmentation_image.c
-
+SRC = $(shell find ./src -type f -name "*.c")
 OBJ = $(SRC:.c=.o)
-DEP = ${SRC:.c=.d}
+DEP = $(SRC:.c=.d)
+-include $(DEP)
+
+# All bmp file generate by the program
+BMP = $(shell find ./image_data -type f -name "*.bmp") 
+
+# All exec we want to clean
 EXEC = main testsegm segmA
 
-all: $(EXEC)
+# avoid make main
+all: main
 
 main: main.c $(OBJ)
 
@@ -23,12 +27,10 @@ testsegm: testsegm.c $(OBJ)
 
 segmA: segmA.c $(OBJ)
 
-$(EXEC): $(OBJ)
+# Clean
 
 clean:
 	$(RM) $(OBJ) $(DEP) *.o *.d
 
-properclean: clean
-	$(RM) $(EXEC)
-
--include $(DEP)
+mrproper: clean
+	$(RM) $(EXEC) $(BMP)
