@@ -51,10 +51,13 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
+# Ignore doc shortcut
+doc
+
+# Ignore doxygen documentation generation
+# doxygen/*
+
 # Avoid conflict
 main.c
 main
 *.swp
-
-# Remove test from exec
-*.bmp

@@ -2,7 +2,6 @@
 #define COMP_LABELING
 
 #include "../matrix/matrix_image.h"
-#include "../matrix/matrix.h"
 #include "union_find.h"
 
 /*

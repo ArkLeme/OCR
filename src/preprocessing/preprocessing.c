@@ -23,7 +23,7 @@ SDL_Surface* GrayScale(SDL_Surface* InputImage)
 			SDL_GetRGB(pixel, InputImage -> format, &r, &g, &b);
 
 			//Apply grayscale formule (REC. 709)
-			
+
 			//avg = r * 0.2126 + g * 0.7152 + b * 0.0722;
 			avg = (g+b+r)/3;
 
@@ -103,7 +103,7 @@ SDL_Surface* Otsu(SDL_Surface* InputImage)
 
 	//Weight of class 1 and class 2
 	unsigned long weight1 = 0, weight2 = 0;
-	
+
 	//Total summ is pt*t where pt is the probability of a pixel of t intensity
 	unsigned long summTotal = 0, summ1 = 0;
 

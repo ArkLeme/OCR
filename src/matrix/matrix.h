@@ -1,13 +1,22 @@
 #ifndef MATRIX
 #define MATRIX
-
-/*
- * Struct of matrix, we use it in both neural network and segmentation.
- * line is the height of the matrix.
- * col is the width of the matrix.
- * size is col * line
- * matrix is our array of double
+/**
+ * \file matrix.h
+ * \brief header of matrix.c
+ * \author William.G
  */
+
+/**
+ * \struct Matrix
+ * \brief matrix structure
+ * \param line is the height of the matrix.
+ * \param col is the width of the matrix.
+ * \param size is col * line
+ * \return new matrix structure
+ *
+ * The structure is use for both neural network and segmentation.
+ * The structure allow operation on matrix like add, mult or logical operation.
+ * */
 typedef struct Matrix
 {
 	int line;

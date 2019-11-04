@@ -6,7 +6,7 @@ CFLAGS = -fsanitize=address -g -Wall -Wextra -std=c99
 LDFLAGS = -fsanitize=address
 LDLIBS = -lSDL -lSDL_image -lm `pkg-config --libs sdl`
 
-# SRC contain all the file we must built
+# SRC contain all the file we must build
 SRC = $(shell find ./src -type f -name "*.c")
 OBJ = $(SRC:.c=.o)
 DEP = $(SRC:.c=.d)
@@ -18,8 +18,42 @@ BMP = $(shell find ./image_data -type f -name "*.bmp")
 # All exec we want to clean
 EXEC = main testsegm segmA
 
+# Shortcut name
+SHORTCUT = doc.html
+
+# doxygen repo
+DOXYGEN_DIR = doxygen
+
+# doxygen documentation
+define generate_doxygen
+	doxygen
+endef
+
+# Create shortcut to index.html
+define generate_shortcut
+	ln -s $(DOXYGEN_DIR)/html/index.html $(SHORTCUT)
+endef
+
+# Open documentation in browser
+define open_doc
+	x-www-browser $(SHORTCUT)
+endef
+
 # avoid make main
 all: main
+
+.PHONY: doxygen
+doxygen:
+ifeq ($(wildcard $(SHORTCUT)),)
+	$(call generate_doxygen)
+	$(call generate_shortcut)
+else
+	echo "You already generate doxygen"
+endif
+
+.PHONY: doc
+doc: doxygen
+	$(call open_doc)
 
 main: main.c $(OBJ)
 
@@ -33,4 +67,5 @@ clean:
 	$(RM) $(OBJ) $(DEP) *.o *.d
 
 mrproper: clean
-	$(RM) $(EXEC) $(BMP)
+	$(RM) $(EXEC) $(BMP) $(SHORTCUT) 
+	$(RM) -rf $(DOXYGEN_DIR)/html

@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include "../matrix/matrix.h"
 #include "separate_matrix.h"
 #include <err.h>
 
