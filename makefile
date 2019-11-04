@@ -24,7 +24,7 @@ DEP = $(SRC:.c=.d)
 
 EXEC = main testsegm segmA
 
-all: $(EXEC)
+all: main
 
 test:
 	echo $(DIR2)
@@ -36,7 +36,7 @@ testsegm: testsegm.c $(OBJ)
 segmA: segmA.c $(OBJ)
 
 clean:
-	$(RM) $(OBJ) $(DEP) *.o *.d
+	$(RM) $(OBJ) $(DEP) $(EXEC).c $(EXEC).o
 
 mrproper: clean
 	$(RM) $(EXEC) $(BMP)
