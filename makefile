@@ -18,6 +18,12 @@ BMP = $(shell find ./image_data -type f -name "*.bmp")
 # All exec we want to clean
 EXEC = main testsegm segmA
 
+# Shortcut name
+SHORTCUT = doc.html
+
+# doxygen repo
+DOXYGEN_DIR = doxygen
+
 # doxygen documentation
 define generate_doxygen
 	doxygen
@@ -25,22 +31,20 @@ endef
 
 # Create shortcut to index.html
 define generate_shortcut
-	ln -s doxygen/html/index.html doc
+	ln -s $(DOXYGEN_DIR)/html/index.html $(SHORTCUT)
 endef
 
 # Open documentation in browser
 define open_doc
-	x-www-browser doc
+	x-www-browser $(SHORTCUT)
 endef
 
 # avoid make main
 all: main
 
-
-
 .PHONY: doxygen
 doxygen:
-ifeq ($(wildcard doc),)
+ifeq ($(wildcard $(SHORTCUT)),)
 	$(call generate_doxygen)
 	$(call generate_shortcut)
 else
@@ -63,4 +67,5 @@ clean:
 	$(RM) $(OBJ) $(DEP) *.o *.d
 
 mrproper: clean
-	$(RM) $(EXEC) $(BMP)
+	$(RM) $(EXEC) $(BMP) $(SHORTCUT) 
+	$(RM) -rf $(DOXYGEN_DIR)/html
