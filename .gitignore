@@ -55,7 +55,7 @@ dkms.conf
 doc
 
 # Ignore doxygen documentation generation
-doxygen/
+# doxygen/*
 
 # Avoid conflict
 main.c
