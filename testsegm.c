@@ -78,8 +78,8 @@ void testBin(char* path)
 	Matrix* twopass = CompLabeling(mm, &ml);
 	SaveMatAsImRand(twopass, "image_data/label/twopass.bmp", ml);
 	int nbl = NumberLabel(twopass, ml); //Get number of optimal label
-	int* lbL = LabelReduceList(twopass, nbl, ml); //Get list of optimal label;
-	ReduceLabel(twopass, lbL, nbl); //Give the optimal matrix
+	int* lbL = LabelReduceList(twopass, ml); //Get list of optimal label;
+	ReduceLabel(twopass, lbL); //Give the optimal matrix
 	PosM** pos = FindPosMat(twopass, nbl); //List of poas
 	List* l = ListOfMat(twopass, pos, nbl); //List of pos and mat
 	SaveMatsAsIm(l, 5, "image_data/label/char"); //Save some

@@ -36,12 +36,6 @@ Matrix *SecondPass(Matrix *m, Graph *g);
  */
 Graph *CreateGraph(Matrix *m, int maxLabel);
 
-/*
- * Find the number of usefull label in a matrix
- * m is the matrix
- * ml the max label in the matrix
- * return the number of usefull label
- */
 int NumberLabel(Matrix *m, int ml);
 
 /*
@@ -51,7 +45,7 @@ int NumberLabel(Matrix *m, int ml);
  * ml the max label in the matrix
  * return a list of usefull label
  */
-int* LabelReduceList(Matrix *m, int nbl, int ml);
+int* LabelReduceList(Matrix *m, int ml);
 
 /*
  * reduce the value of label in the matrix
@@ -59,7 +53,7 @@ int* LabelReduceList(Matrix *m, int nbl, int ml);
  * *label the list of our usefull label
  * len the len of this list
  */
-void ReduceLabel(Matrix *m, int *label, int len);
+void ReduceLabel(Matrix *m, int *label);
 
 /*
  * Binsearch in a list

@@ -26,6 +26,8 @@ DOXYGEN_DIR = doxygen
 
 # doxygen documentation
 define generate_doxygen
+	$(RM) -rf $(DOXYGEN_DIR)/html
+	$(RM) $(SHORTCUT)
 	doxygen
 endef
 
@@ -36,7 +38,7 @@ endef
 
 # Open documentation in browser
 define open_doc
-	xdg-open  $(SHORTCUT)
+	xdg-open $(SHORTCUT)
 endef
 
 # avoid make main
@@ -44,12 +46,8 @@ all: main
 
 .PHONY: doxygen
 doxygen:
-ifeq ($(wildcard $(SHORTCUT)),)
 	$(call generate_doxygen)
 	$(call generate_shortcut)
-else
-	echo "You already generate doxygen"
-endif
 
 .PHONY: doc
 doc: doxygen
