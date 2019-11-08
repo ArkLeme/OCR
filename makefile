@@ -36,7 +36,7 @@ endef
 
 # Open documentation in browser
 define open_doc
-	x-www-browser $(SHORTCUT)
+	xdg-open  $(SHORTCUT)
 endef
 
 # avoid make main
