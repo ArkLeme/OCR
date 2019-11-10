@@ -1,25 +1,12 @@
-#include "f_b_Propagation.h"
+#include "src/XOR/f_b_Propagation.h"
 #include <stdio.h>
 #include <stddef.h>
 #include <stdlib.h>
-#include "structNet.h"
+#include "src/XOR/structNet.h"
 #include <time.h>
-#include "init_Network.h"
-#include "tools.h"
-#include "../matrix/matrix.h"
-
-void train(neuNet *Network,int steps,float learning_rate);
-
-/*
-int main()
-{
-    int layerSizes[] = {2,2,1};
-	neuNet *network = init_network(layerSizes,3); 
-	train(network,500, 0.1); 
-	freeNeuNet(network);
-	return 0;
-}
-*/
+#include "src/XOR/init_Network.h"
+#include "src/XOR/tools.h"
+#include "src/matrix/matrix.h"
 
 //predict answer with a network trained
 /*int calculate (neuNet* Network,Matrix *input_data)
@@ -34,8 +21,7 @@ int main()
 void train(neuNet *Network,int steps,float learning_rate)
 {
 	int inp[4][2] = {{0,0},{1,1},{0,1},{1,0}};
-
-	srand((unsigned) time(0));
+	int res[4] = {0,0,1,1};
   	for (int i =0; i<steps; i++)
   	{
 		int index = i %4;
@@ -45,13 +31,22 @@ void train(neuNet *Network,int steps,float learning_rate)
 		PutM(input, 0,0,j);
 		PutM(input,1,0,k);
 		Matrix* out = InitM(1,1);
-		PutM(out, 0,0,k=!j);	
+		PutM(out, 0,0,res[index]);
 		forward_prop(Network, input);
-		//printf("%i xor %i",j,k);
-		//printf("%i ^ %i = %f/%i\t%i\n", j,k, GetM(Network->layers[2]->outputs, 0,0),k!=j, i);
-		printf("%f\n\n", GetM(Network->layers[2]->outputs,0,0));
+		printf("%d xor %d = %f\t%d\n", j, k, GetM(Network->layers[2]->outputs,0,0), i);
 		backprop(Network, 1, out, learning_rate);
 		ClearNeuNet(Network);
 		FreeM(out);
     }
 }
+
+int main()
+{
+    int layerSizes[] = {2,2,1};
+	neuNet *network = init_network(layerSizes,3); 
+	train(network,55000, 1.5);
+	freeNeuNet(network);
+	return 0;
+}
+
+

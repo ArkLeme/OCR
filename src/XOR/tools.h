@@ -9,7 +9,7 @@ void Freelayer(layer* cL);
 void SaveNeuNet(neuNet* n);
 Matrix *Sig(Matrix *m);
 Matrix *SigPrime(Matrix *m);
-float sigmoid(float x);
-float sigPrime(float x);
+double sigmoid(float x);
+double sigPrime(float x);
 
 #endif

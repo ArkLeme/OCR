@@ -5,6 +5,7 @@
 #include <err.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 
 double randFloat()
 {	
@@ -13,6 +14,7 @@ double randFloat()
 	double rdm = (double) rand()/((double)(RAND_MAX)/2+ 1.0);
 	if(sign ==1)
 		rdm *= -1;
+	printf("%f\n", rdm);
 	return rdm;
 }
 
@@ -28,16 +30,18 @@ int random_int(int max_value)
 //Initialize biases and weights matrix with random it between 0 and 1
 void  Init_biases_weights(layer* Layer)
 {
-  double rnd;
+	srand((unsigned) time(NULL));
+
+    double rnd;
   
-  for(int i = 0; i < Layer->weights->line; i++)
+    for(int i = 0; i < Layer->weights->line; i++)
 	{
-		rnd = randFloat(-0.5,0.5);
+		rnd = randFloat();
 	    PutM(Layer->biases, i, 0,rnd);
-	    for(int j = 0; j < Layer -> weights->col; j++)
+	    for(int j = 0; j < Layer->weights->col; j++)
 		{
 		    //rnd = random_int(1);
-		  	float rnd = randFloat(-0.5,0.5);
+		  	rnd = randFloat();
 		  	PutM(Layer->weights,i,j, rnd);
 		}
 	}
@@ -73,9 +77,8 @@ layer *init_layer(int nbNeurons, int nbNeurons_prec)
 neuNet* init_network(int layer_size[], size_t nbLayers)
 {
 
-        neuNet *network = malloc(sizeof(neuNet));
+    neuNet *network = malloc(sizeof(neuNet));
 
-	
 	size_t i = 0;
         
 	if(network)
@@ -95,14 +98,6 @@ neuNet* init_network(int layer_size[], size_t nbLayers)
 
 	    network -> nbLay = nbLayers;
 	}
-
-	// for(int i = 1; i < network->nbLay; i++)
-	// {
-	// 	DisplayM(network->layers[i]->weights);
-	// 	DisplayM(network->layers[i]->biases);
-
-	// }
-
 
 	return network;
 	  

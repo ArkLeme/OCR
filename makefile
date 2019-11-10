@@ -61,6 +61,7 @@ testsegm: testsegm.c $(OBJ)
 
 segmA: segmA.c $(OBJ)
 
+neuNet: neuNet.c $(OBJ)
 # Clean
 
 clean:

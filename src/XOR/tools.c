@@ -25,17 +25,18 @@ void freeNeuNet(neuNet *n)
 	//free first layer
 	layer* fL = n->layers[0];
 	FreeM(fL->biases);
-	//FreeM(fL->errors);
-	//FreeM(fL->outputs);
-	//FreeM(fL->values);
 	FreeM(fL->weights);
 	free(fL);
 	for(int i = 1; i < n->nbLay; i ++)
-	{
-		//layer* cL = n->layers[i];
 		Freelayer(n->layers[i]);
-	}
 	free(n);
+}
+
+void Freelayer(layer *cL)
+{
+  	FreeM(cL->biases);
+  	FreeM(cL->weights);
+	free(cL);
 }
 
 void SaveNeuNet(neuNet *n)
@@ -73,17 +74,17 @@ void LoadNeuNet()
 		
 }
 
-float sigmoid(float x)
+double sigmoid(float x)
 {	
-	//return 1.0/(1.0 * exp(-x));
-	return log(1 + exp(x)); // relu soft plus
+	return (double) 1.0/(1.0 + exp(-x));
+	//return log(1 + exp(x)); // relu soft plus
 	//return (exp(2*x) - 1)/(exp(2*x) + 1);
 }
 
-float sigPrime(float x)
+double sigPrime(float x)
 {
-	//return sigmoid(x)*(1-sigmoid(x));
-	return 1/(1+exp(-x)); //relu prime
+	return sigmoid(x)*(1-sigmoid(x));
+	//return 1/(1+exp(-x)); //relu prime
 	//return 1- ( sigmoid( x)* sigmoid( x));
 }
 
@@ -108,14 +109,3 @@ Matrix* SigPrime(Matrix *m)
 	}
 	return m2;
 }
-
-void Freelayer(layer *cL)
-{
-  	FreeM(cL->biases);
-  	//FreeM(cL->values);
-  	//FreeM(cL->outputs);
-  	FreeM(cL->weights);
-  	//FreeM(cL->errors);
-	free(cL);
-}
-

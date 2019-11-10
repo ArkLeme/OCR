@@ -11,10 +11,8 @@
 //Calulate values and outputs
 void layer_forward_propa(layer* Layer, Matrix *input_data)
 {
-      Matrix *multiplication_weights = MultM(Layer->weights,input_data); //ATTENTION VALEUR INVERSE
-      //FreeM(Layer->values);
+      Matrix *multiplication_weights = MultM(Layer->weights,input_data);
       Layer->values = AddM(multiplication_weights,Layer->biases);
-	  //FreeM(Layer->outputs);
       Layer->outputs = Sig(Layer->values);
       FreeM(multiplication_weights);
 }
@@ -22,11 +20,7 @@ void layer_forward_propa(layer* Layer, Matrix *input_data)
 
 Matrix* forward_prop(neuNet* network, Matrix* input_data)
 {
-	DisplayM(input_data);
 	layer *current_layer;
-	//DisplayM(network->layers[0]->values);
-	//FreeM(network->layers[0]->values);
-	//FreeM(network->layers[0]->outputs);
 	network->layers[0]->values = input_data;
 	network->layers[0]->outputs = Sig(network->layers[0]->values);  
   
@@ -36,21 +30,12 @@ Matrix* forward_prop(neuNet* network, Matrix* input_data)
       input_data = network->layers[i-1] -> outputs;
       current_layer = network->layers[i];
 
-
       //Calculate the values and input Matrix of the current layer
       layer_forward_propa(current_layer,input_data);
       input_data = current_layer->outputs;
     }  
-	// for(int i = 0; i < network->nbLay; i++)
-	// {
-	// 	DisplayM(network->layers[i]->values);
-	// 	DisplayM(network->layers[i]->outputs);
-	// }	
   return input_data;
-  
 }
-
-
 
 //Fonction softmax for layer
 /*Matrix softmax(layer Layer, Matrix input)
@@ -75,11 +60,8 @@ Matrix* forward_prop(neuNet* network, Matrix* input_data)
        return Layer.output;
        }*/
 
-
-
 ///////////////////////////////////////////////////////////////////////////////
 //////////////////////BACK PROPAGATION ///////////////////////////////////////
-
 
 Matrix* Copy_Entire_Matrix(Matrix *m)
 {
@@ -100,45 +82,34 @@ Matrix* Copy_Entire_Matrix(Matrix *m)
 void UpdateBW(neuNet * n, int curLay, float learning_rate)
 {
 	layer *cL = n->layers[curLay];	//current layer	
-		//layer *nL =n->layers[curLay+1];	//next layer
+    Matrix *transpose = TransM(n->layers[curLay-1]->outputs);
+	Matrix *eXo = MultM(cL->errors,transpose);
+	Matrix *delta = MultScalM(eXo, -learning_rate);
+	Matrix *copy = Copy_Entire_Matrix(cL->weights);
+	FreeM(cL->weights);
+	cL->weights = AddM(copy, delta);
+	FreeM(eXo);
+	FreeM(transpose);
+	FreeM(delta);
+	FreeM(copy);
 
-
-        Matrix *transpose = TransM(n->layers[curLay-1]->outputs);
-		Matrix *eXo = MultM(cL->errors,transpose);
-		Matrix *delta = MultScalM(eXo, -learning_rate);
-		Matrix *copy = Copy_Entire_Matrix(cL->weights);
-		FreeM(cL->weights);
-		cL->weights = AddM(copy, delta);
-		FreeM(eXo);
-		FreeM(transpose);
-		FreeM(delta);
-		FreeM(copy);
-
-
-		//Current Layer.bias -= learning_rate * output_error
-		Matrix *bXe = MultScalM(cL->errors, -learning_rate);        
-		copy = Copy_Entire_Matrix(cL->biases);
-		FreeM(cL->biases);
-/* 		Matrix*test = AddM(copy, bXe);
-		DisplayM(test);
-		FreeM(test); */
-		cL->biases = AddM(copy, bXe);
-		FreeM(bXe);
-		FreeM(copy);
+	Matrix *bXe = MultScalM(cL->errors, -learning_rate);        
+	copy = Copy_Entire_Matrix(cL->biases);
+	FreeM(cL->biases);
+	cL->biases = AddM(copy, bXe);
+	FreeM(bXe);
+	FreeM(copy);
 }
 
 
 void backprop(neuNet *network, int len_output, Matrix *expOutputs, float learning_rate)
 {
 	//Last layer case
-        layer *ll =network->layers[network->nbLay -1];
-
+    layer *ll =network->layers[network->nbLay -1];
 
 	//Check if len_output corresponds to the number of neurons of the last layer
 	if(len_output != ll->nbNeurons)
 	   errx(1,"Output are not of the correct length");
-
-
 
 	//special case for last layer
 	Matrix *neg = MultScalM(expOutputs, -1);
@@ -147,30 +118,22 @@ void backprop(neuNet *network, int len_output, Matrix *expOutputs, float learnin
 
 	Matrix *sPrimeValues = (SigPrime(ll->values));
 
-	//FreeM(ll->errors);
 	//updates errors martrix
 	ll->errors = MultValM(minus, sPrimeValues);
 	FreeM(minus);
 	FreeM(sPrimeValues);
 	UpdateBW(network, 2, learning_rate);
 	//Not optimal but easier to understand
-	for(int i = network->nbLay-2; i > 0; i--) //gradient descent de l'avant dernier layer au deuxieme (a l'envers)
+	for(int i = network->nbLay-2; i > 0; i--) 
 	{	
-			layer *cL = network->layers[i];	//current layer	
-		//layer *nL =network->layers[i+1];	//next layer
+		layer *cL = network->layers[i];	//current layer
 		Matrix *transpose = TransM(network->layers[i+1] -> weights);
-     	Matrix *wXE = MultM(transpose,network->layers[i+1] -> errors); //si i+1 matrice pas multiple
+     	Matrix *wXE = MultM(transpose,network->layers[i+1] -> errors);
 		Matrix *Sprime = SigPrime(cL->values);
-		//FreeM(cL->errors);
 		cL->errors = MultValM(Sprime, wXE);
 		FreeM(transpose);
 		FreeM(wXE);
 		FreeM(Sprime);
 		UpdateBW(network, i, learning_rate);
 	}
-
-	// for (int i = 2; i>0; i--){
-	// 	DisplayM(network->layers[i]->weights);
-	// }
-	
 }
