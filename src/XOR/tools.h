@@ -12,9 +12,9 @@ Matrix *SigPrime(Matrix *m);
 double sigmoid(float x);
 double sigPrime(float x);
 Matrix *softmax(Matrix *input);
-float Soft(float sum, float z);
+double Soft(double sum, float z);
 Matrix *softprime(Matrix* input);
-float Soft_prime(float sum, float z);
+double Soft_prime(double sum, float z);
 
 
 #endif
