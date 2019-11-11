@@ -1,8 +1,14 @@
-#ifndef COMP_LABELING
-#define COMP_LABELING
+#ifndef COMP_LABELING_H
+#define COMP_LABELING_H
 
 #include "../matrix/matrix_image.h"
 #include "union_find.h"
+
+/**
+ * \file comp_labeling.h
+ * \brief header of comp_labeling.c
+ * \author William.G
+ */
 
 /*
  * Apply the connecting component labeling to our matrix
@@ -36,6 +42,12 @@ Matrix *SecondPass(Matrix *m, Graph *g);
  */
 Graph *CreateGraph(Matrix *m, int maxLabel);
 
+/*
+ * Find the number of usefull label in a matrix
+ * m is the matrix
+ * ml the max label in the matrix
+ * return the number of usefull label
+ */
 int NumberLabel(Matrix *m, int ml);
 
 /*
@@ -45,7 +57,7 @@ int NumberLabel(Matrix *m, int ml);
  * ml the max label in the matrix
  * return a list of usefull label
  */
-int* LabelReduceList(Matrix *m, int ml);
+int *LabelReduceList(Matrix *m,  int ml);
 
 /*
  * reduce the value of label in the matrix

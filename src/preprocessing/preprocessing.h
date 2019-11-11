@@ -1,7 +1,13 @@
-#ifndef PREPROCESSING
-#define PREPROCESSING
+#ifndef PREPROCESSING_H
+#define PREPROCESSING_H
 
 #include "../sdl_tools/sdl_tools.h"
+
+/**
+ * \file preprocessing.h
+ * \brief header of preprocessing.c
+ * \author William.G
+ */
 
 /*
  * Apply grayscale to our surface
