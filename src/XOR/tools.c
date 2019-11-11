@@ -109,3 +109,80 @@ Matrix* SigPrime(Matrix *m)
 	}
 	return m2;
 }
+
+//Fonction softmax for layer
+Matrix *softmax(Matrix *input)
+{
+  	Matrix *output = InitM(input->line,input->col);
+  	float sum;
+  	float value;
+
+
+  	//Softmax fonction needs Sum of exp(z)k, zk is the k th values from input)
+  	for(int i=0; i <input->line; i++)
+	{
+		for(int j=0; j< input->col; j++)
+		{
+			value = GetM(input,i,j);
+			sum+= exp(value);
+		}
+	}
+     
+
+   	//Output = appplying to each values the softmax fonction    
+	for(int i=0; i < input->line; i++)
+	{
+		for(int j=0; j< input->col; j++)
+		{
+			value = Soft(sum, GetM(input,i,j));
+			PutM(output,i,j,value);
+		}
+	}
+
+       
+       return output;
+}
+
+Matrix *softprime(Matrix *input)
+{
+  	Matrix *output = InitM(input->line,input->col);
+  	float sum;
+  	float value;
+
+
+  	//Softmax fonction needs Sum of exp(z)k, zk is the k th values from input)
+  	for(int i=0; i <input->line; i++)
+	{
+		for(int j=0; j< input->col; j++)
+		{
+			value = GetM(input,i,j);
+			sum+= exp(value);
+		}
+	}
+     
+
+   	//Output = appplying to each values the softmax fonction    
+	for(int i=0; i < input->line; i++)
+	{
+		for(int j=0; j< input->col; j++)
+		{
+			value = Soft_prime(sum, GetM(input,i,j));
+			PutM(output,i,j,value);
+		}
+	}
+
+       
+       return output;
+}
+float Soft(float sum, float z)
+{
+   return exp(z)/sum;
+}
+
+float Soft_prime(float sum, float z)
+{
+
+	return Soft(sum, z)*(1-Soft(sum,z));
+}
+
+

@@ -11,5 +11,10 @@ Matrix *Sig(Matrix *m);
 Matrix *SigPrime(Matrix *m);
 double sigmoid(float x);
 double sigPrime(float x);
+Matrix *softmax(Matrix *input);
+float Soft(float sum, float z);
+Matrix *softprime(Matrix* input);
+float Soft_prime(float sum, float z);
+
 
 #endif

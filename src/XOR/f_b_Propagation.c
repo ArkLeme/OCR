@@ -13,7 +13,7 @@ void layer_forward_propa(layer* Layer, Matrix *input_data)
 {
       Matrix *multiplication_weights = MultM(Layer->weights,input_data);
       Layer->values = AddM(multiplication_weights,Layer->biases);
-      Layer->outputs = Sig(Layer->values);
+      Layer->outputs = softmax(Layer->values);
       FreeM(multiplication_weights);
 }
 	
@@ -37,28 +37,8 @@ Matrix* forward_prop(neuNet* network, Matrix* input_data)
   return input_data;
 }
 
-//Fonction softmax for layer
-/*Matrix softmax(layer Layer, Matrix input)
-{
-  Layer.output = InitM(1,input.col);
-  int sum =0;
 
-  //Softmax fonction needs Sum of exp(z)k, zk is the k th values from input)
-  for(int sum_index = 0;  sum_index < input.col; sum_index++)
-	 {
-	    sum+= exp(GetM(input, 1, sum_index);
-	 }
-     
 
-   //Output = appplying to each values the softmax fonction 
-   for(int j = 0; j < input.col; j++)
-     {    
-       PutM(Layer.output, 1,j , exp(GetM(input, 1, j)) / sum );
-     }
-       
-       
-       return Layer.output;
-       }*/
 
 ///////////////////////////////////////////////////////////////////////////////
 //////////////////////BACK PROPAGATION ///////////////////////////////////////
@@ -82,7 +62,7 @@ Matrix* Copy_Entire_Matrix(Matrix *m)
 void UpdateBW(neuNet * n, int curLay, float learning_rate)
 {
 	layer *cL = n->layers[curLay];	//current layer	
-    Matrix *transpose = TransM(n->layers[curLay-1]->outputs);
+   	Matrix *transpose = TransM(n->layers[curLay-1]->outputs);
 	Matrix *eXo = MultM(cL->errors,transpose);
 	Matrix *delta = MultScalM(eXo, -learning_rate);
 	Matrix *copy = Copy_Entire_Matrix(cL->weights);
@@ -116,7 +96,7 @@ void backprop(neuNet *network, int len_output, Matrix *expOutputs, float learnin
 	Matrix* minus = AddM(ll->outputs, neg);
 	FreeM(neg);
 
-	Matrix *sPrimeValues = (SigPrime(ll->values));
+	Matrix *sPrimeValues = (softprime(ll->values));
 
 	//updates errors martrix
 	ll->errors = MultValM(minus, sPrimeValues);
@@ -128,8 +108,8 @@ void backprop(neuNet *network, int len_output, Matrix *expOutputs, float learnin
 	{	
 		layer *cL = network->layers[i];	//current layer
 		Matrix *transpose = TransM(network->layers[i+1] -> weights);
-     	Matrix *wXE = MultM(transpose,network->layers[i+1] -> errors);
-		Matrix *Sprime = SigPrime(cL->values);
+     		Matrix *wXE = MultM(transpose,network->layers[i+1] -> errors);
+		Matrix *Sprime = softprime(cL->values);
 		cL->errors = MultValM(Sprime, wXE);
 		FreeM(transpose);
 		FreeM(wXE);
