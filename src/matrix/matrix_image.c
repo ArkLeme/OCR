@@ -87,8 +87,7 @@ void SaveMatAsImRand(Matrix *m, char* path, int label)
 void SaveMatsAsIm(List *l, int stop, char* path)
 {
 	List* actual = l;
-	
-	while(actual != NULL && stop > 0)
+	while(actual && stop > 0)
 	{
 		//Create the string to sve all our image
 		char* sint = Itoa(stop);

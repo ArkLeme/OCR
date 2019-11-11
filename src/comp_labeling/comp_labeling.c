@@ -220,16 +220,16 @@ int* LabelReduceList (Matrix *m, int ml)
 }
 
 /**
- * \fn void ReduceLabel(Matrix *m, int *lab)
+ * \fn void ReduceLabel(Matrix *m, int ml)
  * \brief Replace the old label value in the Matrix by the new one found with
  * the LabelReduceList function
  *
  * \param m : Matrix we want to set the new label
- * \param lab : list of the new label
- * \param len : length of lab
+ * \param ml : number of maximum label
  */
-void ReduceLabel(Matrix *m, int *lab)
+void ReduceLabel(Matrix *m, int ml)
 {
+    int *lab = LabelReduceList(m, ml);
 	for(int i = 0; i < m -> size; i++)
 	{
 		PutPosM(m, i, lab[(int) GetPosM(m, i)]);

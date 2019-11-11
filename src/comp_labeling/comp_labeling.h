@@ -65,7 +65,7 @@ int *LabelReduceList(Matrix *m,  int ml);
  * *label the list of our usefull label
  * len the len of this list
  */
-void ReduceLabel(Matrix *m, int *label);
+void ReduceLabel(Matrix *m, int ml);
 
 /*
  * Binsearch in a list

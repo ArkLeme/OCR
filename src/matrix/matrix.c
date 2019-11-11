@@ -330,12 +330,13 @@ List* RemoveLL(List *l)
 		errx(1, "Can not remove NULL");
 
 	List *last = l;
-	while(last -> next)
+	while(last->next->next)
 	{
-		last = last -> next;
+		last = last->next;
 	}
 
-	FreeL(last);
+	FreeL(last->next);
+    last->next = NULL;
 
 	return l;
 }
