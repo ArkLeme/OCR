@@ -20,7 +20,6 @@ int main(int argc, char** argv)
 void testBin(char* path)
 {
     List* ll = first_segmentation(path);
-    RemoveLL(ll);
     List* l = ll;
     unsigned long avgh = 0, avgw = 0, size = 0;
     int mh = 0, mw = 0;

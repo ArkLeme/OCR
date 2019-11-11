@@ -18,6 +18,8 @@ Matrix* get_mat_from_png(char* path)
 	SDL_FreeSurface(contrast);
 	SDL_FreeSurface(bin);
 
+    SwapColor(m);
+
 	return m;
 }
 
@@ -44,11 +46,19 @@ List* first_segmentation(char *path)
 
     PosM **pos = FindPosMat(twopass, nbl);
     List *l = ListOfMat(twopass, pos, nbl);
+    RemoveLL(l); //Remove bloc white white pixel
 
-    SaveMatsAsIm(l, nbl - 1, "image_data/label/char");
+    List* ll = l;
+    while(ll)
+    {
+        ll->mat = normalize_dimension(ll->mat);
+        ll = ll->next;
+    }
 
     FreeM(twopass);
     FreeM(m);
+
+    SaveMatsAsIm(l, nbl, "image_data/label/char");
 
     return l;
 }
