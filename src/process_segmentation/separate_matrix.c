@@ -19,8 +19,8 @@ PosM** FindPosMat(Matrix *m, int maxLabel)
 		for(int j = 0; j < m -> col; j++)
 		{
 			int label = (int) GetM(m, i, j);
-			
-			//If he is not initialized, initiate it
+
+            //If he is not initialized, initiate it
 			PosM *p = posM[label];
 			if(p -> mx < 0)
 			{
@@ -73,6 +73,8 @@ List* ListOfMat(Matrix *m, PosM **p, int maxLabel)
 			errx(1, "index = %i", i);
 		}
 	}
+
+    free(p);
 
 	return l;
 }

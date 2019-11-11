@@ -1,8 +1,14 @@
-#ifndef COMP_LABELING
-#define COMP_LABELING
+#ifndef COMP_LABELING_H
+#define COMP_LABELING_H
 
 #include "../matrix/matrix_image.h"
 #include "union_find.h"
+
+/**
+ * \file comp_labeling.h
+ * \brief header of comp_labeling.c
+ * \author William.G
+ */
 
 /*
  * Apply the connecting component labeling to our matrix
@@ -51,7 +57,7 @@ int NumberLabel(Matrix *m, int ml);
  * ml the max label in the matrix
  * return a list of usefull label
  */
-int* LabelReduceList(Matrix *m, int nbl, int ml);
+int *LabelReduceList(Matrix *m,  int ml);
 
 /*
  * reduce the value of label in the matrix
@@ -59,7 +65,7 @@ int* LabelReduceList(Matrix *m, int nbl, int ml);
  * *label the list of our usefull label
  * len the len of this list
  */
-void ReduceLabel(Matrix *m, int *label, int len);
+void ReduceLabel(Matrix *m, int ml);
 
 /*
  * Binsearch in a list

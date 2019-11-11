@@ -1,21 +1,49 @@
 #include "comp_labeling.h"
 #include <err.h>
 
-//Apply connecting component labeling algorithm (two pass)
+/**
+ * \file comp_labeling.c
+ * \brief This file contains the functions requiered to apply the two pass
+ * algorithm which is a connecting components labeling algorithm.
+ * The purpose of the algorithm is to assign a label to every isolated bloc.
+ * It allow us to separe our initial Matrix into many Matrix where each new
+ * Matrix contains one bloc. This is our way to segment a text.
+ * \author William.G
+ */
+
+/**
+ * \fn Matrix *CompLabeling(Matrix *m, int *maxlabel)
+ * \brief Apply the two pass algorithm, every 1 in the Matrix are considered
+ * full and every 0 empty, so we label every 1 in the Matrix
+ *
+ * \param m : Matrix we want to label
+ * \param maxLabel : number of different label in the Matrix (modif by ref)
+ * \return Matrix where each bloc have a label
+ */
 Matrix *CompLabeling(Matrix *m, int* maxLabel)
 {
 	Matrix *fp = FirstPass(m, maxLabel);
 	Graph *g = CreateGraph(fp, *maxLabel);
 	Matrix *sp = SecondPass(fp, g);
 
-	free(g -> subsets);
-	free(g);
+    free_graph(g);
 	FreeM(fp);
 
 	return sp;
 }
 
-//First pass of the two pass algorithm
+/**
+ * \fn Matrix *FirstPass(Matrix *m, int *maxLabel)
+ * \brief First pass in the Matrix, the purpose is to set a temporary label to
+ * each pixel in the Matrix, we also create a tree where each label directly
+ * connected are set as parent and children, it will help in the second pass
+ * to merge both label together.
+ *
+ * \param m : Matrix we want to label
+ * \param maxLabel : number of different label (set by ref)
+ *
+ * \return Matrix with label to each pixel
+ */
 Matrix* FirstPass(Matrix* m, int* maxLabel)
 {
 	Matrix *output = InitM(m -> line, m -> col);
@@ -54,7 +82,18 @@ Matrix* FirstPass(Matrix* m, int* maxLabel)
 	return output;
 }
 
-//Second pass of the two pass algorithm
+/**
+ * \fn Matrix *SecondPass(Matrix *m, Graph *g)
+ * \brief Second pass in the Matrix, the purpose is to merge connected label
+ * since they are the same bloc, we use the Graph struct where every label are
+ * merged with their parent.
+ *
+ * \param m : Matrix we apply the second pass
+ * \param g : Graph of label, it allow use to know which label are connected
+ * together, it use the union-find implementation, more info : union_find.c
+ *
+ * \return Matrix where each bloc has a unique label
+ */
 Matrix *SecondPass(Matrix *m, Graph *g)
 {
 	Matrix *output = InitM(m -> line, m -> col);
@@ -71,7 +110,17 @@ Matrix *SecondPass(Matrix *m, Graph *g)
 	return output;
 }
 
-//Create the graph of our matrix
+/**
+ * \fn Graph *CreateGraph(Matrix *m, int maxLabel)
+ * \brief Create the Graph of the connection between every label
+ *  in the Matrix, it use the union-find implementation
+ *  for more info : union-find.c
+ *
+ * \param m : Matrix with the label
+ * \param maxLabel : number of different label in the Matrix
+ *
+ * \return Graph with the connection of label
+ */
 Graph *CreateGraph(Matrix *m, int maxLabel)
 {
 	Graph *g = InitG(maxLabel + 1);
@@ -96,7 +145,26 @@ Graph *CreateGraph(Matrix *m, int maxLabel)
 	return g;
 }
 
-//Find the number of different label in our image
+/**
+ * \fn int NumberLabel(Matrix *m, int ml)
+ * \brief Find the number of usefull label in the Matrix.
+ * After the second pass,
+ * some label are merged so it create a gap between label.
+ * For example, label 1 and 3 can be set in the Matrix, but not the label 2.
+ * It is necessary to find the number of usefull label
+ * to create the graph of connection
+ * between label and free the memory correctly.
+ *
+ * To find the number of usefull label, we create and histogramm of every label.
+ * For some of them,
+ * the value will be 0 because there is no longer any label with
+ * this value in our Matrix, they are the useeless label.
+ *
+ * \param m : Matrix we want to find the number of label
+ * \param ml : maximum number of label in the Matrix.
+ *
+ * \return Number of usefull label in the Matrix
+ */
 int NumberLabel(Matrix *m, int ml)
 {
 	int* histo = calloc(ml + 1, sizeof(int));
@@ -114,10 +182,23 @@ int NumberLabel(Matrix *m, int ml)
 	return label;
 }
 
-//reduce the number of label (replace bigger label by lower one)
-int* LabelReduceList (Matrix *m, int nbl, int ml)
+/**
+ * \fn int *LabelReduceList(Matrix *m,  int ml)
+ * \brief This function replace every label by a lower one if it exist, for
+ * example if label 2 is free and a bloc has the label 3, the bloc will have for
+ * new label 2. It is necessary to reduce the number of label for realease the
+ * allocated memory correctly.
+ *
+ * \param m : Matrix we want to reduce label value
+ * \param nbl : number of usefull label
+ * \param ml : number of the maximum label
+ *
+ * \return List of int where the new value of the label is 
+ * at the index of the value of the old label.
+ */
+int* LabelReduceList (Matrix *m, int ml)
 {
-	int* list = malloc(nbl * sizeof(int));
+	int* list = malloc((ml + 1) * sizeof(int));
 	int place = 1;
 	int* listPlaced = calloc(ml + 1, sizeof(int));
 	listPlaced[0] = 1; //Save label 0 as white and do not change is label
@@ -128,7 +209,7 @@ int* LabelReduceList (Matrix *m, int nbl, int ml)
 		int pos = GetPosM(m, i);
 		if(listPlaced[(int) pos] == 0)
 		{
-			list[place] = pos;
+			list[pos] = place;
 			place++;
 			listPlaced[pos] = 1;
 		}
@@ -138,25 +219,21 @@ int* LabelReduceList (Matrix *m, int nbl, int ml)
 	return list;
 }
 
-//Reduce the number of label in our matrix
-void ReduceLabel(Matrix *m, int* lab, int len)
+/**
+ * \fn void ReduceLabel(Matrix *m, int ml)
+ * \brief Replace the old label value in the Matrix by the new one found with
+ * the LabelReduceList function
+ *
+ * \param m : Matrix we want to set the new label
+ * \param ml : number of maximum label
+ */
+void ReduceLabel(Matrix *m, int ml)
 {
+    int *lab = LabelReduceList(m, ml);
 	for(int i = 0; i < m -> size; i++)
 	{
-		PutPosM(m, i, BinSearch(lab, GetPosM(m, i), len));
+		PutPosM(m, i, lab[(int) GetPosM(m, i)]);
 	}
 
 	free(lab);
-}
-
-//BinSearch not working (might be the comparaison between double and int)
-int BinSearch(int* list, int x, int len)
-{
-	for(int i = 0; i < len; i++)
-	{
-		if(list[i] == x)
-			return i;
-	}
-
-	errx(1, "Should have found a value for th binsearch");
 }
