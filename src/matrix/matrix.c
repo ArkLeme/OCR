@@ -348,3 +348,14 @@ void DeleteL(List *l)
 		l = RemoveFL(l);
 	}
 }
+
+Matrix* InitMWithValues(int s, double*m)
+{
+	int size = s*s;
+	Matrix* temp = malloc(sizeof(Matrix));
+	temp -> line = s;
+	temp -> col = s;
+	temp -> size = size;
+	temp -> matrix = &m; 
+	return temp;
+}
