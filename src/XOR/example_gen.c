@@ -38,10 +38,28 @@ Matrix** ReadExamples(char* path, char*results[])
 	return &examples;
 }
 
-void CreateNewExample(char* path)
+/*!
+ * \author pierre-olivier.rey
+ * \brief add all characters on the image situated at path to the example file
+ * \param path Path of the example file, it is the string in the image.
+ * \param example Path of the example file.
+ */
+void CreateNewExample(char* path, char* example)
 {
-	Matrix *m = get_mat_from_png(path);
-
-	fputc(c, f);
-	fwrite(m->matrix, sizeof(double), m->size, f);
+	FILE f = fopen(example, 'a');
+	if(f == NULL)
+		errx(1, "Example file cannot be opened");
+	List* matrix = first_segmentation(path);
+	Matrix* m = matrix->mat;
+	int i = 0;
+	while(m != NULL)
+	{
+		char c = path[i];
+		fputc(c, f);
+		fwrite(m->matrix, sizeof(double), m->size, f);
+		FreeM(m);
+		matrix = RemoveFL(matrix);
+		m = matrix->mat;
+	}
+	fclose(f);
 }
