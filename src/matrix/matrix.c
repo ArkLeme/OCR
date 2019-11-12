@@ -241,6 +241,21 @@ Matrix* CopyMatrix(Matrix *m, int mx, int my, int Mx, int My)
 	return out;
 }
 
+Matrix* normalize_dimension(Matrix *m)
+{
+    Matrix *out = InitM(28,28);
+
+    for(int i = 0; i < m->line; i++)
+    {
+        for(int j = 0; j < m->col; j++)
+        {
+            PutM(out, i, j, GetM(m, i, j) != 0);
+        }
+    }
+
+    FreeM(m);
+    return out;
+}
 //Initiate List of struct
 //We use it to stock our list of matrix and their position
 List* InitL(void *m, void *p)
@@ -330,12 +345,13 @@ List* RemoveLL(List *l)
 		errx(1, "Can not remove NULL");
 
 	List *last = l;
-	while(last -> next)
+	while(last->next->next)
 	{
-		last = last -> next;
+		last = last->next;
 	}
 
-	FreeL(last);
+	FreeL(last->next);
+    last->next = NULL;
 
 	return l;
 }

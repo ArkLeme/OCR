@@ -180,6 +180,13 @@ Matrix *MultScalM(Matrix *m1, double v);
 Matrix* CopyMatrix(Matrix *m, int mx, int my, int Mx, int My);
 
 /*
+ * Normalize matrix to 28x28
+ * m is the matrix
+ * return the matrix and free the old one
+ */
+Matrix* normalize_dimension(Matrix *m);
+
+/*
  * Initiate the structure PosM
  * mx is the left pos
  * my the top pos

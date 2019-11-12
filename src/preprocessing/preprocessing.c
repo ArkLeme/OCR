@@ -1,10 +1,27 @@
-// Include lib required
-
 #include <stdlib.h>
 #include <err.h>
 #include "preprocessing.h"
 
-//Grayscale weight of r g and b
+/**
+ * \file preprocessing.c
+ * \brief This file contains every functions related to the basic preprocessing
+ * we apply on the image. It contains a grayscale, a contrast
+ * and binarization function.
+ * This file do not return a Matrix, but a SDL_Surface which is something
+ * close to an image.
+ * \author William.G
+ */
+
+/**
+ * \fn SDL_Surface* GrayScale(SDL_Surface* InputImage)
+ * \brief Create a new SDL_Surface but every pixel are gray.
+ * It removes the color in the image
+ * since it is an useless information in our case.
+ *
+ * \param InputImage : The image ito which we apply the grayscale
+ *
+ * \return New SDL_Surface, it does not modify the InputImage
+ */
 SDL_Surface* GrayScale(SDL_Surface* InputImage)
 {
 	Uint32 pixel;
@@ -38,7 +55,19 @@ SDL_Surface* GrayScale(SDL_Surface* InputImage)
 	return OutputImage;
 }
 
-//Histogram equalization
+/**
+ * \fn SDL_Surface* Contrast(SDL_Surface* InputImage)
+ * \brief Create contrast in the image, the goal of this function is to create
+ * a bigger difference between the gray pixel. It helps the binarization to
+ * find the best threshold.
+ *
+ * The algorithm is an equalization of histogram. The new value of a pixel is
+ * basically the mean of the intensity of a pixel divided by the number of pixel.
+ *
+ * \param InputImage : The image to which we apply the contrast
+ *
+ * \return New SDL_Surface, it does not modify InputImage
+ */
 SDL_Surface* Contrast(SDL_Surface* InputImage)
 {
 	Uint32 pixel;
@@ -90,7 +119,26 @@ SDL_Surface* Contrast(SDL_Surface* InputImage)
 	return OutputImage;
 }
 
-//Apply otsu method to binarize our image
+/**
+ * \fn SDL_Surface* Otsu(SDL_Surface* InputImage)
+ * \brief The function of binarization, we use the Otsu's method which is a global
+ * binarization. 
+ *
+ * The goal of the function is to find a threshold to delimit the
+ * which pixel will become black and which pixel will become white.
+ *
+ * The principle of this function is to try every threshold and test if this
+ * threshold create a minimim variance between pixel with higher and lower
+ * intensity. If the variance is minimal it mean the  black pixels have an
+ * intensoty close to each other. The same goes for the white pixel.
+ *
+ * When we found the threshold, we can change pixel to black if they have a
+ * lower intensity, we change them in white otherwise.
+ *
+ * \param InputImage : The image we binazrize
+ *
+ * \return New SDL_Surface, it does not modify the InputImage
+ */
 SDL_Surface* Otsu(SDL_Surface* InputImage)
 {
 	Uint32 pixel;
@@ -149,8 +197,8 @@ SDL_Surface* Otsu(SDL_Surface* InputImage)
 		if(weight2 == 0) break;
 
 		summ1 += i * histogram[i];
-		
-		mean1 = summ1/weight1;
+
+        mean1 = summ1/weight1;
 		mean2 = (summTotal - summ1)/weight2;
 
 		varAct = weight1 * weight2 * (mean1 - mean2) * (mean1 - mean2);
@@ -164,7 +212,15 @@ SDL_Surface* Otsu(SDL_Surface* InputImage)
 	return Binarization(InputImage, threshold);
 }
 
-//Apply otsu method to binazrize the image with a good threshold
+/**
+ * \fn SDL_Surface* Binarization(SDL_Surface* InputImage, int threshold)
+ * \brief It transform every pixel in black or white according to a threshold.
+ *
+ * \param InputImage : The image we binarize
+ * \param threshold : The intensity threshold between black and white pixel.
+ *
+ * \return New SDL_Surface, It does not modify the InputImage
+ */
 SDL_Surface* Binarization(SDL_Surface* InputImage, int threshold)
 {
 	Uint32 pixel;

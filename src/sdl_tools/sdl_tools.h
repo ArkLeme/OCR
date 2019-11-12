@@ -1,8 +1,14 @@
-#ifndef SDL_TOOLS
-#define SDL_TOOLS
+#ifndef SDL_TOOLS_H
+#define SDL_TOOLS_H
 
 #include <SDL.h>
 #include <SDL_image.h>
+
+/**
+ * \file sdl_tools.h
+ * \brief header of sdl_tools.c
+ * \author William.G
+ */
 
 /*
  * Load a surface from an image
