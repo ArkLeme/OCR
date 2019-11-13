@@ -372,6 +372,6 @@ Matrix* InitMWithValues(int s, double*m)
 	temp -> line = s;
 	temp -> col = s;
 	temp -> size = size;
-	temp -> matrix = &m; 
+	temp -> matrix = m; 
 	return temp;
 }

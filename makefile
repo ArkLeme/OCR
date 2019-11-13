@@ -72,7 +72,7 @@ help:
 # Clean
 
 clean:	## Clean every .o and .d
-	@$(RM) $(OBJ) $(DEP) *.o *.d
+	@$(RM) $(OBJ) $(DEP) *.o *.d neuralNetwork_data/example.txt
 
 mrproper: clean 	## Clean every .o and .d as well as all generated files.
 	@$(RM) $(EXEC) $(BMP) $(SHORTCUT) 

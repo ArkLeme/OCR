@@ -6,6 +6,7 @@
 #include <time.h>
 #include "src/XOR/init_Network.h"
 #include "src/XOR/tools.h"
+#include "src/XOR/example_gen.h"
 #include "src/matrix/matrix.h"
 
 //predict answer with a network trained
@@ -40,17 +41,25 @@ void train(neuNet *Network,int steps,float learning_rate)
     }
 }
 
-int main()
+int main(int argc, char** argv)
 {
     /*int layerSizes[] = {28*28,20,26};
 	neuNet *network = init_network(layerSizes,3); 
 	train(network,55000, 1.5);
-	freeNeuNet(network);*/	
+	freeNeuNet(network);*/
+	if(argc == 2 && *argv[1] == 't')
+	{
+		GenerateExamples("image_data/png/test.txt");
+	}
+	else
+	{	
 	Matrix* input = InitM(2,1);
 	PutM(input, 0,0,1);
 	PutM(input,1,0,1);
         softmax(input);
 	DisplayM(input);
+	FreeM(input);
+	}	
 	return 0;
 }
 

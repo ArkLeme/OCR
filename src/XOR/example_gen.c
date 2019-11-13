@@ -1,7 +1,10 @@
 #include "../matrix/matrix.h"
 #include <stdio.h>
 #include <err.h>
-
+#include <stdlib.h>
+#include "../process_segmentation/process_segm.h"
+#include <string.h>
+#include "example_gen.h"
 /*!
  * \author pierre-olivier.rey
  * \brief Read examples from specidief file
@@ -13,15 +16,15 @@
  * Matrix of the char c
  * ...
  */
-Matrix** ReadExamples(char* path, char*results[])
+Matrix* ReadExamples(char* path, char*results)
 {
-	FILE*f = fopen(path, 'r');
+	FILE*f = fopen(path, "r");
 	if(f == NULL)
 		errx(1, "Example file cannot be opened");
 	int exNb;
 	fscanf(f, "%d", &exNb); //gets the total number of example in that file
-	Matrix *examples[exNb] = malloc(sizeof(Matrix) * exNb);
-	*results = malloc(sizeof(char) * exNb);
+	Matrix *examples = (Matrix*) malloc(sizeof(Matrix) * exNb);
+	results = malloc(sizeof(char) * exNb);
 	//*results = (char*)malloc(sizeof(char) * exNb);
 
 	char c;
@@ -31,35 +34,52 @@ Matrix** ReadExamples(char* path, char*results[])
 		c = (char) fgetc(f);
 		fread(ch, sizeof(double), 784, f);
 		Matrix *m = InitMWithValues(28, ch);
-		examples[i] = m;
-		*results[i] = c;
+		examples[i] = *m;
+		results[i] = &c;
 	}
 	fclose(f);
-	return &examples;
+	return examples;
+}
+
+void GenerateExamples(char* path)
+{
+	FILE *f = fopen(path, "r");
+	if(f == NULL)
+		errx(1, "Name file cannot be read");
+	char *filename = malloc(sizeof(char) * 35);
+	char *text = malloc(sizeof(char) * 1000);
+	while(fscanf(f, "%s: %s\n", filename, text) != EOF)
+	{
+		GenExample(filename, text);
+		//free(example);
+	//	free(text);
+	}
+	fclose(f);
 }
 
 /*!
  * \author pierre-olivier.rey
  * \brief add all characters on the image situated at path to the example file
- * \param path Path of the example file, it is the string in the image.
+ * \param ImagePath Path of the example image, it is the string in the image.
  * \param example Path of the example file.
  */
-void CreateNewExample(char* path, char* example)
+void GenExample(char* ImagePath, char* text)
 {
-	FILE f = fopen(example, 'a');
+	FILE* f = fopen("neuralNetwork_data/example.txt", "a");
 	if(f == NULL)
 		errx(1, "Example file cannot be opened");
-	List* matrix = first_segmentation(path);
-	Matrix* m = matrix->mat;
+	List* l = first_segmentation(ImagePath);
+	Matrix* m;
 	int i = 0;
-	while(m != NULL)
+	while(l != NULL)
 	{
-		char c = path[i];
-		fputc(c, f);
+		m = l->mat;
+		fputc(text[i], f);
+		fputc('\n', f);
 		fwrite(m->matrix, sizeof(double), m->size, f);
-		FreeM(m);
-		matrix = RemoveFL(matrix);
-		m = matrix->mat;
+		fputc('\n',f);
+		l = RemoveFL(l); //next element in l
+		i++;
 	}
 	fclose(f);
 }
