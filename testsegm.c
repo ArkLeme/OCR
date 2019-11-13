@@ -20,22 +20,8 @@ int main(int argc, char** argv)
 void testBin(char* path)
 {
     List* ll = paragraph_segm(path);
-    List* l = ll;
-    unsigned long avgh = 0, avgw = 0, size = 0;
-    int mh = 0, mw = 0;
-    while(l)
-    {
-        size++;
-        Matrix *m = l->mat;
-        if(mw < m->col)
-            mw = m->col;
-        if(mh < m->line)
-            mh = m->line;
-        avgw += m->col;
-        avgh += m->line;
-        l = l->next;
-    }
+    line_segm(ll);
 
-    printf("w = %li, h = %li, mw = %i, mh = %i\n", avgw/size, avgh/size, mw, mh);
+
     DeleteL(ll);
 }

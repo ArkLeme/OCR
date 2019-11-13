@@ -328,19 +328,19 @@ void FreeL(List *l)
 
 	free(l -> pos);
 	FreeM((Matrix*) (l -> mat));
-    FreeL(l -> child);
-	free(l);
+	DeleteL(l->child);
+    free(l);
 }
 
 //Remove first
 List* RemoveFL(List *l)
 {
-	if(!l)
+	if(l == NULL)
 		errx(1, "Can not remove NULL");
 
 	List *first = l;
 	l = l -> next;
-	FreeL(first);
+    FreeL(first);
 
 	return l;
 }
@@ -348,7 +348,7 @@ List* RemoveFL(List *l)
 //Remove last
 List* RemoveLL(List *l)
 {
-	if(!l)
+	if(l == NULL)
 		errx(1, "Can not remove NULL");
 
 	List *last = l;
