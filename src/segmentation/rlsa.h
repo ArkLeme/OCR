@@ -25,6 +25,6 @@ Matrix *Vrlsa(Matrix *m, int limit);
  * limit is the treshold value
  * return a new matrix
  */
-Matrix *rlsa(Matrix *m, int limit);
+Matrix *rlsa(Matrix *m, int vr, int cr);
 
 #endif

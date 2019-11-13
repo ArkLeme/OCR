@@ -92,10 +92,10 @@ Matrix *Vrlsa(Matrix *m, int limit)
 }
 
 //Apply both horizontal and vertical rlsa
-Matrix *rlsa(Matrix *m, int limit)
+Matrix *rlsa(Matrix *m, int vr, int cr)
 {
-	Matrix *v = Vrlsa(m, limit);
-	Matrix *h = Hrlsa(m, limit);
+	Matrix *v = Vrlsa(m, vr);
+	Matrix *h = Hrlsa(m, cr);
 	Matrix *a = AndM(v, h);
 
 	FreeM(v);

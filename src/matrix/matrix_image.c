@@ -58,7 +58,9 @@ void SaveMatAsImRand(Matrix *m, char* path, int label)
 	for(int i = 1; i < label + 1; i++)
 	{
 		labelColor[i] = SDL_MapRGB(temp -> format,
-						rand() % 255, rand() % 255, rand() % 255);
+						rand() % 128,
+                        rand() % 128,
+                        rand() % 128);
 	}
 
 	for(int i = 0; i < m -> line; i++)

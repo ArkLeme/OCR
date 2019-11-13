@@ -266,6 +266,7 @@ List* InitL(void *m, void *p)
 		l -> mat = m;
 		l -> pos = p;
 		l -> next = NULL;
+        l -> child = NULL;
 	}
 
 	return l;
@@ -320,8 +321,14 @@ List* AppendL(List* old, void *m, void *p)
 //Free our list
 void FreeL(List *l)
 {
+    if(l == NULL)
+    {
+        return;
+    }
+
 	free(l -> pos);
 	FreeM((Matrix*) (l -> mat));
+    FreeL(l -> child);
 	free(l);
 }
 
