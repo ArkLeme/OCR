@@ -9,6 +9,7 @@
 #include "src/process_segmentation/process_segm.h"
 
 void testBin(char* path);
+void SaveMat(List *l, int i, char *p);
 
 int main(int argc, char** argv)
 {
@@ -19,9 +20,56 @@ int main(int argc, char** argv)
 
 void testBin(char* path)
 {
-    List* ll = paragraph_segm(path);
-    line_segm(ll);
+    List* lg = paragraph_segm(path);
+    line_segm(lg);
 
+    List * lp = lg;
+    int p = 0;
+    int l = 0;
+    int w = 0;
+    while(lp != NULL)
+    {
+        List *ll = lp->child;
+        word_segm(ll);
+        SaveMat(lp, p, "para");
+        p++;
 
-    DeleteL(ll);
+        while(ll != NULL)
+        {
+            List *lw = ll->child;
+            SaveMat(ll, l, "line");
+            l++;
+
+            while(lw != NULL)
+            {
+                SaveMat(lw, w, "word");
+                w++;
+
+                lw = lw->next;
+            }
+
+            ll = ll->next;
+            //ll = NULL;
+        }
+
+        lp = lp->next;
+        //lp = NULL;
+    }
+
+    DeleteL(lg);
+}
+
+void SaveMat(List *l,  int i, char *n)
+{
+    char *sint = Itoa(i);
+    char *p = Concatene("image_data/rlsa/", n);
+    char *s = Concatene(p, sint);
+    char *sf = Concatene(s, ".bmp");
+
+    SaveMatAsIm(((Matrix*) (l->mat)),sf);
+
+    free(s);
+    free(sint);
+    free(sf);
+    free(p);
 }

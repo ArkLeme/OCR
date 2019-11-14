@@ -14,4 +14,6 @@ List* first_segmentation(char *path);
 List* paragraph_segm(char *path);
 
 List* line_segm(List* p);
+
+List* word_segm(List* p);
 #endif

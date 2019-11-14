@@ -13,7 +13,7 @@ Matrix* get_mat_from_png(char* path)
 
 	Matrix *m = GetMatFromIm(bin);
 
-    SaveMatAsIm(m, "image_data/rlsa/bin");
+    SaveMatAsIm(m, "image_data/rlsa/bin.bmp");
 
     SDL_FreeSurface(input);
 	SDL_FreeSurface(gray);
@@ -27,11 +27,10 @@ Matrix* get_mat_from_png(char* path)
 
 Matrix* apply_rlsa(Matrix *m, int vr, int cr)
 {
+
     Matrix *r = rlsa(m, vr, cr);
-    SaveMatAsIm(r, "image_data/rlsa/binr");
     Matrix *rr = Hrlsa(r, cr/2);
     Matrix *rv = Vrlsa(rr, vr/3);
-    SaveMatAsIm(rv, "image_data/rlsa/binrr");
 
     FreeM(r);
     FreeM(rr);
@@ -80,13 +79,13 @@ List* paragraph_segm(char *path)
     List *l = ListOfMat(m, pos, nbl);
     RemoveLL(l); //Remove bloc with white pixel
 
-    SaveMatAsIm(twopass, "image_data/rlsa/rlsa");
+    SaveMatAsIm(twopass, "image_data/rlsa/rlsa.bmp");
 
     FreeM(twopass);
     FreeM(m);
     FreeM(rlsa);
 
-    SaveMatsAsIm(l, nbl, "image_data/label/par");
+    //SaveMatsAsIm(l, nbl, "image_data/label/par");
 
     return l;
 
@@ -100,25 +99,64 @@ List* line_segm(List* p)
         int ml = 0;
 
         Matrix *m = par->mat;
-        SaveMatAsIm(m, "image_data/rlsa/lineempty");
+        //SaveMatAsIm(m, "image_data/rlsa/par_empty.bmp");
         Matrix *rlsa = apply_rlsa(m, 0, m->col);
+
+        //SaveMatAsIm(rlsa, "image_data/rlsa/rlsa.bmp");
+        //SaveMatAsIm(m, "image_data/rlsa/par_rlsa.bmp");
         Matrix *twopass = CompLabeling(rlsa, &ml);
-        SaveMatAsIm(rlsa, "image_data/rlsa/line");
         int nbl = NumberLabel(twopass, ml);
         ReduceLabel(twopass, ml);
-        SaveMatAsIm(twopass, "image_data/rlsa/test1");
+        //SaveMatAsIm(twopass, "image_data/rlsa/test1.bmp");
+
+        printf("rlsa0 = %f\n", GetPosM(rlsa, 55 + 56 * 3));
+        printf("m = %f\n", GetPosM(m, 55 + 56 * 3));
 
         PosM **pos = FindPosMat(twopass, nbl);
         List *l = ListOfMat(m, pos, nbl);
         RemoveLL(l);
 
-        SaveMatsAsIm(l, nbl, "image_data/label/line");
+        //SaveMatsAsIm(l, nbl, "image_data/label/line");
         par->child = l;
 
         FreeM(twopass);
         FreeM(rlsa);
 
-        par = par -> next;
+        par = par ->next;
+        //par = NULL;
+    }
+
+    return p;
+}
+
+List* word_segm(List* p)
+{
+    List* line = p;
+    while(line != NULL)
+    {
+        int ml = 0;
+        Matrix *m = line->mat;
+        //SaveMatAsIm(m, "image_data/rlsa/line_empty.bmp");
+        Matrix *rlsa = apply_rlsa(m, m->line, 20);
+        Matrix *twopass = CompLabeling(rlsa, &ml);
+        int nbl = NumberLabel(twopass, ml);
+        ReduceLabel(twopass, ml);
+        //SaveMatAsIm(twopass, "image_data/rlsa/rlsaV.bmp");
+
+        PosM **pos = FindPosMat(twopass, nbl);
+        List *l = ListOfMat(m, pos, nbl);
+
+        printf("%i\n", nbl);
+        RemoveLL(l);
+
+        //SaveMatsAsIm(l, nbl, "image_data/label/word.bmp");
+        line->child = l;
+
+        FreeM(twopass);
+        FreeM(rlsa);
+
+        //line = NULL;
+        line = line->next;
     }
 
     return p;
