@@ -35,7 +35,7 @@ Matrix* ReadExamples(char* path, char*results)
 		fread(ch, sizeof(double), 784, f);
 		Matrix *m = InitMWithValues(28, ch);
 		examples[i] = *m;
-		results[i] = &c;
+		results[i] = c;
 	}
 	fclose(f);
 	return examples;
@@ -47,12 +47,15 @@ void GenerateExamples(char* path)
 	if(f == NULL)
 		errx(1, "Name file cannot be read");
 	char *filename = malloc(sizeof(char) * 35);
-	char *text = malloc(sizeof(char) * 1000);
-	while(fscanf(f, "%s: %s\n", filename, text) != EOF)
+	char *text = malloc(sizeof(char) * 10000);
+	while(fscanf(f, "%s\n", filename) != EOF)
 	{
+		fgets(text, 10000, f);
+		printf("filename : %s\n", filename);
+		printf("text : %s\n", text);
 		GenExample(filename, text);
-		//free(example);
-	//	free(text);
+		free(filename);
+		free(text);
 	}
 	fclose(f);
 }
@@ -65,6 +68,7 @@ void GenerateExamples(char* path)
  */
 void GenExample(char* ImagePath, char* text)
 {
+	remove("neuralNetwork_data/example.txt");
 	FILE* f = fopen("neuralNetwork_data/example.txt", "a");
 	if(f == NULL)
 		errx(1, "Example file cannot be opened");
@@ -73,11 +77,17 @@ void GenExample(char* ImagePath, char* text)
 	int i = 0;
 	while(l != NULL)
 	{
+		if(text[i] == ' ') i++; //to 'remove' space in the string, à optimiser
 		m = l->mat;
 		fputc(text[i], f);
 		fputc('\n', f);
 		fwrite(m->matrix, sizeof(double), m->size, f);
 		fputc('\n',f);
+		//DISPLAY FOR TESTING
+		printf("%c\n",text[i]);
+		DisplayM(m);
+		getchar();
+		////
 		l = RemoveFL(l); //next element in l
 		i++;
 	}

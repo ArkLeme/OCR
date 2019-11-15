@@ -49,7 +49,7 @@ int main(int argc, char** argv)
 	freeNeuNet(network);*/
 	if(argc == 2 && *argv[1] == 't')
 	{
-		GenerateExamples("image_data/png/test.txt");
+		GenerateExamples("neuralNetwork_data/names.txt");
 	}
 	else
 	{	

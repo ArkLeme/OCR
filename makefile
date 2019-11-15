@@ -16,7 +16,7 @@ DEP = $(SRC:.c=.d)
 BMP = $(shell find ./image_data -type f -name "*.bmp") 
 
 # All exec we want to clean
-EXEC = main testsegm segmA
+EXEC = main testsegm segmA neuNet
 
 # Shortcut name
 SHORTCUT = doc.html
@@ -58,7 +58,7 @@ testsegm: testsegm.c $(OBJ)
 
 segmA: segmA.c $(OBJ)
 
-neuNet: neuNet.c $(OBJ)
+neuNet: neuNet.c $(OBJ) ##t option to test in/out functions for example
 
 # Help function to use the makefile
 # It "just" detect every rules in this makefile and the print it
