@@ -1,10 +1,10 @@
 #include <err.h>
-#include "sdl_tools/sdl_tools.h"
-#include "preprocessing/preprocessing.h"
-#include "matrix/matrix.h"
-#include "segmentation/segmentation_image.h"
-#include "segmentation/segmentation.h"
-#include "matrix/matrix_image.h"
+#include "src/sdl_tools/sdl_tools.h"
+#include "src/preprocessing/preprocessing.h"
+#include "src/matrix/matrix.h"
+#include "src/segmentation/segmentation_image.h"
+#include "src/segmentation/segmentation.h"
+#include "src/matrix/matrix_image.h"
 
 int main(int argc, char** argv)
 {
@@ -19,27 +19,37 @@ int main(int argc, char** argv)
 	//Segmentation on image
 	image_lines_segmentation(Bin_for_img);
 
-	Matrix *m = InitM(0,0);
+	Matrix *line = InitM(0,0);
 	PosM* p1 = InitP(0,0,0,0);
-	List *listofchar = InitL(m,p1);
+	List *listoflines = InitL(line,p1);
+	
+	Matrix *word = InitM(0,0);
+	PosM* p2 = InitP(0,0,0,0);
+	List *listofwords = InitL(word,p2);
 
 	Matrix *img_m = GetMatFromIm(Bin_for_mat);
 	    
 	//Segmentation put in list of matrix
-	lines_segmentation(img_m,listofchar);
+	lines_segmentation(img_m,listoflines);
+	listoflines = RemoveFL(listoflines);
 
-	listofchar = RemoveFL(listofchar);
-
+	List *next = listoflines;
+	while(next != NULL)
+	{
+	    words_segmentation(next->mat,listofwords);
+	    next = next -> next;
+	}
+	listofwords = RemoveFL(listofwords);
 	//First char of the list and the image
-	Matrix* first = listofchar ->  mat;
+	Matrix* firstline = listoflines ->  mat;
 	//Second char of the list and the image
-	Matrix* second = listofchar -> next -> mat;
+	Matrix* firstword = listofwords -> mat;
 
-	char path[] = "image_data/char_1.bmp";
-	char path1[] = "image_data/char_2.bmp";
-	
-	SaveMatAsIm( first,path);
-	SaveMatAsIm(second,path1);
+	char path[] = "image_data/first_line.bmp";
+	char path1[] = "image_data/first_word.bmp";
+
+	SaveMatAsIm(firstline,path);
+	SaveMatAsIm(firstword,path1);
 	
 	SaveImage(Bin_for_img,"image_data/segm.bmp");
 
@@ -47,7 +57,8 @@ int main(int argc, char** argv)
 	SDL_FreeSurface(InputImage);
 	SDL_FreeSurface(Bin_for_mat);
 	FreeM(img_m);
-	DeleteL(listofchar);
+	DeleteL(listoflines);
+	DeleteL(listofwords);
 
 	return 0;
 }
