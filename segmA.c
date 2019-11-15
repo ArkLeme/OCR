@@ -19,27 +19,33 @@ int main(int argc, char** argv)
 	//Segmentation on image
 	image_lines_segmentation(Bin_for_img);
 
+	// Init list of lines
 	Matrix *line = InitM(0,0);
 	PosM* p1 = InitP(0,0,0,0);
 	List *listoflines = InitL(line,p1);
 	
+	// Init list of words
 	Matrix *word = InitM(0,0);
 	PosM* p2 = InitP(0,0,0,0);
 	List *listofwords = InitL(word,p2);
 
 	Matrix *img_m = GetMatFromIm(Bin_for_mat);
 	    
-	//Segmentation put in list of matrix
+	//Segmentation of lines put in list of Matrix
 	lines_segmentation(img_m,listoflines);
+	// Remove the "null" matrix
 	listoflines = RemoveFL(listoflines);
 
 	List *next = listoflines;
+	//Fill the list of words from each lines of the Paragraph
 	while(next != NULL)
 	{
 	    words_segmentation(next->mat,listofwords);
 	    next = next -> next;
 	}
+	//Remove the "null" matrix
 	listofwords = RemoveFL(listofwords);
+
 	//First char of the list and the image
 	Matrix* firstline = listoflines ->  mat;
 	//Second char of the list and the image
