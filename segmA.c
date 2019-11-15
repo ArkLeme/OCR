@@ -31,7 +31,7 @@ int main(int argc, char** argv)
 
 	Matrix *img_m = GetMatFromIm(Bin_for_mat);
 	    
-	//Segmentation of lines put in list of Matrix
+	//Segmentation of each lines of IMAGE put in a list of Matrix
 	lines_segmentation(img_m,listoflines);
 	// Remove the "null" matrix
 	listoflines = RemoveFL(listoflines);
