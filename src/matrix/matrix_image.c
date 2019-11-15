@@ -16,7 +16,7 @@ void SaveMatAsIm(Matrix *m, char* path)
 			int v = GetM(m, i, j);
 			if(v == 0) r = 255;
 			else if(v == 2) r = 127;
-			else r = 0;
+			else r = 50;
 			pixel = SDL_MapRGB(temp -> format, r, r, r); 
 			PutPixel(temp, j, i, pixel);
 		}
@@ -58,7 +58,9 @@ void SaveMatAsImRand(Matrix *m, char* path, int label)
 	for(int i = 1; i < label + 1; i++)
 	{
 		labelColor[i] = SDL_MapRGB(temp -> format,
-						rand() % 255, rand() % 255, rand() % 255);
+						rand() % 128,
+                        rand() % 128,
+                        rand() % 128);
 	}
 
 	for(int i = 0; i < m -> line; i++)
