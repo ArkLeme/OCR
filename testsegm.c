@@ -27,6 +27,7 @@ void testBin(char* path)
     int p = 0;
     int l = 0;
     int w = 0;
+    int c = 0;
     while(lp != NULL)
     {
         List *ll = lp->child;
@@ -42,10 +43,22 @@ void testBin(char* path)
 
             while(lw != NULL)
             {
+                char_segm(lw);
+                List *lc = lw->child;
                 SaveMat(lw, w, "word");
                 w++;
 
+                while(lc != NULL)
+                {
+                    SaveMat(lc, c, "char");
+                    c++;
+
+                    lc = lc->next;
+                    //lc = NULL;
+                }
+
                 lw = lw->next;
+                //lw = NULL;
             }
 
             ll = ll->next;

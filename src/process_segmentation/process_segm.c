@@ -109,9 +109,6 @@ List* line_segm(List* p)
         ReduceLabel(twopass, ml);
         //SaveMatAsIm(twopass, "image_data/rlsa/test1.bmp");
 
-        printf("rlsa0 = %f\n", GetPosM(rlsa, 55 + 56 * 3));
-        printf("m = %f\n", GetPosM(m, 55 + 56 * 3));
-
         PosM **pos = FindPosMat(twopass, nbl);
         List *l = ListOfMat(m, pos, nbl);
         RemoveLL(l);
@@ -146,7 +143,6 @@ List* word_segm(List* p)
         PosM **pos = FindPosMat(twopass, nbl);
         List *l = ListOfMat(m, pos, nbl);
 
-        printf("%i\n", nbl);
         RemoveLL(l);
 
         //SaveMatsAsIm(l, nbl, "image_data/label/word.bmp");
@@ -160,4 +156,92 @@ List* word_segm(List* p)
     }
 
     return p;
+}
+
+List* char_segm(List* w)
+{
+    List* word = w;
+    while(word != NULL)
+    {
+        int ml = 0;
+        Matrix *w = word->mat;
+        Matrix *twopass = CompLabeling(w, &ml);
+        int nbl = NumberLabel(twopass, ml);
+        ReduceLabel(twopass, ml);
+
+        PosM **pos = FindPosMat(twopass, nbl);
+        List *l = ListOfMat(w, pos, nbl);
+
+        RemoveLL(l);
+
+        List* sorted_char = sort_list(l);
+        List* word_no_point = remove_point(sorted_char);
+
+        word->child = word_no_point;
+
+        FreeM(twopass);
+
+        word = word->next;
+        word = NULL;
+    }
+
+    return w;
+}
+
+List* remove_point(List *c)
+{
+    List *first = c;
+
+    while(first != NULL)
+    {
+        List* next = first->next;
+        if(next != NULL && ((Matrix*) (next->mat))->size < 30)
+        {
+            first->next = next->next;
+            FreeL(next);
+        }
+
+        first = first->next;
+    }
+
+    if(c != NULL && ((Matrix*) (c->mat))->size < 20)
+    {
+        return RemoveFL(c);
+    }
+
+    return c;
+}
+
+List* sort_list(List *c)
+{
+    List* first = c;
+    while(first != NULL)
+    {
+        List *f = first;
+        List *min = first;
+
+        while(f != NULL)
+        {
+            if(f->pos->mx < min->pos->mx)
+                min = f;
+            f = f->next;
+        }
+
+        swap_list(first, min);
+        first = first->next;
+    }
+
+    return c;
+}
+
+void swap_list(List *c1, List *c2)
+{
+    PosM *p = c1->pos;
+    Matrix *m = c1->mat;
+
+    c1->pos = c2->pos;
+    c1->mat = c2->mat;
+
+    c2->pos = p;
+    c2->mat = m;
 }
