@@ -22,7 +22,7 @@ int main(int argc, char** argv)
 void testBin(char* path)
 {
     List* lg = paragraph_segm(path);
-    List * lp = lg->next;
+    List * lp = lg;
 
     int p = 0;
     int l = 0;
@@ -33,43 +33,43 @@ void testBin(char* path)
     {
         line_segm(lp);
         List *ll = lp->child;
-        //SaveMat(lp, p, "para");
+        SaveMat(lp, p, "para");
         p++;
 
         while(ll != NULL)
         {
             word_segm(ll);
             List *lw = ll->child;
-            //SaveMat(ll, l, "line");
+            SaveMat(ll, l, "line");
             l++;
 
             while(lw != NULL)
             {
                 char_segm(lw);
                 List *lc = lw->child;
-                //SaveMat(lw, w, "word");
-                write_files("test.txt", lw);
+                SaveMat(lw, w, "word");
                 w++;
 
                 while(lc != NULL)
                 {
-                    //SaveMat(lc, c, "char");
+                    SaveMat(lc, c, "char");
                     c++;
 
                     lc = lc->next;
-                    lc = NULL;
+                    //lc = NULL;
                 }
 
                 lw = lw->next;
-                lw = NULL;
+                //lw = NULL;
             }
 
             ll = ll->next;
-            ll = NULL;
+            //ll = NULL;
         }
 
+        //write_files("test.txt", lp->child);
         lp = lp->next;
-        lp = NULL;
+        //lp = NULL;
     }
 
     DeleteL(lg);

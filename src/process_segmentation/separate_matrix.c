@@ -53,6 +53,7 @@ List* ListOfMat(Matrix *m, PosM **p, int maxLabel)
 
 	//Create the list so we can return it
 	List *l = NULL;
+    List **first = &l;
 
 	for(int i = 0; i < maxLabel; i++)
 	{
@@ -66,7 +67,7 @@ List* ListOfMat(Matrix *m, PosM **p, int maxLabel)
 
 			//Create the matrix and prepend it to the list
 			Matrix *mat = CopyMatrix(m, mx, my, Mx, My);
-			l = PrependL(l, mat, p[i]);
+			l = AppendL(l, mat, p[i]);
 		}
 		else
 		{
@@ -76,5 +77,5 @@ List* ListOfMat(Matrix *m, PosM **p, int maxLabel)
 
     free(p);
 
-	return l;
+	return RemoveFL(*first);
 }

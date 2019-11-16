@@ -62,3 +62,6 @@ doxygen/*
 main.c
 main
 *.swp
+
+# Ignore .txt
+*.txt
