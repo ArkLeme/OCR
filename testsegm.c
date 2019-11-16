@@ -21,22 +21,23 @@ int main(int argc, char** argv)
 void testBin(char* path)
 {
     List* lg = paragraph_segm(path);
-    line_segm(lg);
-
     List * lp = lg;
+
     int p = 0;
     int l = 0;
     int w = 0;
     int c = 0;
+
     while(lp != NULL)
     {
+        line_segm(lp);
         List *ll = lp->child;
-        word_segm(ll);
         SaveMat(lp, p, "para");
         p++;
 
         while(ll != NULL)
         {
+            word_segm(ll);
             List *lw = ll->child;
             SaveMat(ll, l, "line");
             l++;
