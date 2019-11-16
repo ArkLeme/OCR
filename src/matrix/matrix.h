@@ -49,6 +49,7 @@ struct List
 	void* mat;
 
 	List* next;
+    List* child;
 };
 
 /*

@@ -266,6 +266,7 @@ List* InitL(void *m, void *p)
 		l -> mat = m;
 		l -> pos = p;
 		l -> next = NULL;
+        l -> child = NULL;
 	}
 
 	return l;
@@ -320,20 +321,26 @@ List* AppendL(List* old, void *m, void *p)
 //Free our list
 void FreeL(List *l)
 {
+    if(l == NULL)
+    {
+        return;
+    }
+
 	free(l -> pos);
 	FreeM((Matrix*) (l -> mat));
-	free(l);
+	DeleteL(l->child);
+    free(l);
 }
 
 //Remove first
 List* RemoveFL(List *l)
 {
-	if(!l)
+	if(l == NULL)
 		errx(1, "Can not remove NULL");
 
 	List *first = l;
 	l = l -> next;
-	FreeL(first);
+    FreeL(first);
 
 	return l;
 }
@@ -341,7 +348,7 @@ List* RemoveFL(List *l)
 //Remove last
 List* RemoveLL(List *l)
 {
-	if(!l)
+	if(l == NULL)
 		errx(1, "Can not remove NULL");
 
 	List *last = l;
