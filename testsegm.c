@@ -67,11 +67,11 @@ void testBin(char* path)
             //ll = NULL;
         }
 
-        //write_files("test.txt", lp->child);
         lp = lp->next;
         //lp = NULL;
     }
 
+    write_files("test.txt", lg);
     DeleteL(lg);
 }
 
