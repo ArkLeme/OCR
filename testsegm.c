@@ -7,6 +7,7 @@
 #include "src/string/string_operation.h"
 #include "src/process_segmentation/separate_matrix.h"
 #include "src/process_segmentation/process_segm.h"
+#include "src/output_files/create_string.h"
 
 void testBin(char* path);
 void SaveMat(List *l, int i, char *p);
@@ -21,7 +22,7 @@ int main(int argc, char** argv)
 void testBin(char* path)
 {
     List* lg = paragraph_segm(path);
-    List * lp = lg;
+    List * lp = lg->next;
 
     int p = 0;
     int l = 0;
@@ -32,42 +33,43 @@ void testBin(char* path)
     {
         line_segm(lp);
         List *ll = lp->child;
-        SaveMat(lp, p, "para");
+        //SaveMat(lp, p, "para");
         p++;
 
         while(ll != NULL)
         {
             word_segm(ll);
             List *lw = ll->child;
-            SaveMat(ll, l, "line");
+            //SaveMat(ll, l, "line");
             l++;
 
             while(lw != NULL)
             {
                 char_segm(lw);
                 List *lc = lw->child;
-                SaveMat(lw, w, "word");
+                //SaveMat(lw, w, "word");
+                write_files("test.txt", lw);
                 w++;
 
                 while(lc != NULL)
                 {
-                    SaveMat(lc, c, "char");
+                    //SaveMat(lc, c, "char");
                     c++;
 
                     lc = lc->next;
-                    //lc = NULL;
+                    lc = NULL;
                 }
 
                 lw = lw->next;
-                //lw = NULL;
+                lw = NULL;
             }
 
             ll = ll->next;
-            //ll = NULL;
+            ll = NULL;
         }
 
         lp = lp->next;
-        //lp = NULL;
+        lp = NULL;
     }
 
     DeleteL(lg);
