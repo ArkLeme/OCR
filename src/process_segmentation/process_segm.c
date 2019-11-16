@@ -93,10 +93,9 @@ List* paragraph_segm(char *path)
 
 List* line_segm(List* p)
 {
-    List* par = p;
     int ml = 0;
 
-    Matrix *m = par->mat;
+    Matrix *m = p->mat;
     //SaveMatAsIm(m, "image_data/rlsa/par_empty.bmp");
     Matrix *rlsa = apply_rlsa(m, 0, m->col);
 
@@ -112,7 +111,7 @@ List* line_segm(List* p)
     RemoveLL(l);
 
     //SaveMatsAsIm(l, nbl, "image_data/label/line");
-    par->child = l;
+    p->child = l;
 
     FreeM(twopass);
     FreeM(rlsa);
@@ -122,48 +121,46 @@ List* line_segm(List* p)
 
 List* word_segm(List* p)
 {
-    List* line = p;
-        int ml = 0;
-        Matrix *m = line->mat;
-        //SaveMatAsIm(m, "image_data/rlsa/line_empty.bmp");
-        Matrix *rlsa = apply_rlsa(m, m->line, 20);
-        Matrix *twopass = CompLabeling(rlsa, &ml);
-        int nbl = NumberLabel(twopass, ml);
-        ReduceLabel(twopass, ml);
-        //SaveMatAsIm(twopass, "image_data/rlsa/rlsaV.bmp");
+    int ml = 0;
+    Matrix *m = p->mat;
+    //SaveMatAsIm(m, "image_data/rlsa/line_empty.bmp");
+    Matrix *rlsa = apply_rlsa(m, m->line, 20);
+    Matrix *twopass = CompLabeling(rlsa, &ml);
+    int nbl = NumberLabel(twopass, ml);
+    ReduceLabel(twopass, ml);
+    //SaveMatAsIm(twopass, "image_data/rlsa/rlsaV.bmp");
 
-        PosM **pos = FindPosMat(twopass, nbl);
-        List *l = ListOfMat(m, pos, nbl);
+    PosM **pos = FindPosMat(twopass, nbl);
+    List *l = ListOfMat(m, pos, nbl);
 
-        RemoveLL(l);
+    RemoveLL(l);
 
-        //SaveMatsAsIm(l, nbl, "image_data/label/word.bmp");
-        line->child = l;
+    //SaveMatsAsIm(l, nbl, "image_data/label/word.bmp");
+    p->child = l;
 
-        FreeM(twopass);
-        FreeM(rlsa);
+    FreeM(twopass);
+    FreeM(rlsa);
 
     return p;
 }
 
 List* char_segm(List* w)
 {
-    List* word = w;
     int ml = 0;
-    Matrix *wo = word->mat;
-    Matrix *twopass = CompLabeling(wo, &ml);
+    Matrix *word = w->mat;
+    Matrix *twopass = CompLabeling(word, &ml);
     int nbl = NumberLabel(twopass, ml);
     ReduceLabel(twopass, ml);
 
     PosM **pos = FindPosMat(twopass, nbl);
-    List *l = ListOfMat(wo, pos, nbl);
+    List *l = ListOfMat(word, pos, nbl);
 
     RemoveLL(l);
 
     List* sorted_char = sort_list(l);
     List* word_no_point = remove_point(sorted_char);
 
-    word->child = word_no_point;
+    w->child = word_no_point;
 
     FreeM(twopass);
 

@@ -7,7 +7,6 @@
 #include "src/string/string_operation.h"
 #include "src/process_segmentation/separate_matrix.h"
 #include "src/process_segmentation/process_segm.h"
-#include "stc/segmentation/segmentation.h"
 
 void testBin(char* path);
 void SaveMat(List *l, int i, char *p);
@@ -22,7 +21,7 @@ int main(int argc, char** argv)
 void testBin(char* path)
 {
     List* lg = paragraph_segm(path);
-    List * lp = lg->next;
+    List * lp = lg;
 
     int p = 0;
     int l = 0;
@@ -52,23 +51,23 @@ void testBin(char* path)
 
                 while(lc != NULL)
                 {
-                    //SaveMat(lc, c, "char");
+                    SaveMat(lc, c, "char");
                     c++;
 
                     lc = lc->next;
-                    lc = NULL;
+                    //lc = NULL;
                 }
 
                 lw = lw->next;
-                lw = NULL;
+                //lw = NULL;
             }
 
             ll = ll->next;
-            ll = NULL;
+            //ll = NULL;
         }
 
         lp = lp->next;
-        lp = NULL;
+        //lp = NULL;
     }
 
     DeleteL(lg);
