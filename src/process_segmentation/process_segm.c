@@ -94,34 +94,28 @@ List* paragraph_segm(char *path)
 List* line_segm(List* p)
 {
     List* par = p;
-    while(par != NULL)
-    {
-        int ml = 0;
+    int ml = 0;
 
-        Matrix *m = par->mat;
-        //SaveMatAsIm(m, "image_data/rlsa/par_empty.bmp");
-        Matrix *rlsa = apply_rlsa(m, 0, m->col);
+    Matrix *m = par->mat;
+    //SaveMatAsIm(m, "image_data/rlsa/par_empty.bmp");
+    Matrix *rlsa = apply_rlsa(m, 0, m->col);
 
-        //SaveMatAsIm(rlsa, "image_data/rlsa/rlsa.bmp");
-        //SaveMatAsIm(m, "image_data/rlsa/par_rlsa.bmp");
-        Matrix *twopass = CompLabeling(rlsa, &ml);
-        int nbl = NumberLabel(twopass, ml);
-        ReduceLabel(twopass, ml);
-        //SaveMatAsIm(twopass, "image_data/rlsa/test1.bmp");
+    //SaveMatAsIm(rlsa, "image_data/rlsa/rlsa.bmp");
+    //SaveMatAsIm(m, "image_data/rlsa/par_rlsa.bmp");
+    Matrix *twopass = CompLabeling(rlsa, &ml);
+    int nbl = NumberLabel(twopass, ml);
+    ReduceLabel(twopass, ml);
+    //SaveMatAsIm(twopass, "image_data/rlsa/test1.bmp");
 
-        PosM **pos = FindPosMat(twopass, nbl);
-        List *l = ListOfMat(m, pos, nbl);
-        RemoveLL(l);
+    PosM **pos = FindPosMat(twopass, nbl);
+    List *l = ListOfMat(m, pos, nbl);
+    RemoveLL(l);
 
-        //SaveMatsAsIm(l, nbl, "image_data/label/line");
-        par->child = l;
+    //SaveMatsAsIm(l, nbl, "image_data/label/line");
+    par->child = l;
 
-        FreeM(twopass);
-        FreeM(rlsa);
-
-        par = par ->next;
-        //par = NULL;
-    }
+    FreeM(twopass);
+    FreeM(rlsa);
 
     return p;
 }
@@ -129,8 +123,6 @@ List* line_segm(List* p)
 List* word_segm(List* p)
 {
     List* line = p;
-    while(line != NULL)
-    {
         int ml = 0;
         Matrix *m = line->mat;
         //SaveMatAsIm(m, "image_data/rlsa/line_empty.bmp");
@@ -151,39 +143,29 @@ List* word_segm(List* p)
         FreeM(twopass);
         FreeM(rlsa);
 
-        //line = NULL;
-        line = line->next;
-    }
-
     return p;
 }
 
 List* char_segm(List* w)
 {
     List* word = w;
-    while(word != NULL)
-    {
-        int ml = 0;
-        Matrix *w = word->mat;
-        Matrix *twopass = CompLabeling(w, &ml);
-        int nbl = NumberLabel(twopass, ml);
-        ReduceLabel(twopass, ml);
+    int ml = 0;
+    Matrix *wo = word->mat;
+    Matrix *twopass = CompLabeling(wo, &ml);
+    int nbl = NumberLabel(twopass, ml);
+    ReduceLabel(twopass, ml);
 
-        PosM **pos = FindPosMat(twopass, nbl);
-        List *l = ListOfMat(w, pos, nbl);
+    PosM **pos = FindPosMat(twopass, nbl);
+    List *l = ListOfMat(wo, pos, nbl);
 
-        RemoveLL(l);
+    RemoveLL(l);
 
-        List* sorted_char = sort_list(l);
-        List* word_no_point = remove_point(sorted_char);
+    List* sorted_char = sort_list(l);
+    List* word_no_point = remove_point(sorted_char);
 
-        word->child = word_no_point;
+    word->child = word_no_point;
 
-        FreeM(twopass);
-
-        word = word->next;
-        word = NULL;
-    }
+    FreeM(twopass);
 
     return w;
 }

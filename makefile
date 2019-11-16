@@ -69,7 +69,7 @@ help:
 
 # Clean
 
-clean:	## Clean every .o and .d
+clean:	## Clean every .o and .d.
 	@$(RM) $(OBJ) $(DEP) *.o *.d
 
 mrproper: clean 	## Clean every .o and .d as well as all generated files.
