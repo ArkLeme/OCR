@@ -7,6 +7,7 @@
 #include "src/string/string_operation.h"
 #include "src/process_segmentation/separate_matrix.h"
 #include "src/process_segmentation/process_segm.h"
+#include "stc/segmentation/segmentation.h"
 
 void testBin(char* path);
 void SaveMat(List *l, int i, char *p);
@@ -37,7 +38,7 @@ void testBin(char* path)
 
         while(ll != NULL)
         {
-            //word_segm(ll);
+            word_segm(ll);
             List *lw = ll->child;
             SaveMat(ll, l, "line");
             l++;
