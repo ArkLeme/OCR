@@ -36,7 +36,7 @@ void lines_segmentation(Matrix *m, List *listofchar)
         }
         if(!black && line) // if previous line had black pixels but now it is white
         {
-            line = 0; // make back line = false
+            line = 0; // line = false
             end = y; // conserve the index of the end
 
             // trace the char_segmentation
