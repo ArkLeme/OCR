@@ -5,6 +5,7 @@
 #include "../process_segmentation/process_segm.h"
 #include <string.h>
 #include "example_gen.h"
+#include "../../testsegm.h"
 /*!
  * \author pierre-olivier.rey
  * \brief Read examples from specidief file
