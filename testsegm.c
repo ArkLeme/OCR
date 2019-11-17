@@ -7,6 +7,7 @@
 #include "src/string/string_operation.h"
 #include "src/process_segmentation/separate_matrix.h"
 #include "src/process_segmentation/process_segm.h"
+#include "src/output_files/create_string.h"
 
 void testBin(char* path);
 void SaveMat(List *l, int i, char *p);
@@ -70,6 +71,7 @@ void testBin(char* path)
         //lp = NULL;
     }
 
+    write_files("test.txt", lg);
     DeleteL(lg);
 }
 

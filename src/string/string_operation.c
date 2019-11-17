@@ -78,3 +78,10 @@ char* Itoa(int n)
 
 	return Reverse(s);
 }
+
+char* empty_string()
+{
+    char *c = malloc(sizeof(char) * 1);
+    *c = 0;
+    return c;
+}

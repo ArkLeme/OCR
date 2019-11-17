@@ -321,17 +321,16 @@ List* AppendL(List* old, void *m, void *p)
 //Free our list
 void FreeL(List *l)
 {
-    if(l == NULL)
+    if(l != NULL)
     {
-        return;
+        if(l->pos != NULL)
+            free(l -> pos);
+        if(l->mat != NULL)
+            FreeM((Matrix*) (l -> mat));
+        DeleteL(l->child);
+        free(l);
     }
-
-	free(l -> pos);
-	FreeM((Matrix*) (l -> mat));
-	DeleteL(l->child);
-    free(l);
 }
-
 //Remove first
 List* RemoveFL(List *l)
 {
