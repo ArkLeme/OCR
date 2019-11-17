@@ -7,11 +7,11 @@ char* char_string(List *chr);
 
 char* word_string(List *word);
 
-char* line_segm(List *line);
+char* line_string(List *line);
 
-char* para_segm(List *para);
+char* para_string(List *para);
 
-char* text_segm(List *text);
+char* text_string(List *text);
 
 void write_files(char* path, List *l);
 
