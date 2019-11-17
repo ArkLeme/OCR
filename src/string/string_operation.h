@@ -37,4 +37,5 @@ char* Reverse(char *s);
  */
 char* Itoa(int i);
 
+char* empty_string();
 #endif

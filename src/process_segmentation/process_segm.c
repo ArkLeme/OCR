@@ -77,7 +77,7 @@ List* paragraph_segm(char *path)
 
     PosM **pos = FindPosMat(twopass, nbl);
     List *l = ListOfMat(m, pos, nbl);
-    RemoveLL(l); //Remove bloc with white pixel
+    //RemoveFL(l); //Remove bloc with white pixel
 
     SaveMatAsIm(twopass, "image_data/rlsa/rlsa.bmp");
 
@@ -108,7 +108,6 @@ List* line_segm(List* p)
 
     PosM **pos = FindPosMat(twopass, nbl);
     List *l = ListOfMat(m, pos, nbl);
-    RemoveLL(l);
 
     //SaveMatsAsIm(l, nbl, "image_data/label/line");
     p->child = l;
@@ -133,8 +132,6 @@ List* word_segm(List* p)
     PosM **pos = FindPosMat(twopass, nbl);
     List *l = ListOfMat(m, pos, nbl);
 
-    RemoveLL(l);
-
     //SaveMatsAsIm(l, nbl, "image_data/label/word.bmp");
     p->child = l;
 
@@ -154,8 +151,6 @@ List* char_segm(List* w)
 
     PosM **pos = FindPosMat(twopass, nbl);
     List *l = ListOfMat(word, pos, nbl);
-
-    RemoveLL(l);
 
     List* sorted_char = sort_list(l);
     List* word_no_point = remove_point(sorted_char);

@@ -77,3 +77,4 @@ clean:	## Clean every .o and .d.
 mrproper: clean 	## Clean every .o and .d as well as all generated files.
 	@$(RM) $(EXEC) $(BMP) $(SHORTCUT) 
 	@$(RM) -rf $(DOXYGEN_DIR)/html
+	@$(RM) *.txt
