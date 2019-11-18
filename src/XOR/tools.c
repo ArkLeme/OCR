@@ -193,4 +193,16 @@ double Soft_prime(double sum, float z)
 	return Soft(sum, z)*(1-Soft(sum,z));
 }
 
+void FreeP(Pool*p)
+{
+	for(size_t i =0; i < p->size; i++) {
+		DisplayM(&p->examples[i]);
+		printf("%ld", i);
+		FreeM(p->examples+i);
+	}
+	free(p->examples);
+	free(p->results);
+//	free(p->size);
+	free(p);
+}
 

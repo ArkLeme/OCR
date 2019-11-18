@@ -2,9 +2,10 @@
 #define EXAMPLE_GEN_H
 
 #include "../matrix/matrix.h"
+#include "structNet.h"
 
-Matrix* ReadExamples(char* path, char* results);
+Pool* ReadExamples(char* path);
 void GenerateExamples(char* path);
-void GenExample(char*path, char* text);
+int GenExample(char*path, char* text, FILE*f);
 
 #endif

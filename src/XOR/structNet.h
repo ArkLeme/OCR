@@ -8,6 +8,7 @@
 #ifndef  STRUCTNET_H
 #define  STRUCTNET_H
 #include "../matrix/matrix.h"
+#include <stdlib.h>
 /*!
  * \struct layer structNet.h
  * \brief Structure for a neural Network Layer
@@ -35,4 +36,9 @@ typedef struct neuNet{
 	layer *layers[3]; /*!<List of structs layer, consists of layers of this neuNet. Currently at 3, it should use an FAM to represent any kind of neural network.*/
 } neuNet;
 
+typedef struct Pool{
+	size_t size;
+	Matrix* examples;
+	char* results;
+} Pool;
 #endif

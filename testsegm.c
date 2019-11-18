@@ -109,6 +109,7 @@ void char_func(char* path)
 
                 while(lc != NULL)
                 {
+					//TRAITEMENT
                     SaveMat(lc, c, "char");
                     c++;
 
