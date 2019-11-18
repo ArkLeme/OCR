@@ -15,6 +15,7 @@ Matrix *softmax(Matrix *input);
 double Soft(double sum, float z);
 Matrix *softprime(Matrix* input);
 double Soft_prime(double sum, float z);
-void FreeP(Pool*p);
+Pool* InitPool(size_t size);
+void FreePool(Pool*p);
 
 #endif

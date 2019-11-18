@@ -377,6 +377,8 @@ Matrix* InitMWithValues(int s, double*m)
 	temp -> line = s;
 	temp -> col = s;
 	temp -> size = s*s;
-	temp -> matrix = m; 
+	temp -> matrix = calloc(s*s, sizeof(double));
+	for(int i = 0; i < 784; i++)
+		temp->matrix[i] = m[i];
 	return temp;
 }

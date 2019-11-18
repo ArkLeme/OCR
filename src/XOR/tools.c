@@ -193,16 +193,26 @@ double Soft_prime(double sum, float z)
 	return Soft(sum, z)*(1-Soft(sum,z));
 }
 
-void FreeP(Pool*p)
+Pool* InitPool(size_t size)
 {
-	for(size_t i =0; i < p->size; i++) {
-		DisplayM(&p->examples[i]);
-		printf("%ld", i);
-		FreeM(p->examples+i);
+	Pool *p = malloc(sizeof(Pool));
+	p->size = size;
+	p->examples = malloc(sizeof(Matrix*) * size);
+	//*p->examples = malloc(sizeof(Matrix) * size);
+	p->results = malloc(sizeof(char) * size);
+	return p;
+}
+
+void FreePool(Pool*p)
+{
+	for(size_t i = 0; i < p->size; i++)
+	{
+		DisplayM(*(p->examples+i));
+		FreeM(*(p->examples+i));
 	}
+	//free(*(p->examples));
 	free(p->examples);
 	free(p->results);
-//	free(p->size);
 	free(p);
 }
 

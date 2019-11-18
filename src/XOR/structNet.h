@@ -38,7 +38,7 @@ typedef struct neuNet{
 
 typedef struct Pool{
 	size_t size;
-	Matrix* examples;
+	Matrix** examples;
 	char* results;
 } Pool;
 #endif

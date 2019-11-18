@@ -8,6 +8,7 @@
 #include "../../testsegm.h"
 #include "../string/string_operation.h"
 #include "structNet.h"
+#include "tools.h"
 
 size_t GetSize()
 {
@@ -16,7 +17,7 @@ size_t GetSize()
 		errx(1, "Size file cannot be opened");
 	size_t size;
 	fscanf(f, "%ld\n", &size); //gets the total number of example in that file
-	fclosef(f);
+	fclose(f);
 	return size;
 }
 /*!
@@ -32,25 +33,19 @@ size_t GetSize()
  */
 Pool* ReadExamples(char* path)
 {
-	Pool* pool;
-	pool->size = GetSize();
-	pool->examples= malloc(sizeof(Matrix) * pool->size);
-	pool->results = malloc(sizeof(char) * pool->size);
+	Pool* pool = InitPool(GetSize());
 	FILE*f = fopen(path, "r");
 	if(f == NULL)
 		errx(1, "Example file cannot be opened");
 	for(size_t i = 0; i < pool->size; i++)
 	{
-		double*ch = malloc(sizeof(double) *784);
-		fread(ch, sizeof(double), 784, f);
+		double*ch = malloc(784 * sizeof(double));
 		fscanf(f, "%c\n", &pool->results[i]);
-
+		fread(ch, sizeof(double), 784, f);
+		
 		Matrix *m = InitMWithValues(28, ch);
-		/////// TESTING
-		printf("%c", pool->results[i]);
-	//	DisplayM(m);
-		//////
-		pool->examples[i] = *m;
+		pool->examples[i] = m;
+		free(ch);
 	}
 	fclose(f);
 	return pool;
@@ -79,7 +74,7 @@ void GenerateExamples(char* path)
 	fclose(f);
 	fclose(fe);
 	char *itoa = Itoa(sum);
-	FILE* f = fopen("neuralNetwork_data/size.data", "w");
+	f = fopen("neuralNetwork_data/size.data", "w");
 	fprintf(f, "%s\n", itoa);
 	fclose(f);
 	free(itoa);
@@ -104,7 +99,7 @@ int GenExample(char* ImagePath, char* text, FILE*f)
 		fputc('\n', f);
 		Matrix* m  = l->mat;
 		fwrite(m->matrix, sizeof(double), m->size, f);
-		fputc('\n', f);
+		//fputc('\n', f);
 /*		
 		//DISPLAY FOR TESTING
 		printf("%c\n",text[i]);

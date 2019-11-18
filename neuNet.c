@@ -51,12 +51,12 @@ int main(int argc, char** argv)
 	{
 		GenerateExamples("neuralNetwork_data/names.data");
 		Pool* pool = ReadExamples("neuralNetwork_data/examples.data");
-		for(size_t i = 0; i < 10; i++)
+		for(size_t i = 0; i < pool->size; i++)
 		{
-			DisplayM(pool->examples + i);
-			printf("%ld, %c\n", i, *(pool->results + i));
+		//	DisplayM(pool->examples + i);
+		//	printf("%ld, %c\n", i, *(pool->results + i));
 		}
-		FreeP(pool);
+		FreePool(pool);
 	}
 	else
 	{	
