@@ -18,6 +18,13 @@ void ShuffleArray(Matrix**a, size_t size)
 	}
 }	
 
+Matrix* CreateExpected(char c)
+{
+	Matrix* m = InitM(26, 1);
+	PutM(m, (int)(c - 'a'), 1, 1);
+	return m;
+}
+
 Pool** CreateBatches(Pool* p, size_t batchSize)
 {
 //	ShuffleArray(p->examples, p->size);
@@ -30,6 +37,7 @@ Pool** CreateBatches(Pool* p, size_t batchSize)
 		for(size_t j = 0; j < batchSize; j++)
 		{
 			*(batch->examples + j) = *(p->examples + i*batchSize +j);
+			batch->results[j] = p->results[i*batchSize +j];
 		}
 		*(batches +i) = batch;
 		i++;
@@ -47,47 +55,35 @@ Pool** CreateBatches(Pool* p, size_t batchSize)
 }
 
 
-void Training(neuNet *n)
+void Training(neuNet *n, int epoch, double learning_rate)
 {
 	int batchSize = 10; //Arbritrary value, needs of tests
-	GenerateExamples("neuralNetwork_data/names.data");
+	if(!fopen("neuralNetwork_data/examples.data", 'r')) //file does not exist
+		GenerateExamples("neuralNetwork_data/names.data");
 	Pool* pool = ReadExamples("neuralNetwork_data/examples.data");
-	Pool** batches = CreateBatches(pool, batchSize);
-	for(size_t b = 0; b< pool->size/batchSize; b++)
+	for(int i = 0; i < epoch; i++)
 	{
-		for(size_t m  = 0; m < batches[b]->size; m++)
-		{	DisplayM(batches[b]->examples[m]);
+		Pool** batches = CreateBatches(pool, batchSize);
+		for(size_t b = 0; b < pool->size/batchSize; b++)
+		{
+			for(size_t m  = 0; m < batches[b]->size; m++)
+			{	
+				//DisplayM(batches[b]->examples[m]);
+				forward_prop(n, batches[b]->examples[m]);
+				Matrix* expected_out = CreateExpected(batches[b]->results[m]);
+				backprop(n, 26, expected_out, learning_rate);
+				/////UPDATE PONDEREE DES BIAIS/POIDS
+				ClearNeuNet(n);
+				FreeM(expected_out);
+			}
 		}
+		printf("OCR gabriel\n");
+		for(size_t i = 0; i < pool->size/batchSize+1; i++)
+			FreePoolP(*(batches+i));
+		free(batches);
+		printf("epoch %d finished\n", i);
 	}
-	printf("OCR gabriel\n");
-	for(size_t i = 0; i < pool->size/batchSize+1; i++)
-		FreePool(*(batches+i));
-	free(batches);
-	FreePoolP(pool);
-	//FreePool(pool);
+//	FreePoolP(pool);
+	FreePool(pool);
 }
-
-//train network with output_data and given output wanted
-void train(neuNet *Network,int steps,float learning_rate)
-{
-	int inp[4][2] = {{0,0},{1,1},{0,1},{1,0}};
-	int res[4] = {0,0,1,1};
-  	for (int i =0; i<steps; i++)
-  	{
-		int index = i %4;
-		int j = inp[index][0];
-		int k = inp[index][1];
-		Matrix* input = InitM(2,1);
-		PutM(input, 0,0,j);
-		PutM(input,1,0,k);
-		Matrix* out = InitM(1,1);
-		PutM(out, 0,0,res[index]);
-		forward_prop(Network, input);
-		printf("%d xor %d = %f\t%d\n", j, k, GetM(Network->layers[2]->outputs,0,0), i);
-		backprop(Network, 1, out, learning_rate);
-		ClearNeuNet(Network);
-		FreeM(out);
-    }
-}
-
 
