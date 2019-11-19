@@ -110,37 +110,45 @@ Matrix* SigPrime(Matrix *m)
 	return m2;
 }
 
-//Fonction softmax for layer
-Matrix *softmax(Matrix *input)
+
+
+Matrix* Softmax(Matrix *input)
 {
-  	Matrix *output = InitM(input->line,input->col);
+	Matrix *output = InitM(input->line,input->col);
   	double sum = 0;
   	float value = 0;
+	double softed_value = 0;
+	double max;
 
 
-  	//Softmax fonction needs Sum of exp(z)k, zk is the k th values from input
-  	for(int i=0; i <input->line; i++)
+	//Softmax fonction needs Sum of exp(z)k, zk is the k th values from input
+	max = GetM(input,0,0);
+	for(int j = 0; j<input->line; j++)
 	{
-		for(int j=0; j< input->col; j++)
-		{
-			value = GetM(input,i,j);
-			sum+= exp(value);
-		}
-	}
-     
+		value = GetM(input,j,0);
+		if(value>max)
+			max = value;
+		sum+=exp(value);
 
-   	//Output = appplying to each values the softmax fonction    
-	for(int i=0; i < input->line; i++)
-	{
-		for(int j=0; j< input->col; j++)
-		{
-			value = Soft(sum, GetM(input,i,j));
-			PutM(output,i,j,value);
-		}
 	}
 
-       
-       return output;
+	value = 0;
+	
+
+	//Output = appplying to each values the softmax fonction 
+	for(int i = 0; i<input->col; i++)
+	{
+		for(int j = 0; j<input->line; j++)
+		{
+			value = GetM(input,j,i);
+			softed_value = Soft(sum,value, max);
+			PutM(output,j,i,softed_value);
+			
+		}
+	}
+
+	return output;
+
 }
 
 Matrix *softprime(Matrix *input)
@@ -148,33 +156,45 @@ Matrix *softprime(Matrix *input)
   	Matrix *output = InitM(input->line,input->col);
   	double sum =0;
   	double value;
-	double value2;
+	double softed_value;
+	double max;
+
+	int sums[input->line];
 
   	//Softmax fonction needs Sum of exp(z)k, zk is the k th values from input)
-  	for(int i=0; i <input->line; i++)
+  	for(int i=0; i <input->col; i++)
 	{
-		for(int j=0; j< input->col; j++)
+		max = GetM(input,0,i);
+		for(int j=0; j< input->line; j++)
 		{
-			value = GetM(input,i,j);
+			value = GetM(input,j,i);
+			if(value>max)
+				max = value;
 			sum+= exp(value);
+			
 		}
+
+		sums[i] = sum;
+		sum= 0;
 	}
      
 
-	value2 = Soft(sum, GetM(input,input->line-1,input->col-1));
-   	//Output = appplying to each values the softmax fonction    
-	for(int i=0; i < input->line; i++)
+	//Output = appplying to each values the soft fonction    
+	for(int i=0; i < input->col; i++)
 	{
-		for(int j=0; j< input->col; j++)
+		for(int j=0; j< input->line; j++)
 		{
-			if((i+1)*(j+1) == (input->col)*(input->line))
+			if(i==j)
 			{
-				value = Soft_prime(sum, GetM(input,i,j));
-				PutM(output,i,j,value);
+				value = GetM(input,j,0);
+				
+				softed_value = Soft_prime(sums[i], value, 1, max);
+				PutM(output,j,i,softed_value);
 			}
 			else
-			{	value = Soft(sum, GetM(input,i,j));
-				PutM(output,i,j,0);
+			{	value = Soft(sums[i], GetM(input,j,0),max);
+				softed_value = Soft_prime(sums[i], value, 0,max);
+				PutM(output,j,i,softed_value);
 			}
 		}
 	}
@@ -182,15 +202,15 @@ Matrix *softprime(Matrix *input)
        
        return output;
 }
-double Soft(double sum, float z)
+double Soft(double sum, double z, double shift)
 {
-   return exp(z)/sum;
+   return exp(z-shift)/sum;
 }
 
-double Soft_prime(double sum, float z)
+double Soft_prime(double sum, double z, int delta, double shift)
 {
 
-	return Soft(sum, z)*(1-Soft(sum,z));
+	return Soft(sum, z,shift)*(delta-Soft(sum,z,shift));
 }
 
 Pool* InitPool(size_t size)

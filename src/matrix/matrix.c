@@ -73,7 +73,7 @@ void DisplayM(Matrix* m)
 		printf("[ ");
 		for(int j = 0; j < m -> col; j++)
 		{
-			printf("%i ", (int) GetM(m, i, j));
+			printf("%f ", (double) GetM(m, i, j));
 		}
 		printf("]\n");
 	}
