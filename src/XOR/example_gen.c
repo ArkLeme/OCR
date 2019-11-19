@@ -45,7 +45,6 @@ Pool* ReadExamples(char* path)
 		
 		Matrix *m = InitMWithValues(28, ch);
 		pool->examples[i] = m;
-		free(ch);
 	}
 	fclose(f);
 	return pool;

@@ -207,10 +207,16 @@ void FreePool(Pool*p)
 {
 	for(size_t i = 0; i < p->size; i++)
 	{
-		DisplayM(*(p->examples+i));
+	//	DisplayM(*(p->examples+i));
 		FreeM(*(p->examples+i));
 	}
-	//free(*(p->examples));
+	free(p->examples);
+	free(p->results);
+	free(p);
+}
+
+void FreePoolP(Pool*p)
+{
 	free(p->examples);
 	free(p->results);
 	free(p);
