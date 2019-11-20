@@ -1,5 +1,5 @@
 #include "../matrix/matrix.h"
-
+#include "../process_segmentation/process_segm.h"
 #include <stddef.h>
 List* Parcours(char* path)
 {
@@ -21,16 +21,11 @@ List* Parcours(char* path)
             {
                 char_segm(lw);
                 List *lc = lw->child;
-                //SaveMat(lw, w, "word");
-                //w++;
 
                 while(lc != NULL)
                 {
 					//TRAITEMENT
-                    //SaveMat(lc, c, "char");
-					p = AppendL(p, lc, NULL)
-                    c++;
-
+					p = AppendL(p, lc, NULL);
                     /**
                      * Liste de char du mot lc, les char sont dans le bon ordre
                      * pour le mort abcde :
