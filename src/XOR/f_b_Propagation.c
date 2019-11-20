@@ -13,7 +13,7 @@ void layer_forward_propa(layer* Layer, Matrix *input_data)
 {
       Matrix *multiplication_weights = MultM(Layer->weights,input_data);
       Layer->values = AddM(multiplication_weights,Layer->biases);
-      Layer->outputs = softmax(Layer->values);
+      Layer->outputs = Softmax(Layer->values);
       DisplayM(Layer->outputs);
       FreeM(multiplication_weights);
 }
@@ -23,7 +23,7 @@ Matrix* forward_prop(neuNet* network, Matrix* input_data)
 {
 	layer *current_layer;
 	network->layers[0]->values = input_data;
-	network->layers[0]->outputs = softmax(network->layers[0]->values);  
+	network->layers[0]->outputs = Softmax(network->layers[0]->values);  
   
   //Propage the input values in every layers of the network
   for(int i = 1; i < network->nbLay; i++)
@@ -86,7 +86,7 @@ void UpdateBW(neuNet * n, int curLay, float learning_rate)
 void backprop(neuNet *network, int len_output, Matrix *expOutputs, float learning_rate)
 {
 	//Last layer case
-    layer *ll =network->layers[network->nbLay -1];
+        layer *ll =network->layers[network->nbLay -1];
 
 	//Check if len_output corresponds to the number of neurons of the last layer
 	if(len_output != ll->nbNeurons)

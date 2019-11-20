@@ -29,12 +29,13 @@ int main(int argc, char** argv)
 	}
 	else
 	{	
-	Matrix* input = InitM(2,1);
-	PutM(input, 0,0,1);
-	PutM(input,1,0,1);
-        softmax(input);
-	DisplayM(input);
-	FreeM(input);
+		int layerSizes[] = {2,3,1};
+		neuNet *network = init_network(layerSizes,3); 
+		train(network,55000, 1.5);
+
+		freeNeuNet(network);
+
+	
 	}	
 	freeNeuNet(network);
 
