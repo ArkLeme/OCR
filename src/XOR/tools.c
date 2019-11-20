@@ -200,8 +200,35 @@ Matrix *softprime(Matrix *input)
 	}
 
        
-       return output;
+       //return Addition_soft(output);
+	return output;
 }
+
+
+
+Matrix* Addition_soft(Matrix* input)
+{
+	Matrix *output= InitM(input->line, 0);
+	double result;
+
+	for(int i=0; i <input->line; i++)
+	{
+		result=0;
+		
+		for(int j=0; j< input->col; j++)
+		{
+			result+= GetM(input,i,j);
+			
+		}
+
+		PutM(output,i,0,result);
+		
+	}
+
+	FreeM(input);
+	return output;
+}
+
 double Soft(double sum, double z, double shift)
 {
    return exp(z-shift)/sum;
