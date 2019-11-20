@@ -9,6 +9,7 @@
 void ShuffleArray(Matrix**a, size_t size)
 {
 	//TODO Il faut aussi randomize de la même manière les caracteres
+	//IN NEEDS TO DEBUG
 	for(size_t i = 0; i < size-1; i++)
 	{
 		size_t j = i + rand() / (RAND_MAX / (size - i) + 1);
@@ -58,7 +59,7 @@ Pool** CreateBatches(Pool* p, size_t batchSize)
 void Training(neuNet *n, int epoch, double learning_rate)
 {
 	int batchSize = 10; //Arbritrary value, needs of tests
-	if(!fopen("neuralNetwork_data/examples.data", 'r')) //file does not exist
+	if(!fopen("neuralNetwork_data/examples.data", "r")) //file does not exist
 		GenerateExamples("neuralNetwork_data/names.data");
 	Pool* pool = ReadExamples("neuralNetwork_data/examples.data");
 	for(int i = 0; i < epoch; i++)
@@ -68,7 +69,11 @@ void Training(neuNet *n, int epoch, double learning_rate)
 		{
 			for(size_t m  = 0; m < batches[b]->size; m++)
 			{	
-				//DisplayM(batches[b]->examples[m]);
+				Matrix* m = batches[b]->example[m];
+				//DisplayM(m);
+				m->col = 1;
+				m->line = 784; //resizing matrix according to expected format
+								// for neuNet input matrix
 				forward_prop(n, batches[b]->examples[m]);
 				Matrix* expected_out = CreateExpected(batches[b]->results[m]);
 				backprop(n, 26, expected_out, learning_rate);
