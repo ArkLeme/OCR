@@ -69,12 +69,12 @@ void Training(neuNet *n, int epoch, double learning_rate)
 		{
 			for(size_t m  = 0; m < batches[b]->size; m++)
 			{	
-				Matrix* m = batches[b]->example[m];
-				//DisplayM(m);
-				m->col = 1;
-				m->line = 784; //resizing matrix according to expected format
+				Matrix* mat = batches[b]->examples[m];
+				//DisplayM(mat);
+				mat->col = 1;
+				mat->line = 784; //resizing matrix according to expected format
 								// for neuNet input matrix
-				forward_prop(n, batches[b]->examples[m]);
+				forward_prop(n, mat);
 				Matrix* expected_out = CreateExpected(batches[b]->results[m]);
 				backprop(n, 26, expected_out, learning_rate);
 				/////UPDATE PONDEREE DES BIAIS/POIDS

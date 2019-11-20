@@ -18,6 +18,28 @@
 	return GetM(Network->layers[2]->outputs,0,0);	
 	}*/
 
+char Calculate(Matrix* c, neuNet * n)
+{
+	forward_prop(n, c);
+	return (char) ('a' + GetOutput(n));
+}
+
+int GetOutput(neuNet *n)
+{
+	double max = -1;
+	int index = 0;
+	layer*ll = n->layers[n->nbLay-1];
+	for(size_t n = 0; n < ll->nbNeurons; i++)
+	{
+		if(ll->outputs[i] > max)
+		{
+			max = ll->outputs[i];
+		   index = i;
+		}
+	}
+	return index;
+}
+	
 
 int main(int argc, char** argv)
 {
@@ -26,12 +48,13 @@ int main(int argc, char** argv)
 	if(argc == 2 && *argv[1] == 't')
 	{
 		Training(network);
+
 	}
 	else
 	{	
 		int layerSizes[] = {2,3,1};
 		neuNet *network = init_network(layerSizes,3); 
-		train(network,55000, 1.5);
+		//train(network,55000, 1.5);
 
 		freeNeuNet(network);
 
