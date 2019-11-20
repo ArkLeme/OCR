@@ -14,7 +14,6 @@ double randFloat()
 	double rdm = (double) rand()/((double)(RAND_MAX)/2+ 1.0);
 	if(sign ==1)
 		rdm *= -1;
-	printf("%f\n", rdm);
 	return rdm;
 }
 

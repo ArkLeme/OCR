@@ -8,7 +8,7 @@
 void ClearNeuNet(neuNet *n)
 {
 	layer* cL = n->layers[0];
-	FreeM(cL->values);
+//	FreeM(cL->values); //Maybe it will be needed to only free the pointer
   	FreeM(cL->outputs);
 	for(int i = 1; i < n->nbLay; i++)
 	{
@@ -254,10 +254,16 @@ void FreePool(Pool*p)
 {
 	for(size_t i = 0; i < p->size; i++)
 	{
-		DisplayM(*(p->examples+i));
+	//	DisplayM(*(p->examples+i));
 		FreeM(*(p->examples+i));
 	}
-	//free(*(p->examples));
+	free(p->examples);
+	free(p->results);
+	free(p);
+}
+
+void FreePoolP(Pool*p)
+{
 	free(p->examples);
 	free(p->results);
 	free(p);

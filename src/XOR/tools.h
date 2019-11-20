@@ -20,5 +20,6 @@ Matrix *Addition_soft(Matrix* input);
 
 Pool* InitPool(size_t size);
 void FreePool(Pool*p);
+void FreePoolP(Pool*p);
 
 #endif

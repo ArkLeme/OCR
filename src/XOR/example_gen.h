@@ -3,6 +3,7 @@
 
 #include "../matrix/matrix.h"
 #include "structNet.h"
+#include <stdio.h>
 
 Pool* ReadExamples(char* path);
 void GenerateExamples(char* path);
