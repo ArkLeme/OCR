@@ -1,5 +1,5 @@
 #include "structNet.h"
-#include "tools.h"
+#include "memory_handler.h"
 #include "example_gen.h"
 #include "../matrix/matrix.h"
 #include "f_b_Propagation.h"

@@ -8,7 +8,7 @@
 #include "../../testsegm.h"
 #include "../string/string_operation.h"
 #include "structNet.h"
-#include "tools.h"
+#include "memory_handler.h"
 #include "parcours.h"
 
 size_t GetSize()

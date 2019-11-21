@@ -1,6 +1,7 @@
 #include "../matrix/matrix.h"
 #include "structNet.h"
-#include "tools.h"
+#include "memory_handler.h"
+#include "acti_fonction.h"
 #include <err.h>
 #include <stdio.h>
 #include <math.h>

@@ -1,5 +1,6 @@
 #include "../matrix/matrix.h"
 #include "structNet.h"
+#include "memory_handler.h"
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
