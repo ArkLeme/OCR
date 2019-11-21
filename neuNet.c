@@ -5,7 +5,9 @@
 #include "src/XOR/structNet.h"
 #include <time.h>
 #include "src/XOR/init_Network.h"
-#include "src/XOR/tools.h"
+#include "src/XOR/memory_handler.h"
+#include "src/XOR/acti_fonction.h"
+#include "src/XOR/save_net.h"
 #include "src/XOR/example_gen.h"
 #include "src/matrix/matrix.h"
 #include "src/XOR/training.h"
@@ -52,9 +54,9 @@ int main(int argc, char** argv)
 	}
 	else
 	{	
-		int layerSizes[] = {2,3,1};
+		int layerSizes[] = {28*28,15,26};
 		neuNet *network = init_network(layerSizes,3); 
-		//train(network,55000, 1.5);
+		train(network,55000, 1.5);
 
 		freeNeuNet(network);
 
