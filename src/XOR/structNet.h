@@ -23,6 +23,7 @@ typedef struct layer{
 	Matrix *outputs; /*!<Outputs of this layer: equal to sigmoid(values) ; size: nbNeurons*1*/
 	Matrix *weights; /*!Weights going into this layer ; size: nbNeurons*layers[currentLayer-1]->nbNeurons*/
 	Matrix *errors; /*!<Used in backpropagation algorithm ; size : nbNeurons*1*/
+	
 	int nbNeurons; /*!<Numbers of neurons in this layer. */ 
 } layer;
 
