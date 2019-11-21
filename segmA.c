@@ -1,10 +1,10 @@
 #include <err.h>
-#include "sdl_tools/sdl_tools.h"
-#include "preprocessing/preprocessing.h"
-#include "matrix/matrix.h"
-#include "segmentation/segmentation_image.h"
-#include "segmentation/segmentation.h"
-#include "matrix/matrix_image.h"
+#include "src/sdl_tools/sdl_tools.h"
+#include "src/preprocessing/preprocessing.h"
+#include "src/matrix/matrix.h"
+#include "src/segmentation/segmentation_image.h"
+#include "src/segmentation/segmentation.h"
+#include "src/matrix/matrix_image.h"
 
 int main(int argc, char** argv)
 {

@@ -4,14 +4,52 @@
 
 static void open_file (const gchar *, GtkTextView *);
 
+void cb_ocr(GtkWidget *s_widget, gpointer user_data)
+{
+    g_print("OCR");
+
+    (void) s_widget;
+    (void) user_data;
+}
+
+void cb_edit(GtkWidget *s_widget,gpointer user_data)
+{
+    gtk_widget_show_all(GTK_WIDGET(user_data));
+
+
+    (void) s_widget;
+    (void) user_data;
+}
+
+
+
+void cb_new (GtkWidget *p_widget, gpointer user_data)
+{
+    if (docs.actif)
+    {
+	cb_close(p_widget,user_data);
+    }
+    docs.actif = g_malloc (sizeof (*docs.actif));
+    docs.actif->chemin = NULL;
+  
+    docs.actif->p_text_view = GTK_TEXT_VIEW (user_data);
+  
+    docs.actif->sauve = TRUE;
+    gtk_widget_set_sensitive (GTK_WIDGET (docs.actif->p_text_view), TRUE);
+  
+    /* Unused parameter */
+    (void)p_widget;
+}
+
+
 void cb_open (GtkWidget *p_widget, gpointer user_data)
 {
     GtkWidget *p_dialog = NULL;
     
     p_dialog = gtk_file_chooser_dialog_new ("Open a file", NULL,
                                           GTK_FILE_CHOOSER_ACTION_OPEN,
-                                          GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                          GTK_STOCK_OPEN, GTK_RESPONSE_ACCEPT,
+                                          ("Cancel"), GTK_RESPONSE_CANCEL,
+                                          ("Open"), GTK_RESPONSE_ACCEPT,
                                           NULL);
     
     if (gtk_dialog_run (GTK_DIALOG (p_dialog)) == GTK_RESPONSE_ACCEPT)
@@ -30,10 +68,69 @@ void cb_open (GtkWidget *p_widget, gpointer user_data)
     (void)p_widget;
 }
 
+void cb_close (GtkWidget *p_widget, gpointer user_data)
+{
+    if (docs.actif)
+    {
+	if (!docs.actif->sauve)
+	{
+	    GtkWidget *p_dialog = NULL;
+	    GtkWidget *p_label = NULL;
+	    
+	    p_dialog = gtk_dialog_new_with_buttons ("Save",
+						docs.p_main_window,
+						GTK_DIALOG_MODAL,
+						"Yes",GTK_RESPONSE_YES,
+						"No",GTK_RESPONSE_NO,
+						"Cancel",GTK_RESPONSE_CANCEL, NULL);
+	    p_label = gtk_label_new ("Save changes ?");
+	    gtk_box_pack_start (GTK_BOX (p_dialog), p_label, TRUE, TRUE, 0);
+	    gtk_widget_show_all (p_dialog);
+	    switch (gtk_dialog_run (GTK_DIALOG (p_dialog)))
+	    {
+		case GTK_RESPONSE_YES:
+		     cb_save (p_widget, user_data);
+		     break;
+		case GTK_RESPONSE_NO:
+		     break;
+		case GTK_RESPONSE_CANCEL:
+		     gtk_widget_destroy (p_dialog);
+		     return;
+		break;
+	    }
+	    gtk_widget_destroy (p_dialog);
+	}
+	GtkTextIter start;
+	GtkTextIter end;
+	GtkTextBuffer *p_text_buffer = NULL;
+
+	p_text_buffer = gtk_text_view_get_buffer (docs.actif->p_text_view);
+	gtk_text_buffer_get_bounds (p_text_buffer, &start, &end);
+	gtk_text_buffer_delete (p_text_buffer, &start, &end);
+	gtk_widget_set_sensitive (GTK_WIDGET (docs.actif->p_text_view), FALSE);
+
+	g_free (docs.actif->chemin), docs.actif->chemin = NULL;
+	docs.actif->p_text_view = NULL;
+	g_free (docs.actif), docs.actif = NULL;
+
+    }
+    else
+    {
+	print_warning ("No file open");
+    }
+}
+
 void cb_quit (GtkWidget *p_widget, gpointer user_data)
 {
-    gtk_main_quit();
+    if (docs.actif)
+    {
+	cb_close (p_widget, user_data);
+    }
 
+    if (!docs.actif)
+    {
+	gtk_main_quit();
+    }
     /* Unused parameter */
     (void)p_widget;
     (void)user_data;
@@ -62,10 +159,10 @@ void cb_save (GtkWidget *p_widget, gpointer user_data)
 	    {
 		GtkWidget *p_dialog = NULL;
 
-		p_dialog = gtk_file_chooser_dialog_new ("Sauvegarder le fichier", NULL,
+		p_dialog = gtk_file_chooser_dialog_new ("Save file", NULL,
                                                 GTK_FILE_CHOOSER_ACTION_SAVE,
-                                                GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
-                                                GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
+                                                "Cancel", GTK_RESPONSE_CANCEL,
+                                                "Save", GTK_RESPONSE_ACCEPT,
                                                 NULL);
 		if (gtk_dialog_run (GTK_DIALOG (p_dialog)) == GTK_RESPONSE_ACCEPT)
 		{
@@ -104,14 +201,14 @@ void cb_save (GtkWidget *p_widget, gpointer user_data)
 		}
 		else
 		{
-		    print_warning ("Impossible de sauvegarder le fichier %s", docs.actif->chemin);
+		    print_warning ("Impossible to save file %s", docs.actif->chemin);
 		}
 	    }
 	}
     }
     else
     {
-	print_warning ("Aucun document ouvert");
+	print_warning ("No file open");
     }
 
     /* Unused parameter */
@@ -135,7 +232,7 @@ void cb_saveas (GtkWidget *p_widget, gpointer user_data)
     }
     else
     {
-	print_warning ("Aucun document ouvert");
+	print_warning ("No file open");
     }
 }
 
@@ -147,28 +244,18 @@ static void open_file (const gchar *file_name, GtkTextView *p_text_view)
 
 	if (g_file_get_contents (file_name, &contents, NULL, NULL))
 	{
-	    docs.actif = g_malloc (sizeof (*docs.actif));
-	    docs.actif->chemin = g_strdup (file_name);
-
-	    docs.actif->p_text_view = p_text_view;
-	    docs.actif->sauve = TRUE;
-
 	    /* Copie of contents in GtkTextView */
-	    gchar *utf8 = NULL;
 	    GtkTextIter iter;
 	    GtkTextBuffer *p_text_buffer = NULL;
+
+	    cb_new(NULL, p_text_view);
+	    gtk_widget_set_sensitive (GTK_WIDGET (docs.actif -> p_text_view), TRUE);
 
 	    /* Get buffer of GtkTextView to change text */
 	    p_text_buffer = gtk_text_view_get_buffer (p_text_view);
 	    gtk_text_buffer_get_iter_at_line (p_text_buffer, &iter, 0);
-
-	    /* To avoid error with char encoding */
-	    utf8 = g_locale_to_utf8 (contents, -1, NULL, NULL, NULL);
-	    g_free (contents);
-	    contents = NULL;
-	    gtk_text_buffer_insert (p_text_buffer, &iter, utf8, -1);
-	    g_free (utf8);
-	    utf8 = NULL;
+	    gtk_text_buffer_insert (p_text_buffer, &iter, contents, -1);
+	    docs.actif ->sauve = TRUE;
 	}
 	else
 	{
