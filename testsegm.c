@@ -109,8 +109,8 @@ void char_func(char* path)
 
                 while(lc != NULL)
                 {
-                    SaveMat(lc, c, "char");
-                    c++;
+                    //SaveMat(lc, c, "char");
+                    //c++;
 
                     /**
                      * Liste de char du mot lc, les char sont dans le bon ordre
