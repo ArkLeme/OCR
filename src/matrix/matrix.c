@@ -3,7 +3,22 @@
 #include <err.h>
 #include <stdio.h>
 
-//Init matrix
+/**
+ * \file matrix.c
+ * \brief This files contains almost every function using Matrix.
+ * \author William.G
+ */
+
+/**
+ * \fn Matrix* InitM(int l, int c)
+ * \brief Init the Matrix structure, it calloc the good size of element, we set
+ * it at 0 by default because in the pretraitement it represenent black pixel.
+ *
+ * \param l : height of the Matrix : number of line.
+ * \paral c : width of the Matrix : number of column.
+ *
+ * \return pointer to the structure
+ */
 Matrix* InitM(int l, int c)
 {
 	int size = l * c;
@@ -15,7 +30,16 @@ Matrix* InitM(int l, int c)
 	return temp;
 }
 
-//Put element e in matrix at [i,j]
+/**
+ * \fn void PutM(Matrix* m, int i, int j, double e)
+ * \brief Place the element e at the position ith line and the jth column
+ * in the Matrix m
+ *
+ * \param m : Matrix
+ * \param i : ith line
+ * \param j : jth column
+ * \param e : element we insert
+ */
 void PutM(Matrix* m, int i, int j, double e)
 {
 	if(i < 0 || i >= m -> line || j < 0 || j > m -> col)
@@ -24,7 +48,17 @@ void PutM(Matrix* m, int i, int j, double e)
 	*((m -> matrix) + (m -> col) * i + j) = e;
 }
 
-//Create Matrix from string
+/**
+ * \fn Matrix *InitStringM(int l, int c, char* str)
+ * \brief Create a Matrix with a string as argument, the length of the string
+ * must be l * c.
+ *
+ * \param l : number of line
+ * \param c : number of column
+ * \param str : the string
+ *
+ * \return pointer to the Matrix
+ */
 Matrix *InitStringM(int l, int c, char* str)
 {
 	Matrix *output = InitM(l, c);
@@ -37,7 +71,14 @@ Matrix *InitStringM(int l, int c, char* str)
 	return output;
 }
 
-//Put element e in matrix at [i/col, i%col]
+/**
+ * \fn void PutPosM(Matrix* m, int pos, double e)
+ * \brief Since our Matrix are represented as a single array, we can insert an
+ * element with only on index.
+ *
+ * \param pos : index in the Matrix, pos = i * col + j
+ * \param e : element inserted
+ */
 void PutPosM(Matrix* m, int pos, double e)
 {
 	if(pos < 0 || pos >= m -> size)
@@ -47,7 +88,16 @@ void PutPosM(Matrix* m, int pos, double e)
 }
 
 
-//Get element e in matrix at [i,j]
+/**
+ * \fn double GetM(Matrix* m, int i, int j)
+ * \brief Get the element at the ith line and jth collumn in the m Matrix
+ *
+ * \param m : Matrix
+ * \param i : ith line
+ * \param j : jth column
+ *
+ * \return the element at this position
+ */
 double GetM(Matrix* m, int i, int j)
 {
 	if(i < 0 || i >= m -> line || j < 0 || j > m -> col)
@@ -56,7 +106,15 @@ double GetM(Matrix* m, int i, int j)
 	return *(m -> matrix + m -> col * i + j);
 }
 
-//Get element e in matrix at [i/col, i%col]
+/**
+ * \fn double GetPosM(Matrix* m, int pos)
+ * \brief Get the element at the pos index in the Matrix
+ *
+ * \param m : Matrix
+ * \param pos : position of the element, pos = i * col + j
+ *
+ * \return the element at this position
+ */
 double GetPosM(Matrix* m, int pos)
 {
 	if(pos < 0 || pos >= m -> size)
@@ -65,7 +123,12 @@ double GetPosM(Matrix* m, int pos)
 	return *(m -> matrix + pos);
 }
 
-//Display Matrix
+/**
+ * \fn void DisplayM(Matrix* m)
+ * \brief Display the matrix in the console
+ *
+ * \param m : Matrix
+ */
 void DisplayM(Matrix* m)
 {
 	for(int i = 0; i < m -> line; i++)
@@ -80,7 +143,12 @@ void DisplayM(Matrix* m)
 	printf("\n");
 }
 
-//Free Matrix
+/**
+ * \fn void FreeM(Matrix *m)
+ * \brief Free the Matrix and the array of double
+ *
+ * \param m : Matrix
+ */
 void FreeM(Matrix *m)
 {
 	free(m -> matrix);
