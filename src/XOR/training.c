@@ -44,33 +44,32 @@ Pool** CreateBatches(Pool* p, size_t batchSize)
 		i++;
 	}
 	i = batchSize*(batchNb-1);
-	printf("%ld\n", i);
 	Pool* lastBatch = InitPool(p->size - batchSize*(batchNb-1));	
 	for(size_t j = 0; j < lastBatch->size; j++)
 	{
 		*(lastBatch->examples +j) = *(p->examples +i +j);
+		lastBatch->results[j] = p->results[i+j];
 	}
-	*(batches + batchNb-1) = lastBatch;	
+	*(batches + batchNb-1) = lastBatch;
 	return batches; 
-	
 }
 
 
 void Training(neuNet *n, int epoch, double learning_rate)
 {
 	int batchSize = 10; //Arbritrary value, needs of tests
-	if(!fopen("neuralNetwork_data/examples.data", "r")) //file does not exist
+//	if(!fopen("neuralNetwork_data/examples.data", "r")) //file does not exist
 		GenerateExamples("neuralNetwork_data/names.data");
 	Pool* pool = ReadExamples("neuralNetwork_data/examples.data");
 	for(int i = 0; i < epoch; i++)
 	{
 		Pool** batches = CreateBatches(pool, batchSize);
-		for(size_t b = 0; b < pool->size/batchSize; b++)
+		for(size_t b = 0; b < pool->size/batchSize +1; b++)
 		{
 			for(size_t m  = 0; m < batches[b]->size; m++)
 			{	
 				Matrix* mat = batches[b]->examples[m];
-				//DisplayM(mat);
+				printf("%c", batches[b]->results[m]);
 				mat->col = 1;
 				mat->line = 784; //resizing matrix according to expected format
 								// for neuNet input matrix
@@ -81,12 +80,12 @@ void Training(neuNet *n, int epoch, double learning_rate)
 				ClearNeuNet(n);
 				FreeM(expected_out);
 			}
+			printf("%li\n", batches[b]->size);
 		}
-		printf("OCR gabriel\n");
 		for(size_t i = 0; i < pool->size/batchSize+1; i++)
 			FreePoolP(*(batches+i));
 		free(batches);
-		printf("epoch %d finished\n", i);
+		printf("\nepoch %i finished\n", i);
 	}
 //	FreePoolP(pool);
 	FreePool(pool);

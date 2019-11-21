@@ -248,5 +248,5 @@ List * RemoveLL(List* l);
  */
 void DeleteL(List* l);
 
-Matrix* InitMWithValues(int s, double*m);
+Matrix* InitMWithValues(int c, int l, double*m);
 #endif

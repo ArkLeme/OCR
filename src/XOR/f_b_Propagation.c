@@ -14,7 +14,7 @@ void layer_forward_propa(layer* Layer, Matrix *input_data)
       Matrix *multiplication_weights = MultM(Layer->weights,input_data);
       Layer->values = AddM(multiplication_weights,Layer->biases);
       Layer->outputs = Softmax(Layer->values);
-      DisplayM(Layer->outputs);
+//      DisplayM(Layer->outputs);
       FreeM(multiplication_weights);
 }
 	

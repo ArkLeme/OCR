@@ -47,8 +47,8 @@ int main(int argc, char** argv)
 	neuNet *network = init_network(layerSizes,3); 
 	if(argc == 2 && *argv[1] == 't')
 	{
-		Training(network);
-
+		Training(network, 5, 0.01);
+		printf("Training completed");
 	}
 	else
 	{	
@@ -61,6 +61,7 @@ int main(int argc, char** argv)
 	
 	}	
 	freeNeuNet(network);
+
 
 	return 0;
 }

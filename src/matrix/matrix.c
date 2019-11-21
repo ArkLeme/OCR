@@ -73,7 +73,7 @@ void DisplayM(Matrix* m)
 		printf("[ ");
 		for(int j = 0; j < m -> col; j++)
 		{
-			printf("%f ", (double) GetM(m, i, j));
+			printf("%i ", (int) GetM(m, i, j));
 		}
 		printf("]\n");
 	}
@@ -253,7 +253,7 @@ Matrix* normalize_dimension(Matrix *m)
         }
     }
 
-    FreeM(m);
+    //FreeM(m);
     return out;
 }
 //Initiate List of struct
@@ -371,12 +371,12 @@ void DeleteL(List *l)
 	}
 }
 
-Matrix* InitMWithValues(int s, double*m)
+Matrix* InitMWithValues(int c, int l, double*m)
 {
 	Matrix* temp = malloc(sizeof(Matrix));
-	temp -> line = s;
-	temp -> col = s;
-	temp -> size = s*s;
+	temp -> line = l;
+	temp -> col = c;
+	temp -> size = c*l;
 	temp->matrix = m;
 	return temp;
 }

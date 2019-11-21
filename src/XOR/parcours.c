@@ -25,7 +25,8 @@ List* Parcours(char* path)
                 while(lc != NULL)
                 {
 					//TRAITEMENT
-					p = AppendL(p, lc, NULL);
+					p = AppendL(p, normalize_dimension(lc->mat), NULL);
+				//	DisplayM(p->mat);
                     /**
                      * Liste de char du mot lc, les char sont dans le bon ordre
                      * pour le mort abcde :
@@ -53,7 +54,6 @@ List* Parcours(char* path)
 
     DeleteL(lg);
 	return p;
-
 }
 
 

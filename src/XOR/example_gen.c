@@ -9,6 +9,7 @@
 #include "../string/string_operation.h"
 #include "structNet.h"
 #include "tools.h"
+#include "parcours.h"
 
 size_t GetSize()
 {
@@ -43,7 +44,7 @@ Pool* ReadExamples(char* path)
 		fscanf(f, "%c\n", &pool->results[i]);
 		fread(ch, sizeof(double), 784, f);
 		
-		Matrix *m = InitMWithValues(28, ch);
+		Matrix *m = InitMWithValues(28, 28, ch);
 		pool->examples[i] = m;
 	}
 	fclose(f);
@@ -88,7 +89,7 @@ void GenerateExamples(char* path)
  */
 int GenExample(char* ImagePath, char* text, FILE*f)
 {
-	List* l = first_segmentation(ImagePath);
+	List* l = Parcours(ImagePath);
 	int nbChar = 0;
 	int i = 0;
 	while(l)
@@ -102,9 +103,9 @@ int GenExample(char* ImagePath, char* text, FILE*f)
 /*		
 		//DISPLAY FOR TESTING
 		printf("%c\n",text[i]);
-		DisplayM(m);
-		getchar();
-*/		
+		*/
+//		DisplayM(m);
+		//getchar();
 		l = RemoveFL(l); //next element in l
 		i++;
 		nbChar++;
