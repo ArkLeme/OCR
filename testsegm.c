@@ -71,7 +71,7 @@ void testBin(char* path)
         //lp = NULL;
     }
 
-    write_files("test.txt", lg);
+    //write_files("test.txt", lg);
     DeleteL(lg);
 }
 
@@ -80,12 +80,10 @@ void char_func(char* path)
     List* lg = paragraph_segm(path);
     List * lp = lg;
 
-    /*
     int p = 0;
     int l = 0;
     int w = 0;
     int c = 0;
-    */
     while(lp != NULL)
     {
         line_segm(lp);
@@ -97,7 +95,7 @@ void char_func(char* path)
         {
             word_segm(ll);
             List *lw = ll->child;
-            //SaveMat(ll, l, "line");
+            SaveMat(ll, l, "line");
             //l++;
 
             while(lw != NULL)
@@ -110,7 +108,7 @@ void char_func(char* path)
                 while(lc != NULL)
                 {
 					//TRAITEMENT
-                    SaveMat(lc, c, "char");
+            //        SaveMat(lc, c, "char");
                     c++;
 
                     /**
