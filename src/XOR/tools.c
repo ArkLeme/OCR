@@ -76,15 +76,15 @@ void LoadNeuNet()
 
 double sigmoid(float x)
 {	
-	return (double) 1.0/(1.0 + exp(-x));
-	//return log(1 + exp(x)); // relu soft plus
+	//return (double) 1.0/(1.0 + exp(-x));
+	return log(1 + exp(x)); // relu soft plus
 	//return (exp(2*x) - 1)/(exp(2*x) + 1);
 }
 
 double sigPrime(float x)
 {
-	return sigmoid(x)*(1-sigmoid(x));
-	//return 1/(1+exp(-x)); //relu prime
+	//return sigmoid(x)*(1-sigmoid(x));
+	return 1/(1+exp(-x)); //relu prime
 	//return 1- ( sigmoid( x)* sigmoid( x));
 }
 
@@ -153,62 +153,57 @@ Matrix* Softmax(Matrix *input)
 
 Matrix *softprime(Matrix *input)
 {
-  	Matrix *output = InitM(input->line,input->col);
+  	Matrix *output = InitM(input->line,input->line);
   	double sum =0;
   	double value;
 	double softed_value;
-	double max;
+	double max = GetM(input,0,0);
 
-	int sums[input->line];
+	
 
   	//Softmax fonction needs Sum of exp(z)k, zk is the k th values from input)
-  	for(int i=0; i <input->col; i++)
+  	
+	for(int j=0; j< input->line; j++)
 	{
-		max = GetM(input,0,i);
-		for(int j=0; j< input->line; j++)
-		{
-			value = GetM(input,j,i);
-			if(value>max)
-				max = value;
-			sum+= exp(value);
+		value = GetM(input,j,0);
+		if(value>max)
+			max = value;
+		sum+= exp(value);
 			
-		}
-
-		sums[i] = sum;
-		sum= 0;
 	}
-     
+ 
 
 	//Output = appplying to each values the soft fonction    
-	for(int i=0; i < input->col; i++)
+	for(int i=0; i < input->line; i++)
 	{
 		for(int j=0; j< input->line; j++)
 		{
-			if(i==j)
+			if(i!=j)
 			{
 				value = GetM(input,j,0);
-				
-				softed_value = Soft_prime(sums[i], value, 1, max);
-				PutM(output,j,i,softed_value);
+			
+				softed_value = Soft_prime(sum, value, 0, max);
+				PutM(output,i,j,softed_value);
 			}
 			else
-			{	value = Soft(sums[i], GetM(input,j,0),max);
-				softed_value = Soft_prime(sums[i], value, 0,max);
-				PutM(output,j,i,softed_value);
+			{	value = GetM(input,j,0);
+				
+				softed_value = Soft_prime(sum, value, 1,max);
+				PutM(output,i,j,softed_value);
 			}
 		}
 	}
 
        
-       //return Addition_soft(output);
-	return output;
+        return Addition_soft(output);
+	//return output;
 }
 
 
 
 Matrix* Addition_soft(Matrix* input)
 {
-	Matrix *output= InitM(input->line, 0);
+	Matrix *output= InitM(input->line, 1);
 	double result;
 
 	for(int i=0; i <input->line; i++)
@@ -217,10 +212,13 @@ Matrix* Addition_soft(Matrix* input)
 		
 		for(int j=0; j< input->col; j++)
 		{
+			
+			//printf("%f  ", GetM(input,i,j));
 			result+= GetM(input,i,j);
 			
 		}
 
+		//printf("%f  \n",result);
 		PutM(output,i,0,result);
 		
 	}

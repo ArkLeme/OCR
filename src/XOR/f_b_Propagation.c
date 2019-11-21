@@ -85,8 +85,7 @@ void UpdateBW(neuNet * n, int curLay, float learning_rate)
 
 void backprop(neuNet *network, int len_output, Matrix *expOutputs, float learning_rate)
 {
-	//Last layer case
-        layer *ll =network->layers[network->nbLay -1];
+	layer *ll =network->layers[network->nbLay -1];
 
 	//Check if len_output corresponds to the number of neurons of the last layer
 	if(len_output != ll->nbNeurons)
@@ -109,12 +108,13 @@ void backprop(neuNet *network, int len_output, Matrix *expOutputs, float learnin
 	{	
 		layer *cL = network->layers[i];	//current layer
 		Matrix *transpose = TransM(network->layers[i+1] -> weights);
-     		Matrix *wXE = MultM(transpose,network->layers[i+1] -> errors);
+     	Matrix *wXE = MultM(transpose,network->layers[i+1] -> errors);
 		Matrix *Sprime = softprime(cL->values);
 		cL->errors = MultValM(Sprime, wXE);
 		FreeM(transpose);
 		FreeM(wXE);
 		FreeM(Sprime);
 		UpdateBW(network, i, learning_rate);
-	}
+}
+
 }
