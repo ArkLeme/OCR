@@ -43,6 +43,30 @@ char Calculate(Matrix* c, neuNet * n)
 	return (char) ('a' + GetOutput(n));
 }
 
+//train network with output_data and given output wanted
+void train(neuNet *Network,int steps,float learning_rate, Matrix* input, int output_wanted)
+{
+	int index;
+	
+  	for (int i =0; i<steps; i++)
+  	{
+				
+		Matrix* out = InitM(1,1);
+		PutM(out, 0,0,output_wanted-a);
+		forward_prop(Network, input);
+		printf("%d xor %d = %f\t%d\n", j, k, GetM(Network->layers[2]->outputs,0,0), i);
+		backprop(Network, 1, out, learning_rate);
+		ClearNeuNet(Network);
+		FreeM(out);
+		//FreeM(input);
+    }
+
+	index = GetOutput(Network);
+	printf("{%c}\n", a+index);
+
+	
+}
+
 int main(int argc, char** argv)
 {
     int layerSizes[] = {28*28,20,26};
