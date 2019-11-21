@@ -18,28 +18,28 @@
 	return GetM(Network->layers[2]->outputs,0,0);	
 	}*/
 
-char Calculate(Matrix* c, neuNet * n)
-{
-	forward_prop(n, c);
-	return (char) ('a' + GetOutput(n));
-}
 
 int GetOutput(neuNet *n)
 {
 	double max = -1;
 	int index = 0;
 	layer*ll = n->layers[n->nbLay-1];
-	for(size_t n = 0; n < ll->nbNeurons; i++)
+	for(int i  = 0; i < ll->nbNeurons; i++)
 	{
-		if(ll->outputs[i] > max)
+		if(GetM(ll->outputs, i, 1) > max)
 		{
-			max = ll->outputs[i];
+			max = GetM(ll->outputs, i, 1);
 		   index = i;
 		}
 	}
 	return index;
 }
 	
+char Calculate(Matrix* c, neuNet * n)
+{
+	forward_prop(n, c);
+	return (char) ('a' + GetOutput(n));
+}
 
 int main(int argc, char** argv)
 {
