@@ -119,3 +119,103 @@ void backprop(neuNet *network, int len_output, Matrix *expOutputs, float learnin
 }
 
 }
+
+///////////////////////////////////////////////////////// B A T C H   P R O P A //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+void batch_Propa(neuNet *network, Matrix *wanted_output, float learning_rate)
+{
+
+     Matrix *save_acti = InitM(network->nbLay,Nbexemplees);
+     MAtrix *save_errors = InitM(network->nbLay,Nbexemples);
+
+     //TODO : SAVE LES VALEURS NECESSAIRES DANS UNE LISTE DE LISTE DE MATRICE ??
+}
+	
+
+void feedforward_batch(neuNet* network, Matrix* input_data, Matrix *save_acti, int step)
+{
+	layer *current_layer;
+		
+	network->layers[0]->values = input_data;
+	network->layers[0]->outputs = Softmax(network->layers[0]->values);
+	//	PutM(save_acti, 0,step, network->layer[0]->values);
+	  
+	//Propage the input values in every layers of the network
+	for(int i = 1; i < network->nbLay; i++)
+	  {
+	    input_data = network->layers[i-1] -> outputs;
+	    current_layer = network->layers[i];
+
+	    //Calculate the values and input Matrix of the current layer
+	    layer_forward_propa(current_layer,input_data);
+	    
+	    Matrix *multiplication_weights = MultM(current_layer->weights,input_data);
+	    current_layer->values = AddM(multiplication_weights,current_layer->biases);
+	    current_layer->outputs = Softmax(current_layer->values);
+
+
+	    // PutM(save_acti,i,step,current_layer->outputs);
+	    FreeM(multiplication_weights);
+	    input_data = current_layer->outputs;
+	    
+	  }
+
+	
+}
+
+
+void update_batch(neuNet * n, int nb_exemples, float learning_rate)
+{
+  for(int i =0; i<n->nbLayer; i++)
+    {
+      //Sum Errors
+      
+    }
+}
+
+
+void backpropError_batch(neuNet *network, int step, Matrix *expOutputs, float learning_rate, Matrix* save_errors)
+{
+	layer *cl =network->layers[network->nbLay -1];
+
+	//Check if len_output corresponds to the number of neurons of the last layer
+	if(len_output != cl->nbNeurons)
+	   errx(1,"Output are not of the correct length");
+
+	//special case for last layer
+	Matrix *neg = MultScalM(expOutputs, -1);
+	Matrix* minus = AddM(ll->outputs, neg);
+	FreeM(neg);
+
+	Matrix *sPrimeValues = (softprime(cl->values));
+
+	//updates errors martrix
+	cl->errors = MultValM(minus, sPrimeValues);
+	FreeM(minus);
+	FreeM(sPrimeValues);
+
+	//PutM(save_errors,0,0,cl->errors);
+	
+	//Not optimal but easier to understand
+	for(int i = network->nbLay-2; i > 0; i--) 
+	{	
+	        cl = network->layers[i];	//current layer
+		Matrix *transpose = TransM(network->layers[i+1] -> weights);
+		Matrix *wXE = MultM(transpose,network->layers[i+1] -> errors);
+		Matrix *Sprime = softprime(cL->values);
+		cL->errors = MultValM(Sprime, wXE);
+		FreeM(transpose);
+		FreeM(wXE);
+		FreeM(Sprime);
+
+
+		//	for(int j=0; j<cl->nbNeurons;j++)
+		//{
+		//  PutM(save_errors,i,step,cl->errors[j]
+		//}
+		
+		
+	}
+
+}
