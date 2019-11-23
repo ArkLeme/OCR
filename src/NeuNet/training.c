@@ -73,7 +73,7 @@ void Training(neuNet *n, int epoch, double learning_rate)
 				mat->col = 1;
 				mat->line = 784; //resizing matrix according to expected format
 								// for neuNet input matrix
-				feedforward_batch(n, mat);
+				forward_prop(n, mat);
 				Matrix* expected_out = CreateExpected(batches[b]->results[m]);
 				backprop_batch(n, 26, expected_out, learning_rate);
 				ClearNeuNet(n);

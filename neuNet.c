@@ -82,7 +82,7 @@ int main(int argc, char** argv)
 		int layerSizes[] = {28*28,15,26};
 		neuNet *network = init_network(layerSizes,3); 
 		//train(network,2, 1.5, input, ' ' );
-		feedforward_batch(network, input);
+		forward_prop(network, input);
 		
 
 		freeNeuNet(network);

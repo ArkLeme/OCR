@@ -10,7 +10,7 @@
 ///////////////////// FORWARD PROPAGATION /////////////////////////////////////
 
 //Calulate values and outputs
-void layer_forward_propa(layer* Layer, Matrix *input_data)
+void forward_prop(layer* Layer, Matrix *input_data)
 {
         layer *current_layer;
 		
@@ -162,6 +162,7 @@ void backprop(neuNet *network, int len_output, Matrix *expOutputs, float learnin
 	
 }*/
 	
+
 
 
 void FinalUpdate_batch(neuNet *network, float learning_rate, int step)
