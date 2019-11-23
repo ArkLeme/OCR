@@ -20,8 +20,8 @@ double randFloat()
 
 int random_int(int max_value)
 {
-  int randomvalue = (int) rand() / ((double) RAND_MAX * max_value);
-  return randomvalue;
+  	int randomvalue = (int) rand() / ((double) RAND_MAX * max_value);
+  	return randomvalue;
   
  }
 
@@ -31,42 +31,46 @@ void  Init_biases_weights(layer* Layer)
 {
 	srand((unsigned) time(NULL));
 
-    double rnd;
+    	double rnd;
   
-    for(int i = 0; i < Layer->weights->line; i++)
+    	for(int i = 0; i < Layer->weights->line; i++)
 	{
 		rnd = randFloat();
-	    PutM(Layer->biases, i, 0,rnd);
-	    for(int j = 0; j < Layer->weights->col; j++)
+		PutM(Layer->biases, i, 0,rnd);
+	    	for(int j = 0; j < Layer->weights->col; j++)
 		{
-		    //rnd = random_int(1);
+		    	//rnd = random_int(1);
 		  	rnd = randFloat();
 		  	PutM(Layer->weights,i,j, rnd);
 		}
 	}
+
+	Layer->weight_batch = InitM(Layer->nbNeurons,1);
+	Layer->biases_batch = InitM(Layer->nbNeurons,1);
 }
 
 
 layer *init_layer(int nbNeurons, int nbNeurons_prec)
 {
-  layer *Layer = malloc(sizeof(layer));
+  	layer *Layer = malloc(sizeof(layer));
 
-  if(Layer)
-    {
-	//Layer->values = InitM(nbNeurons,1);
-	Layer->biases = InitM(nbNeurons,1);
-    //Layer->outputs = InitM(nbNeurons,1);
+  	if(Layer)
+    	{
+		//Layer->values = InitM(nbNeurons,1);
+		Layer->biases = InitM(nbNeurons,1);
+    		//Layer->outputs = InitM(nbNeurons,1);
       
-      if(nbNeurons_prec)
-	Layer->weights = InitM(nbNeurons,nbNeurons_prec);
+      		if(nbNeurons_prec)
+			Layer->weights = InitM(nbNeurons,nbNeurons_prec);
       
-      else Layer->weights = InitM(nbNeurons,1);
+     		else Layer->weights = InitM(nbNeurons,1);
       
-     // Layer->errors = InitM(nbNeurons,1);
+     			// Layer->errors = InitM(nbNeurons,1);
 
-      Layer->nbNeurons = nbNeurons;
-    }
-  return Layer;
+      			Layer->nbNeurons = nbNeurons;
+	}
+    
+  	return Layer;
 }
 
 

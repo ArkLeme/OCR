@@ -192,7 +192,7 @@ void backprop_batch(neuNet *network, int len_output, Matrix *expOutputs, float l
 
 	
 	//Check if len_output corresponds to the number of neurons of the last layer
-	if(len_output != pl->nbNeurons)
+	if(len_output != cl->nbNeurons)
 	   errx(1,"Output are not of the correct length");
 
 	//special case for last layer
@@ -210,11 +210,13 @@ void backprop_batch(neuNet *network, int len_output, Matrix *expOutputs, float l
 
 
 	//Update Sum of Errors and Erros*Output(layer-1)
-	Matrix *update = MultValM(cl->errors,pl->outputs);
+	Matrix* transpose_out = TransM(pl->outputs);
+	Matrix *update = MultM(cl->errors,transpose_out);
 	Add_OptiM(cl->weight_batch,update);
 	Add_OptiM(cl->biases_batch,cl->errors);
 
 	FreeM(update);
+	FreeM(transpose_out);
 	
 	//Not optimal but easier to understand
 	for(int i = network->nbLay-2; i > 0; i--) 
@@ -229,11 +231,13 @@ void backprop_batch(neuNet *network, int len_output, Matrix *expOutputs, float l
 		FreeM(wXE);
 		FreeM(Sprime);
 
-		Matrix *update = MultValM(cl->errors,pl->outputs);
+		Matrix* transpose_bis = TransM(pl->outputs);
+		Matrix *update = MultM(cl->errors,transpose_bis);
 		Add_OptiM(cl->weight_batch,update);
 		Add_OptiM(cl->biases_batch,cl->errors);
 		
 		FreeM(update);
+		FreeM(transpose_bis);
 	}
 
 }
