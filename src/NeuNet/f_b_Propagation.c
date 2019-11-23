@@ -127,6 +127,10 @@ void backprop(neuNet *network, int len_output, Matrix *expOutputs, float learnin
 	network->layers[0]->values = input_data;
 	network->layers[0]->outputs = Softmax(network->layers[0]->values);
 	//Init weight_batch and biases_batch 
+	//pas sûr su'il faille initialiser ici, puisque cette fonction
+	//va être appellée pour chaque example; et non pas pour chaque lot
+	// /////////J'ai peut etre mal compris
+	//Mauvaises dimensiosn il me semble pour weight
 	current_layer->weight_batch = InitM(current_layer->nbNeurons,1);
 	current_layer->biases_batch = InitM(current_laeyer->nbNeurons,1);
 
