@@ -211,7 +211,7 @@ void backprop_batch(neuNet *network, int len_output, Matrix *expOutputs, float l
 
 	//Update Sum of Errors and Erros*Output(layer-1)
 	Matrix* transpose_out = TransM(pl->outputs);
-	Matrix *update = MultValM(transpose_out,cl->errors);
+	Matrix *update = MultM(cl->errors,transpose_out);
 	Add_OptiM(update,cl->weight_batch);
 	Add_OptiM(cl->biases_batch,cl->errors);
 
@@ -232,7 +232,7 @@ void backprop_batch(neuNet *network, int len_output, Matrix *expOutputs, float l
 		FreeM(Sprime);
 
 		Matrix* transpose_bis = TransM(pl->outputs);
-		Matrix *update = MultValM(transpose_bis,cl->errors);
+		Matrix *update = MultM(cl->errors,transpose_bis);
 		Add_OptiM(cl->weight_batch,update);
 		Add_OptiM(cl->biases_batch,cl->errors);
 		

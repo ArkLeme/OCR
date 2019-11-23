@@ -89,7 +89,6 @@ int main(int argc, char** argv)
 		int layerSizes[] = {2,3,1};
 		
 		neuNet *network = init_network(layerSizes,3); 
-		forward_prop(network,input);
 		train(network, 2, 0.1);
 		
 		

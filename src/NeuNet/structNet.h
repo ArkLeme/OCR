@@ -28,7 +28,7 @@ typedef struct layer{
 	Matrix *biases_batch; /*<Sum errors of the layer for each exemple of the batch; size: nbNeurons*1*/
 	
 	int nbNeurons; /*!<Numbers of neurons in this layer. */ 
-} layer;
+}layer;
 
 /*!
  * \struct neuNet structNet.h
