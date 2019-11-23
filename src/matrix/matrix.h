@@ -115,12 +115,32 @@ void DisplayM(Matrix *m);
  */
 void FreeM(Matrix *m);
 
+
+/*
+ * Fill up the Matrix with 0
+ * m is the matrix
+ */
+
+void Fillup(Matrix *m);
+
+/*
+ * Add two matrix and return the first one
+ * m1 is the first matrix
+ * m3 the second
+ * return m1
+ */
+
+Matrix *Add_OptiM(Matrix *m1, Matrix *m2);
+
+
+
 /*
  * Add two matrix and return a new one
  * m1 is the first matrix
  * m3 the second
  * return a new matrix
  */
+
 Matrix *AddM(Matrix *m1, Matrix *m2);
 
 /*

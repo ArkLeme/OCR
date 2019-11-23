@@ -122,14 +122,40 @@ void backprop(neuNet *network, int len_output, Matrix *expOutputs, float learnin
 
 ///////////////////////////////////////////////////////// B A T C H   P R O P A //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
+/*
 void batch_Propa(neuNet *network, Matrix *wanted_output, float learning_rate)
 {
-     //Matrix *save_acti = InitM(network->nbLay,Nbexemplees);
-     //Matrix *save_errors = InitM(network->nbLay,Nbexemples);
+        layer *current_layer;
+		
+	network->layers[0]->values = input_data;
+	network->layers[0]->outputs = Softmax(network->layers[0]->values);
+	//Init weight_batch and biases_batch 
+	current_layer->weight_batch = InitM(current_layer->nbNeurons,1);
+	current_layer->biases_batch = InitM(current_laeyer->nbNeurons,1);
 
-     //TODO : SAVE LES VALEURS NECESSAIRES DANS UNE LISTE DE LISTE DE MATRICE ??
-	 //NON je pense qu'il vaut mieux créer un nouveau champ dans la struct layer
+	current_layer->weight_batch = 
+	
+	//Propage the input values in every layers of the network
+	for(int i = 1; i < network->nbLay; i++)
+	  {
+	    input_data = network->layers[i-1] -> outputs;
+	    current_layer = network->layers[i];
+
+	    //Calculate the values and input Matrix of the current layer
+	    layer_forward_propa(current_layer,input_data);
+	    
+	    Matrix *multiplication_weights = MultM(current_layer->weights,input_data);
+	    current_layer->values = AddM(multiplication_weights,current_layer->biases);
+	    current_layer->outputs = Softmax(current_layer->values);
+
+
+	    //Init weight and biases batch for each layer
+	    FreeM(multiplication_weights);
+	    input_data = current_layer->outputs;
+	    current_layer->weight_batch = InitM(current_layer->nbNeurons,1);
+	    current_layer->biases_batch = InitM(current_layer->nbNeurons,1);
+	    
+	  }
 }
 	
 
@@ -178,6 +204,7 @@ void update_batch(neuNet * n, int nb_exemples, float learning_rate)
 void backpropError_batch(neuNet *network, int step, Matrix *expOutputs, float learning_rate, Matrix* save_errors)
 {
 	layer *cl =network->layers[network->nbLay -1];
+	layer *ll = network->layers[network->nbLay -2];
 
 	//Check if len_output corresponds to the number of neurons of the last layer
 
@@ -193,7 +220,7 @@ void backpropError_batch(neuNet *network, int step, Matrix *expOutputs, float le
 	FreeM(minus);
 	FreeM(sPrimeValues);
 
-	//PutM(save_errors,0,0,cl->errors);
+	cl->weight_batch += MultValM(cl->errors,ll->output);
 	
 	//Not optimal but easier to understand
 	for(int i = network->nbLay-2; i > 0; i--) 
@@ -208,12 +235,9 @@ void backpropError_batch(neuNet *network, int step, Matrix *expOutputs, float le
 		FreeM(Sprime);
 
 
-		//	for(int j=0; j<cl->nbNeurons;j++)
-		//{
-		//  PutM(save_errors,i,step,cl->errors[j]
-		//}
+		
 		
 		
 	}
 
-}
+}*/

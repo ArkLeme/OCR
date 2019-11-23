@@ -87,6 +87,41 @@ void FreeM(Matrix *m)
 	free(m);
 }
 
+//Fill up the Matrix with 0
+void FillupM(Matrix* m)
+{
+	for(int i = 0; i < m -> line; i++)
+	{
+		for(int j = 0; j < m -> col; j++)
+		{
+			PutM(m, i, j,0);
+		}
+		
+	}
+	
+}
+
+//Addition atrix without creating a new Matrix
+Matrix* Add_OptiM(Matrix* m1, Matrix* m2)
+{
+	if(m1 -> col != m2 -> col || m1 -> line != m2 -> line)
+		errx(1, "Add Matrix do not have the same dimension :\
+						m1w=%i, mw2=%i, m1h=%i, m2h=%i\n",
+						m1 -> col, m2 -> col, m1 -> line, m2 -> line);
+
+	
+	for(int i = 0; i < m1 -> line; i++)
+	{
+		for(int j=0; j<m1->col;j++)
+		{
+
+			*((m1 -> matrix) + (m1 -> col) * i + j) +=  GetM(m2, i,j);
+		}
+	}
+
+	return m1;
+}
+
 //Addition Matrix
 Matrix* AddM(Matrix* m1, Matrix* m2)
 {

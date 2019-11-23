@@ -89,7 +89,8 @@ int main(int argc, char** argv)
 	}	
 	freeNeuNet(network);
 
-
+	
+	
 	return 0;
 }
 
