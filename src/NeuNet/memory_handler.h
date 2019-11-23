@@ -6,6 +6,7 @@
 
 void ClearNeuNet(neuNet*n);
 void freeNeuNet(neuNet* n);
+void Freelayer(layer *cl);
 
 Pool* InitPool(size_t size);
 void FreePool(Pool*p);

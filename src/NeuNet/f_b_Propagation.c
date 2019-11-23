@@ -125,11 +125,11 @@ void backprop(neuNet *network, int len_output, Matrix *expOutputs, float learnin
 
 void batch_Propa(neuNet *network, Matrix *wanted_output, float learning_rate)
 {
-
-     Matrix *save_acti = InitM(network->nbLay,Nbexemplees);
-     MAtrix *save_errors = InitM(network->nbLay,Nbexemples);
+     //Matrix *save_acti = InitM(network->nbLay,Nbexemplees);
+     //Matrix *save_errors = InitM(network->nbLay,Nbexemples);
 
      //TODO : SAVE LES VALEURS NECESSAIRES DANS UNE LISTE DE LISTE DE MATRICE ??
+	 //NON je pense qu'il vaut mieux créer un nouveau champ dans la struct layer
 }
 	
 
@@ -167,7 +167,7 @@ void feedforward_batch(neuNet* network, Matrix* input_data, Matrix *save_acti, i
 
 void update_batch(neuNet * n, int nb_exemples, float learning_rate)
 {
-  for(int i =0; i<n->nbLayer; i++)
+  for(int i =0; i<n->nbLay; i++)
     {
       //Sum Errors
       
@@ -180,12 +180,10 @@ void backpropError_batch(neuNet *network, int step, Matrix *expOutputs, float le
 	layer *cl =network->layers[network->nbLay -1];
 
 	//Check if len_output corresponds to the number of neurons of the last layer
-	if(len_output != cl->nbNeurons)
-	   errx(1,"Output are not of the correct length");
 
 	//special case for last layer
 	Matrix *neg = MultScalM(expOutputs, -1);
-	Matrix* minus = AddM(ll->outputs, neg);
+	Matrix* minus = AddM(cl->outputs, neg);
 	FreeM(neg);
 
 	Matrix *sPrimeValues = (softprime(cl->values));
@@ -200,11 +198,11 @@ void backpropError_batch(neuNet *network, int step, Matrix *expOutputs, float le
 	//Not optimal but easier to understand
 	for(int i = network->nbLay-2; i > 0; i--) 
 	{	
-	        cl = network->layers[i];	//current layer
+	    cl = network->layers[i];	//current layer
 		Matrix *transpose = TransM(network->layers[i+1] -> weights);
 		Matrix *wXE = MultM(transpose,network->layers[i+1] -> errors);
-		Matrix *Sprime = softprime(cL->values);
-		cL->errors = MultValM(Sprime, wXE);
+		Matrix *Sprime = softprime(cl->values);
+		cl->errors = MultValM(Sprime, wXE);
 		FreeM(transpose);
 		FreeM(wXE);
 		FreeM(Sprime);

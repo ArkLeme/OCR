@@ -6,16 +6,17 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void ShuffleArray(Matrix**a, size_t size)
+void ShufflePool(Pool*p)
 {
-	//TODO Il faut aussi randomize de la même manière les caracteres
-	//IN NEEDS TO DEBUG
-	for(size_t i = 0; i < size-1; i++)
+	for(size_t i = 0; i < p->size; i++)
 	{
-		size_t j = i + rand() / (RAND_MAX / (size - i) + 1);
-		Matrix* tmp = a[i];
-		a[j] = a[i];
-		a[i] = tmp;
+		size_t j = rand() % p->size;
+		Matrix* tmp = p->examples[i];
+		char temp = p->results[i];
+		p->results[i] = p->results[j];
+		p->results[j] = temp;
+		p->examples[i] = p->examples[j];
+		p->examples[j] = tmp;
 	}
 }	
 
@@ -28,7 +29,7 @@ Matrix* CreateExpected(char c)
 
 Pool** CreateBatches(Pool* p, size_t batchSize)
 {
-//	ShuffleArray(p->examples, p->size);
+	ShufflePool(p);
 	size_t batchNb = p->size/batchSize +1;
 	Pool** batches = malloc(sizeof(Pool*) * batchNb); 
 	size_t i = 0;
@@ -69,18 +70,20 @@ void Training(neuNet *n, int epoch, double learning_rate)
 			for(size_t m  = 0; m < batches[b]->size; m++)
 			{	
 				Matrix* mat = batches[b]->examples[m];
-				printf("%c", batches[b]->results[m]);
 				mat->col = 1;
 				mat->line = 784; //resizing matrix according to expected format
 								// for neuNet input matrix
 				forward_prop(n, mat);
 				Matrix* expected_out = CreateExpected(batches[b]->results[m]);
 				backprop(n, 26, expected_out, learning_rate);
-				/////UPDATE PONDEREE DES BIAIS/POIDS
 				ClearNeuNet(n);
 				FreeM(expected_out);
+				mat->col = 28;
+				mat->line = 28; 
+				printf("%c", (batches[b]->results[m]));
 			}
-			printf("%li\n", batches[b]->size);
+			/////UPDATE PONDEREE DES BIAIS/POIDS ICI
+			printf(" %li\n", batches[b]->size);
 		}
 		for(size_t i = 0; i < pool->size/batchSize+1; i++)
 			FreePoolP(*(batches+i));

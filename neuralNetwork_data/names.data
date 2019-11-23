@@ -1,17 +1,2 @@
 image_data/png/ocr.png
 lorem ipsum dolor sit met consectetur adipiscing elit morbi rhoncus libero et finibus hendrerit nunc bibendum dignissim justo id solades magna eleifend quis curabitur vel dui mokestie pulvinar nisi ut tempor magna phasellus ut felis id argue elementum varius condimentum nec
-image_data/latex.png
-niveau de gris de l image pour la première soutenance, il nous fallait rapidement une binarisation de notre
-image afin de pouvoir effectuer la segmentation de celle-ci. J’ai donc commencé par
-appliquer une fonction pour transformer mon image en différents niveaux de gris, en
-effet les couleurs de l’image ne vont pas nous servir pour déterminer le texte contenu
-par celle-ci. On pourrait même dire qu’ils vont nous déranger, en effet une image
-contient beaucoup d’information et chaque pixel en contient beaucoup également.
-Les composantes rouges, bleu et vert, voir même, en fonction de la qualité de l’image
-les différents filtres appliqués sur l’image. Il est donc primordial de retirer les in-
-formations qui nous seront inutiles pour facilité le traitement. La fonction est assez
-simple, elle prend simplement la moyenne des 3 composantes de la couleur, le rouge,
-le vert et le bleu. De nombreuses méthodes de niveau de gris sont applicables, ont
-pu notamment envisager l’utilisation de coefficients plutôt que de faire la moyenne,
-dans notre cas, la différence est négligeable puisque la couleur du texte ne doit pas
-influencer sa segmentation

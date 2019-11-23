@@ -41,9 +41,10 @@ Pool* ReadExamples(char* path)
 	for(size_t i = 0; i < pool->size; i++)
 	{
 		double*ch = malloc(784 * sizeof(double));
-		fscanf(f, "%c\n", &pool->results[i]);
+		pool->results[i] = fgetc(f);
+		fgetc(f);
 		fread(ch, sizeof(double), 784, f);
-		
+		fgetc(f);	
 		Matrix *m = InitMWithValues(28, 28, ch);
 		pool->examples[i] = m;
 	}
@@ -78,7 +79,6 @@ void GenerateExamples(char* path)
 	fprintf(f, "%s\n", itoa);
 	fclose(f);
 	free(itoa);
-
 }
 
 /*!
@@ -99,7 +99,7 @@ int GenExample(char* ImagePath, char* text, FILE*f)
 		fputc('\n', f);
 		Matrix* m  = l->mat;
 		fwrite(m->matrix, sizeof(double), m->size, f);
-		//fputc('\n', f);
+		fputc('\n', f);
 /*		
 		//DISPLAY FOR TESTING
 		printf("%c\n",text[i]);
