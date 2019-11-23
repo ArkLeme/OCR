@@ -73,16 +73,16 @@ void Training(neuNet *n, int epoch, double learning_rate)
 				mat->col = 1;
 				mat->line = 784; //resizing matrix according to expected format
 								// for neuNet input matrix
-				forward_prop(n, mat);
+				feedforward_batch(n, mat);
 				Matrix* expected_out = CreateExpected(batches[b]->results[m]);
-				backprop(n, 26, expected_out, learning_rate);
+				backprop_batch(n, 26, expected_out, learning_rate);
 				ClearNeuNet(n);
 				FreeM(expected_out);
 				mat->col = 28;
 				mat->line = 28; 
 				printf("%c", (batches[b]->results[m]));
 			}
-			/////UPDATE PONDEREE DES BIAIS/POIDS ICI
+			FinalUpdate_batch(network,learning_rate, epoch);
 			printf(" %li\n", batches[b]->size);
 		}
 		for(size_t i = 0; i < pool->size/batchSize+1; i++)

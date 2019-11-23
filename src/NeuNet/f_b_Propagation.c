@@ -123,7 +123,7 @@ void backprop(neuNet *network, int len_output, Matrix *expOutputs, float learnin
 ///////////////////////////////////////////////////////// B A T C H   P R O P A //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-void batch_Propa(neuNet *network, Matrix *wanted_output, float learning_rate, Matrix *input_data)
+/*void batch_Propa(neuNet *network, Matrix *wanted_output, float learning_rate, Matrix *input_data)
 {
         layer *current_layer;
 		
@@ -163,7 +163,7 @@ void batch_Propa(neuNet *network, Matrix *wanted_output, float learning_rate, Ma
 	FinalUpdate_batch(network,learning_rate, step);
 	
 	
-}
+}*/
 	
 
 void feedforward_batch(neuNet* network, Matrix* input_data)
@@ -217,12 +217,15 @@ void FinalUpdate_batch(neuNet *network, float learning_rate, int step)
 }
 
 
-void backpropError_batch(neuNet *network, Matrix *expOutputs, float learning_rate)
+void backprop_batch(neuNet *network, int len_output, Matrix *expOutputs, float learning_rate)
 {
 	layer *cl =network->layers[network->nbLay -1];
 	layer *pl = network->layers[network->nbLay -2];
 
+	
 	//Check if len_output corresponds to the number of neurons of the last layer
+	if(len_output != ll->nbNeurons)
+	   errx(1,"Output are not of the correct length");
 
 	//special case for last layer
 	Matrix *neg = MultScalM(expOutputs, -1);
