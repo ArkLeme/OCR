@@ -10,7 +10,7 @@
 ///////////////////// FORWARD PROPAGATION /////////////////////////////////////
 
 //Calulate values and outputs
-void forward_prop(layer* Layer, Matrix *input_data)
+void forward_prop(neuNet* network, Matrix *input_data)
 {
         layer *current_layer;
 		
@@ -211,7 +211,7 @@ void backprop_batch(neuNet *network, int len_output, Matrix *expOutputs, float l
 
 	//Update Sum of Errors and Erros*Output(layer-1)
 	Matrix *update = MultValM(cl->errors,pl->outputs);
-	Add_OptiM(cl->weight_batch,minus);
+	Add_OptiM(cl->weight_batch,update);
 	Add_OptiM(cl->biases_batch,cl->errors);
 
 	FreeM(update);
@@ -230,9 +230,10 @@ void backprop_batch(neuNet *network, int len_output, Matrix *expOutputs, float l
 		FreeM(Sprime);
 
 		Matrix *update = MultValM(cl->errors,pl->outputs);
-		Add_OptiM(cl->weight_batch,minus);
+		Add_OptiM(cl->weight_batch,update);
 		Add_OptiM(cl->biases_batch,cl->errors);
 		
+		FreeM(update);
 	}
 
 }

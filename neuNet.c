@@ -46,23 +46,29 @@ char Calculate(Matrix* c, neuNet * n)
 //train network with output_data and given output wanted
 void train(neuNet *Network,int steps,float learning_rate, Matrix* input, int output_wanted)
 {
-	int index;
-	
+	int inp[4][2] = {{0,0},{1,1},{0,1},{1,0}};
+	int res[4] = {0,0,1,1};
   	for (int i =0; i<steps; i++)
   	{
-				
+		int index = i %4;
+		int j = inp[index][0];
+		int k = inp[index][1];
+		
+		Matrix* input = InitM(2,1);
+		PutM(input, 0,0,j);
+		PutM(input,1,0,k);
 		Matrix* out = InitM(1,1);
-		PutM(out, 0,0,output_wanted-'a');
+		PutM(out, 0,0,res[index]);
 		forward_prop(Network, input);
-		printf("OCR = %f\t%d\n",GetM(Network->layers[2]->outputs,0,0), i);
+		printf("%d xor %d = %f\t%d\n", j, k, GetM(Network->layers[2]->outputs,0,0), i);
 		backprop(Network, 1, out, learning_rate);
 		ClearNeuNet(Network);
 		FreeM(out);
-		//FreeM(input);
+		FreeM(input);
     }
+    
 
-	index = GetOutput(Network);
-	printf("{%c}\n", 'a'+index);
+	
 
 	
 }
@@ -78,14 +84,15 @@ int main(int argc, char** argv)
 	}
 	else
 	{	
-		Matrix *input = InitM(28*28,1);
-		int layerSizes[] = {28*28,15,26};
+		Matrix *input = InitM(2,1);
+		int layerSizes[] = {2,3,1};
 		neuNet *network = init_network(layerSizes,3); 
-		//train(network,2, 1.5, input, ' ' );
-		forward_prop(network, input);
+		train(network,2, 1.5, input, ' ' );
+		
 		
 
 		freeNeuNet(network);
+		FreeM(input);
 
 	
 	}	
