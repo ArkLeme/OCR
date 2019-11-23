@@ -3,6 +3,8 @@
 #include "document.h"
 
 static void open_file (const gchar *, GtkTextView *);
+static void set_title (void);
+static gboolean close_all (void);
 
 void cb_ocr(GtkWidget *s_widget, gpointer user_data)
 {
@@ -22,8 +24,49 @@ void cb_edit(GtkWidget *s_widget,gpointer user_data)
 }
 
 
-
 void cb_new (GtkWidget *p_widget, gpointer user_data)
+{
+  document_t *new = NULL;
+
+  new = g_malloc (sizeof (*new));
+  new->chemin = NULL;
+  /* Le document vient d'etre ouvert, il n'est donc pas modifie */
+  new->sauve = TRUE;
+  docs.tous = g_list_append (docs.tous, new);
+  {
+    gint index = 0;
+    GtkWidget *p_scrolled_window = NULL;
+
+    p_scrolled_window = gtk_scrolled_window_new (NULL, NULL);
+    gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (p_scrolled_window), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+    new->p_text_view = GTK_TEXT_VIEW (gtk_text_view_new ());
+    {
+      GtkTextBuffer *p_buffer = NULL;
+
+      p_buffer = gtk_text_view_get_buffer (new->p_text_view);
+      g_signal_connect (G_OBJECT (p_buffer), "changed", G_CALLBACK (cb_modif), NULL);
+    }
+    gtk_container_add (GTK_CONTAINER (p_scrolled_window), GTK_WIDGET (new->p_text_view));
+    index = gtk_notebook_append_page (docs.p_notebook, p_scrolled_window, GTK_WIDGET (gtk_label_new ("New docs")));
+    gtk_widget_show_all (p_scrolled_window);
+    gtk_notebook_set_current_page (docs.p_notebook, index);
+    set_title();
+  }
+
+  /* parametres inutilises */
+  (void)p_widget;
+  (void)user_data;
+}
+
+void cb_page_change (GtkNotebook *notebook, guint page_num, gpointer user_data)
+{
+  docs.actif = g_list_nth_data (docs.tous, page_num);
+
+  /* parametres inutilises */
+  (void)notebook;
+  (void)user_data;
+}
+/*void cb_new (GtkWidget *p_widget, gpointer user_data)
 {
     if (docs.actif)
     {
@@ -37,9 +80,9 @@ void cb_new (GtkWidget *p_widget, gpointer user_data)
     docs.actif->sauve = TRUE;
     gtk_widget_set_sensitive (GTK_WIDGET (docs.actif->p_text_view), TRUE);
   
-    /* Unused parameter */
+     Unused parameter 
     (void)p_widget;
-}
+}*/
 
 
 void cb_open (GtkWidget *p_widget, gpointer user_data)
@@ -100,27 +143,42 @@ void cb_close (GtkWidget *p_widget, gpointer user_data)
 	    }
 	    gtk_widget_destroy (p_dialog);
 	}
-	GtkTextIter start;
-	GtkTextIter end;
-	GtkTextBuffer *p_text_buffer = NULL;
-
-	p_text_buffer = gtk_text_view_get_buffer (docs.actif->p_text_view);
-	gtk_text_buffer_get_bounds (p_text_buffer, &start, &end);
-	gtk_text_buffer_delete (p_text_buffer, &start, &end);
-	gtk_widget_set_sensitive (GTK_WIDGET (docs.actif->p_text_view), FALSE);
-
-	g_free (docs.actif->chemin), docs.actif->chemin = NULL;
-	docs.actif->p_text_view = NULL;
-	g_free (docs.actif), docs.actif = NULL;
-
+	{
+      	docs.tous = g_list_remove (docs.tous, docs.actif);
+      	g_free (docs.actif->chemin), docs.actif->chemin = NULL;
+      	g_free (docs.actif), docs.actif = NULL;
+      	gtk_notebook_remove_page (docs.p_notebook, gtk_notebook_get_current_page (docs.p_notebook));
+      if (gtk_notebook_get_n_pages (docs.p_notebook) > 0)
+      {
+        docs.actif = g_list_nth_data (docs.tous, gtk_notebook_get_current_page (docs.p_notebook));
+      }
+      else
+      {
+        docs.actif = NULL;
+      }
     }
-    else
-    {
-	print_warning ("No file open");
-    }
+  }
+  else
+  {
+     print_warning ("No file open");
+  }
+ 
 }
 
 void cb_quit (GtkWidget *p_widget, gpointer user_data)
+{
+  if (close_all ())
+  {
+    
+    gtk_main_quit();
+  }
+
+  /* parametres inutilises */
+  (void)p_widget;
+  (void)user_data;
+}
+
+/*void cb_quit (GtkWidget *p_widget, gpointer user_data)
 {
     if (docs.actif)
     {
@@ -131,16 +189,17 @@ void cb_quit (GtkWidget *p_widget, gpointer user_data)
     {
 	gtk_main_quit();
     }
-    /* Unused parameter */
+     Unused parameter 
     (void)p_widget;
     (void)user_data;
-}
+}*/
 
 void cb_modif (GtkWidget *p_widget, gpointer user_data)
 {
     if (docs.actif)
     {
 	docs.actif->sauve = FALSE;
+	set_title();
     }
 
     /* Unused parameter */
@@ -198,6 +257,7 @@ void cb_save (GtkWidget *p_widget, gpointer user_data)
 		    fclose (fichier), fichier = NULL;
 
 		    docs.actif->sauve = TRUE;
+		    set_title ();
 		}
 		else
 		{
@@ -256,10 +316,67 @@ static void open_file (const gchar *file_name, GtkTextView *p_text_view)
 	    gtk_text_buffer_get_iter_at_line (p_text_buffer, &iter, 0);
 	    gtk_text_buffer_insert (p_text_buffer, &iter, contents, -1);
 	    docs.actif ->sauve = TRUE;
+	    set_title();
 	}
 	else
 	{
 	   print_warning ("Failed to open %s\n", file_name);
 	}
     }
+}
+static void set_title (void)
+{
+  if (docs.actif)
+  {
+    gchar *title = NULL;
+    gchar *tmp = NULL;
+
+    if (docs.actif->chemin)
+    {
+      tmp = g_path_get_basename (docs.actif->chemin);
+    }
+    else
+    {
+      tmp = g_strdup ("Nouveau document");
+    }
+    if (docs.actif->sauve)
+    {
+      title = g_strdup (tmp);
+    }
+    else
+    {
+      title = g_strdup_printf ("%s *", tmp);
+    }
+    g_free (tmp), tmp = NULL;
+    {
+      gint index = 0;
+      GtkWidget *p_child = NULL;
+      GtkLabel *p_label = NULL;
+
+      index = gtk_notebook_get_current_page (docs.p_notebook);
+      p_child = gtk_notebook_get_nth_page (docs.p_notebook, index);
+      p_label = GTK_LABEL (gtk_notebook_get_tab_label (docs.p_notebook, p_child));
+      gtk_label_set_text (p_label, title);
+    }
+    g_free (title), title = NULL;
+  }
+}
+
+static gboolean close_all (void)
+{
+  gboolean ret = TRUE;
+
+  while (docs.actif)
+  {
+    gint tmp = gtk_notebook_get_n_pages (docs.p_notebook);
+
+    gtk_notebook_set_current_page (docs.p_notebook, 0);
+    cb_close (NULL, NULL);
+    if (gtk_notebook_get_n_pages (docs.p_notebook) >= tmp)
+    {
+      ret = FALSE;
+      break;
+    }
+  }
+  return ret;
 }

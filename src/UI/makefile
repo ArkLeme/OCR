@@ -9,7 +9,7 @@ LDFLAGS = -fsanitize=address
 LDLIBS = `pkg-config --libs gtk+-3.0`
 
 # SRC contain all the file we must built
-SRC = testUI.c callback.c error.c
+SRC = testUI.c callback.c error.c menu.c toolbar.c
 OBJ = $(SRC:.c=.o)
 DEP = ${SRC:.c=.d}
 EXEC = testUI

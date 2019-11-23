@@ -2,8 +2,11 @@
 #include <gtk/gtk.h>
 #include "callback.h"
 #include "document.h"
+#include "menu.h"
+#include "toolbar.h"
 
-docs_t docs = {NULL, NULL, NULL};
+
+docs_t docs = {NULL, NULL, NULL, NULL};
 
 int main(int argc,char **argv)
 {
@@ -43,7 +46,23 @@ int main(int argc,char **argv)
     gtk_container_add (GTK_CONTAINER (p_window), p_main_box);
 
     docs.p_main_window = GTK_WINDOW (p_window);
-    
+   
+    /* Create the menu */
+    gtk_box_pack_start (GTK_BOX (p_main_box), GTK_WIDGET (menu_new (p_text_view)), FALSE, FALSE, 0);
+
+    /* Create toolbar */
+    gtk_box_pack_start (GTK_BOX (p_main_box), GTK_WIDGET (toolbar_new (p_text_view)), FALSE, FALSE, 0);
+
+    /* Creation de la page d'onglets */
+    {
+    	GtkWidget *p_notebook = NULL;
+
+    	p_notebook = gtk_notebook_new ();
+    	gtk_container_add (GTK_CONTAINER (p_main_box), p_notebook);
+    	g_signal_connect (G_OBJECT (p_notebook), "switch-page", G_CALLBACK (cb_page_change), NULL);
+    	docs.p_notebook = GTK_NOTEBOOK (p_notebook);
+    }
+
     /* Create the text area */
     {
 	GtkTextBuffer *p_text_buffer = NULL;
@@ -59,7 +78,7 @@ int main(int argc,char **argv)
 	gtk_container_add (GTK_CONTAINER (p_scrolled_window), p_text_view);
     }
 
-    
+
     /* Create button box container */
     p_button_box = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
     gtk_box_pack_start (GTK_BOX (p_main_box), p_button_box, FALSE, FALSE, 0);
@@ -97,6 +116,7 @@ int main(int argc,char **argv)
 	g_signal_connect (G_OBJECT (s_button), "clicked", G_CALLBACK (cb_quit), NULL);
 	gtk_box_pack_start (GTK_BOX (s_button_box), s_button, FALSE, FALSE, 100);
     }
+
 
     /* Text editor button config */
 
@@ -155,7 +175,7 @@ int main(int argc,char **argv)
     }
 
     /* Display window */
-    gtk_widget_show_all(s_window);
+    gtk_widget_show_all(p_window);
 
     /* Exec gtk main loop */
     gtk_main();

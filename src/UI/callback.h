@@ -11,5 +11,6 @@ void cb_quit (GtkWidget *, gpointer);
 void cb_modif (GtkWidget*,gpointer);
 void cb_save (GtkWidget*,gpointer);
 void cb_saveas (GtkWidget*,gpointer);
+void cb_page_change (GtkNotebook *, guint, gpointer);
 
 #endif

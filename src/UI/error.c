@@ -1,16 +1,27 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <gtk/gtk.h>
+#include "document.h"
 #include "error.h"
+
+static void print_message (GtkMessageType type, const gchar *format, va_list va)
+{
+  gchar *message = NULL;
+  GtkWidget *p_dialog = NULL;
+
+  message = g_strdup_vprintf (format, va);
+  p_dialog = gtk_message_dialog_new (docs.p_main_window, GTK_DIALOG_MODAL, type, GTK_BUTTONS_CLOSE, message);
+  g_free (message), message = NULL;
+  gtk_dialog_run (GTK_DIALOG (p_dialog));
+  gtk_widget_destroy (p_dialog);
+}
 
 void print_info (char *format, ...)
 {
   va_list va;
-
   va_start (va, format);
-  printf ("Information : ");
-  vprintf (format, va);
-  printf ("\n");
+  print_message (GTK_MESSAGE_INFO, format, va);
 }
 
 void print_warning (char *format, ...)
@@ -18,9 +29,7 @@ void print_warning (char *format, ...)
   va_list va;
 
   va_start (va, format);
-  fprintf (stderr, "Erreur : ");
-  vfprintf (stderr, format, va);
-  fprintf (stderr, "\n");
+  print_message (GTK_MESSAGE_WARNING, format, va);
 }
 
 void print_error (char *format, ...)
@@ -28,8 +37,8 @@ void print_error (char *format, ...)
   va_list va;
 
   va_start (va, format);
-  fprintf (stderr, "Erreur fatale : ");
-  vfprintf (stderr, format, va);
-  fprintf (stderr, "\n");
+  print_message (GTK_MESSAGE_ERROR, format, va);
   exit (EXIT_FAILURE);
 }
+
+
