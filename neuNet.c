@@ -69,7 +69,7 @@ void train(neuNet *Network,int steps,float learning_rate, Matrix* input, int out
 
 int main(int argc, char** argv)
 {
-    int layerSizes[] = {28*28,20,26};
+      int layerSizes[] = {28*28,20,26};
 	neuNet *network = init_network(layerSizes,3); 
 	if(argc == 2 && *argv[1] == 't')
 	{
@@ -88,6 +88,8 @@ int main(int argc, char** argv)
 	
 	}	
 	freeNeuNet(network);
+
+	
 
 	
 	

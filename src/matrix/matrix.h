@@ -121,7 +121,7 @@ void FreeM(Matrix *m);
  * m is the matrix
  */
 
-void Fillup(Matrix *m);
+void FillupM(Matrix *m);
 
 /*
  * Add two matrix and return the first one
