@@ -81,7 +81,9 @@ int main(int argc, char** argv)
 		Matrix *input = InitM(28*28,1);
 		int layerSizes[] = {28*28,15,26};
 		neuNet *network = init_network(layerSizes,3); 
-		train(network,2, 1.5, input, ' ' );
+		//train(network,2, 1.5, input, ' ' );
+		feedforward_batch(network, input);
+		
 
 		freeNeuNet(network);
 

@@ -82,7 +82,7 @@ void Training(neuNet *n, int epoch, double learning_rate)
 				mat->line = 28; 
 				printf("%c", (batches[b]->results[m]));
 			}
-			FinalUpdate_batch(network,learning_rate, epoch);
+			FinalUpdate_batch(n,learning_rate, epoch);
 			printf(" %li\n", batches[b]->size);
 		}
 		for(size_t i = 0; i < pool->size/batchSize+1; i++)
