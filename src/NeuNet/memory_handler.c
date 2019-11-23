@@ -36,6 +36,8 @@ void Freelayer(layer *cL)
 {
   	FreeM(cL->biases);
   	FreeM(cL->weights);
+	FreeM(cL->weight_batch);
+	FreeM(cL->biases_batch);
 	free(cL);
 }
 

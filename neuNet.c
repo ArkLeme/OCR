@@ -48,9 +48,9 @@ void train(neuNet *Network,int steps,float learning_rate)
 {
 	int inp[4][2] = {{0,0},{1,1},{0,1},{1,0}};
 	int res[4] = {0,0,1,1};
-  	//for (int i =0; i<steps; i++)
-  	//{	
-		int i =0;
+  	for (int i =0; i<steps; i++)
+  	{	
+		
 		int index = i %4;
 		int j = inp[index][0];
 		int k = inp[index][1];
@@ -62,14 +62,14 @@ void train(neuNet *Network,int steps,float learning_rate)
 		PutM(out, 0,0,res[index]);
 		forward_prop(Network, input);
 		printf("%d xor %d = %f\t%d\n", j, k, GetM(Network->layers[2]->outputs,0,0), i);
-	//	backprop(Network, 1, out, learning_rate);
+	//backprop(Network, 1, out, learning_rate);
 		backprop_batch(Network,1,out,learning_rate);
 		ClearNeuNet(Network);
 		FreeM(out);
 		//FreeM(input);
-    //}
+    }
 
-		FinalUpdate_batch(Network,learning_rate, i+1);	
+		FinalUpdate_batch(Network,learning_rate, steps);	
 
 	
 }
@@ -91,13 +91,10 @@ int main(int argc, char** argv)
 		neuNet *network = init_network(layerSizes,3); 
 		train(network, 2, 0.1);
 		
-		
-
-		freeNeuNet(network);
 		FreeM(input);
-
 	
 	}	
+
 	freeNeuNet(network);
 
 	

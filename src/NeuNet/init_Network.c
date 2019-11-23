@@ -70,8 +70,10 @@ layer *init_layer(int nbNeurons, int nbNeurons_prec)
 		{
 			Layer->weights = InitM(nbNeurons,1);    
      			// Layer->errors = InitM(nbNeurons,1);
-      			Layer->nbNeurons = nbNeurons;
+      			
 		}
+
+		Layer->nbNeurons = nbNeurons;
 	}
     
   	return Layer;
