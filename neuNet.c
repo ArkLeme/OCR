@@ -12,6 +12,7 @@
 #include "src/matrix/matrix.h"
 #include "src/NeuNet/training.h"
 
+#include "src/NeuNet/parcours.h"
 //predict answer with a network trained
 /*int calculate (neuNet* Network,Matrix *input_data)
 {
@@ -26,12 +27,13 @@ int GetOutput(neuNet *n)
 	double max = -1;
 	int index = 0;
 	layer*ll = n->layers[n->nbLay-1];
-	for(int i  = 0; i < ll->nbNeurons; i++)
+//	DisplayM(ll->outputs);
+	for(int i  = 0; i < ll->outputs->line; i++)
 	{
-		if(GetM(ll->outputs, i, 1) > max)
+		if(GetM(ll->outputs, i, 0) > max)
 		{
-			max = GetM(ll->outputs, i, 1);
-		   index = i;
+			max = GetM(ll->outputs, i, 0);
+		    index = i;
 		}
 	}
 	return index;
@@ -39,8 +41,12 @@ int GetOutput(neuNet *n)
 	
 char Calculate(Matrix* c, neuNet * n)
 {
+	c->col = 1;
+	c->line = 784;
 	forward_prop(n, c);
-	return (char) ('a' + GetOutput(n));
+	int result = GetOutput(n);
+	ClearNeuNet(n);
+	return (char) ('a' + result);
 }
 
 //train network with output_data and given output wanted
@@ -82,6 +88,16 @@ int main(int argc, char** argv)
 	{
 		Training(network, 10, 0.01);
 		printf("Training completed\n");
+		List *l = Parcours("image_data/png/ocr.png");
+		List* save = l;
+		while(l)
+		{
+			DisplayM(l->mat);
+			printf("%c\n", Calculate(l->mat, network));
+			getchar();
+			l=l->next;
+		}
+		DeleteL(save);
 	}
 	else
 	{	

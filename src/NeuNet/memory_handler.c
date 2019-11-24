@@ -8,13 +8,13 @@
 void ClearNeuNet(neuNet *n)
 {
 	layer* cL = n->layers[0];
-//	FreeM(cL->values); //Maybe it will be needed to only free the pointer
   	FreeM(cL->outputs);
 	for(int i = 1; i < n->nbLay; i++)
 	{
 		layer* cL = n->layers[i];
   		FreeM(cL->values);
   		FreeM(cL->outputs);
+		if(cL->errors)
   		FreeM(cL->errors);
 	}
 }

@@ -32,7 +32,9 @@ void forward_prop(neuNet* network, Matrix *input_data)
 	    	// PutM(save_acti,i,step,current_layer->outputs);
 	    	FreeM(multiplication_weights);
 	    	input_data = current_layer->outputs;
-	    
+	  		
+		  current_layer->errors = NULL; //needed if it is only 
+							//calculate the answer	  
 	  }
 }
 
@@ -210,10 +212,8 @@ void backprop_batch(neuNet *network, Matrix *expOutputs)
 	FreeM(update);
 	FreeM(transpose_out);
 	
-	//Not optimal but easier to understand
 	for(int i = network->nbLay-2; i > 0; i--) 
 	{	
-		
     	layer *cl = network->layers[i];   //current layer
 		pl = network->layers[i-1];
 		Matrix *transpose = TransM(network->layers[i+1] -> weights);
