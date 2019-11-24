@@ -7,7 +7,7 @@ Matrix* forward_prop(neuNet *network, Matrix * input_data);
 void backprop(neuNet* n, int len, Matrix *expOutputs, float learningRate);
 
 
-void FinalUpdate_batch(neuNet *network, float learning_rate, int step);
-void backprop_batch(neuNet *network, int len_output, Matrix *expOutputs, float learning_rate);
+void FinalUpdate_batch(neuNet *network, float learning_rate, int batchSize);
+void backprop_batch(neuNet *network, Matrix *expOutputs);
 
 #endif

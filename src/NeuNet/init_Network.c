@@ -57,13 +57,13 @@ layer *init_layer(int nbNeurons, int nbNeurons_prec)
     	{
 		//Layer->values = InitM(nbNeurons,1);
 		Layer->biases = InitM(nbNeurons,1);
-		Layer->biases_batch = InitM(nbNeurons,1);
+	//	Layer->biases_batch = InitM(nbNeurons,1);
     		//Layer->outputs = InitM(nbNeurons,1);
       
       		if(nbNeurons_prec)
 		{
 			Layer->weights = InitM(nbNeurons,nbNeurons_prec);
-			Layer->weight_batch = InitM(nbNeurons,nbNeurons_prec);
+		//	Layer->weight_batch = InitM(nbNeurons,nbNeurons_prec);
 		}	
       
      		else 
@@ -111,3 +111,13 @@ neuNet* init_network(int layer_size[], size_t nbLayers)
 	return network;
 	  
 }		     
+
+void InitNeuNetForBatch(neuNet*n)
+{
+	for(int i = 1; i < n->nbLay; i++)
+	{
+		layer *cl = n->layers[i];
+		cl->weight_batch = InitM(cl-> nbNeurons, n->layers[i-1]->nbNeurons);
+		cl->biases_batch = InitM(cl->nbNeurons, 1);
+	}
+}

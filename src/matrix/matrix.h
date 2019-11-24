@@ -123,14 +123,14 @@ void FreeM(Matrix *m);
 
 void FillupM(Matrix *m);
 
-/*
+/* DEPRECATED DESCRIPTION
  * Add two matrix and return the first one
  * m1 is the first matrix
  * m3 the second
  * return m1
  */
 
-Matrix *Add_OptiM(Matrix *m1, Matrix *m2);
+void Add_OptiM(Matrix *m1, Matrix *m2);
 
 
 
@@ -189,6 +189,7 @@ Matrix *MultValM(Matrix *m1, Matrix *m2);
  * return a new matrix
  */
 Matrix *MultScalM(Matrix *m1, double v);
+void MultScalMP(Matrix *m, double v);
 
 /*
  * Copy a part of a matrix

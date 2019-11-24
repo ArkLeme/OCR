@@ -102,7 +102,7 @@ void FillupM(Matrix* m)
 }
 
 //Addition atrix without creating a new Matrix
-Matrix* Add_OptiM(Matrix* m1, Matrix* m2)
+void Add_OptiM(Matrix* m1, Matrix* m2)
 {
 	if(m1 -> col != m2 -> col || m1 -> line != m2 -> line)
 		errx(1, "Add Matrix do not have the same dimension :\
@@ -114,12 +114,9 @@ Matrix* Add_OptiM(Matrix* m1, Matrix* m2)
 	{
 		for(int j=0; j<m1->col;j++)
 		{
-
 			*((m1 -> matrix) + (m1 -> col) * i + j) +=  GetM(m2, i,j);
 		}
 	}
-
-	return m1;
 }
 
 //Addition Matrix
@@ -255,6 +252,17 @@ Matrix* MultScalM(Matrix *m1, double v)
 	}
 
 	return m;
+}
+
+void MultScalMP(Matrix *m, double v)
+{
+	for(int i = 0; i < m -> line; i++)
+	{
+		for(int j = 0; j < m -> col; j++)
+		{
+			PutM(m, i, j, v * GetM(m, i, j));
+		}
+	}
 }
 
 //Copy one matrix from position to another position

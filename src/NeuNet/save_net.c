@@ -7,6 +7,8 @@
 
 void SaveNeuNet(neuNet *n)
 {
+	//DEPRECATED
+	//we need to use fread/fwrite (efficiency)
 	FILE *p;
 	p = fopen("network", "w");
 	if(p == NULL)

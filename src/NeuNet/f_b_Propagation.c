@@ -169,36 +169,27 @@ void backprop(neuNet *network, int len_output, Matrix *expOutputs, float learnin
 
 
 
-void FinalUpdate_batch(neuNet *network, float learning_rate, int step)
+void FinalUpdate_batch(neuNet *network, float learning_rate, int batchSize)
 {
 	layer *cl;
-	double coef = -(learning_rate)/step;
-
-	for(int i=0; i<network->nbLay;i++)	
+	double coef = -(learning_rate)/batchSize;
+	for(int i=1; i<network->nbLay;i++)	
 	{
 		cl = network->layers[i];
+		MultScalMP(cl->weight_batch,coef);
+		Add_OptiM(cl->weights,cl->weight_batch); //update poids
 		
-		cl->weight_batch = MultScalM(cl->weight_batch,coef);
-		cl->weights = Add_OptiM(cl->weights,cl->weight_batch);
-		
-		cl->biases_batch = MultScalM(cl->biases_batch,coef);
-		cl->biases = Add_OptiM(cl->biases,cl->biases_batch);
+		MultScalMP(cl->biases_batch,coef);
+		Add_OptiM(cl->biases,cl->biases_batch);//update biases
 	}
-
-		
 }
 
 
-void backprop_batch(neuNet *network, int len_output, Matrix *expOutputs, float learning_rate)
+void backprop_batch(neuNet *network, Matrix *expOutputs)
 {
 	layer *ll =network->layers[network->nbLay -1]; //last layer
 	layer *pl = network->layers[network->nbLay -2]; //precedant layer
-
 	
-	//Check if len_output corresponds to the number of neurons of the last layer
-	if(len_output != ll->nbNeurons)
-	   errx(1,"Output are not of the correct length");
-
 	//special case for last layer
 	Matrix *neg = MultScalM(expOutputs, -1);
 	Matrix* minus = AddM(ll->outputs, neg);
@@ -211,22 +202,19 @@ void backprop_batch(neuNet *network, int len_output, Matrix *expOutputs, float l
 	FreeM(sPrimeValues);
 	FreeM(minus);
 
-
 	//Update Sum of Errors and Erros*Output(layer-1)
 	Matrix* transpose_out = TransM(pl->outputs);
 	Matrix *update = MultM(ll->errors,transpose_out);
-	Add_OptiM(update,ll->weight_batch);
+	Add_OptiM(ll->weight_batch, update);
 	Add_OptiM(ll->biases_batch,ll->errors);
-
 	FreeM(update);
 	FreeM(transpose_out);
-	
 	
 	//Not optimal but easier to understand
 	for(int i = network->nbLay-2; i > 0; i--) 
 	{	
 		
-	    	layer *cl = network->layers[i];   //current layer
+    	layer *cl = network->layers[i];   //current layer
 		pl = network->layers[i-1];
 		Matrix *transpose = TransM(network->layers[i+1] -> weights);
 		Matrix *wXE = MultM(transpose,network->layers[i+1] -> errors);
@@ -243,8 +231,5 @@ void backprop_batch(neuNet *network, int len_output, Matrix *expOutputs, float l
 		
 		FreeM(update);
 		FreeM(transpose_bis);
-		
 	}
-
-
 }

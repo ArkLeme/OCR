@@ -1,10 +1,12 @@
 #include "structNet.h"
 #include "memory_handler.h"
+#include "init_Network.h"
 #include "example_gen.h"
 #include "../matrix/matrix.h"
 #include "f_b_Propagation.h"
 #include <stdlib.h>
 #include <stdio.h>
+
 
 void ShufflePool(Pool*p)
 {
@@ -67,6 +69,7 @@ void Training(neuNet *n, int epoch, double learning_rate)
 		Pool** batches = CreateBatches(pool, batchSize);
 		for(size_t b = 0; b < pool->size/batchSize +1; b++)
 		{
+			InitNeuNetForBatch(n);
 			for(size_t m  = 0; m < batches[b]->size; m++)
 			{	
 				Matrix* mat = batches[b]->examples[m];
@@ -75,14 +78,13 @@ void Training(neuNet *n, int epoch, double learning_rate)
 								// for neuNet input matrix
 				forward_prop(n, mat);
 				Matrix* expected_out = CreateExpected(batches[b]->results[m]);
-				backprop_batch(n, 26, expected_out, learning_rate);
+				backprop_batch(n, expected_out);
 				ClearNeuNet(n);
 				FreeM(expected_out);
-				mat->col = 28;
-				mat->line = 28; 
 				printf("%c", (batches[b]->results[m]));
 			}
-			FinalUpdate_batch(n,learning_rate, epoch);
+			FinalUpdate_batch(n,learning_rate, batchSize);
+			FreeBatchMatrix(n);
 			printf(" %li\n", batches[b]->size);
 		}
 		for(size_t i = 0; i < pool->size/batchSize+1; i++)

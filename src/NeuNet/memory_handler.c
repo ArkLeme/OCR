@@ -36,11 +36,19 @@ void Freelayer(layer *cL)
 {
   	FreeM(cL->biases);
   	FreeM(cL->weights);
-	FreeM(cL->weight_batch);
-	FreeM(cL->biases_batch);
+	//FreeM(cL->weight_batch);
+	//FreeM(cL->biases_batch);
 	free(cL);
 }
 
+void FreeBatchMatrix(neuNet*n)
+{
+	for(int i = 1; i < n->nbLay; i++)
+	{
+		FreeM(n->layers[i]->weight_batch);
+		FreeM(n->layers[i]->biases_batch);
+	}
+}
 
 Pool* InitPool(size_t size)
 {

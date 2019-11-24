@@ -63,7 +63,7 @@ void train(neuNet *Network,int steps,float learning_rate)
 		forward_prop(Network, input);
 		printf("%d xor %d = %f\t%d\n", j, k, GetM(Network->layers[2]->outputs,0,0), i);
 	//backprop(Network, 1, out, learning_rate);
-		backprop_batch(Network,1,out,learning_rate);
+		backprop_batch(Network,out);
 		ClearNeuNet(Network);
 		FreeM(out);
 		//FreeM(input);
@@ -80,26 +80,18 @@ int main(int argc, char** argv)
 	neuNet *network = init_network(layerSizes,3); 
 	if(argc == 2 && *argv[1] == 't')
 	{
-		Training(network, 5, 0.01);
-		printf("Training completed");
+		Training(network, 10, 0.01);
+		printf("Training completed\n");
 	}
 	else
 	{	
 		Matrix *input = InitM(2,1);
 		int layerSizes[] = {2,3,1};
-		
 		neuNet *network = init_network(layerSizes,3); 
 		train(network, 2, 0.1);
-		
 		FreeM(input);
-	
 	}	
-
 	freeNeuNet(network);
-
-	
-
-	
 	
 	return 0;
 }
