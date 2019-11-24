@@ -3,6 +3,11 @@
 
 #include "../matrix/matrix.h"
 
+/**
+ * \file create_string.h
+ * \brief header of create_string.c
+ * \author William.G
+ */
 char* char_string(List *chr);
 
 char* word_string(List *word);

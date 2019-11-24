@@ -2,7 +2,22 @@
 #include <stdio.h>
 #include "../matrix/matrix_image.h"
 
-//Apply horizontal lrsa
+/**
+ * \file rlsa.c
+ * \brief This files containes all the function to apply the rlsa algorithm
+ * \author William.G
+ */
+
+/**
+ * \fn Matrix *Hrlsa(Matrix *m, int limit)
+ * \brief Apply rlsa horizontaly, limit is the treshold, if the treshold is 0
+ * it return a new matrix without any modification.
+ *
+ * \param m : The matrix
+ * \param limit : threshold of white pixel tolerance
+ *
+ * \return New  matrix
+ */
 Matrix *Hrlsa(Matrix *m, int limit)
 {
     if(limit == 0)
@@ -43,7 +58,16 @@ Matrix *Hrlsa(Matrix *m, int limit)
 return output;
 }
 
-//Aplly vertical lrsa
+/**
+ * \fn Matrix *Vrlsa(Matrix *m, int limit)
+ * \brief Apply the rlsa vertically, limit is the treshold, if the treshold is
+ * 0 it return a new matrix without any modification.
+ *
+ * \param m : The matrix
+ * \param limit : threshold of white pixel tolerance
+ *
+ * \return New  matrix
+ */
 Matrix *Vrlsa(Matrix *m, int limit)
 {
     if(limit == 0)
@@ -84,7 +108,17 @@ Matrix *Vrlsa(Matrix *m, int limit)
 	return output;
 }
 
-//Apply both horizontal and vertical rlsa
+/**
+ * \fn Matrix *rlsa(Matrix *m, int vr, int cr)
+ * \brief Apply the rlsa vertically and horizontally, vr and cr are the
+ * treshold of vertical and horizontal rlsa.
+ *
+ * \param m : The matrix
+ * \param vr : vertical limit
+ * \param cr : horizontal limit
+ *
+ * \return New  matrix
+ */
 Matrix *rlsa(Matrix *m, int vr, int cr)
 {
     //if(m->size==952) SaveMatAsIm(m, "image_data/rlsa/m_rlsa.bmp");

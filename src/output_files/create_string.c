@@ -4,6 +4,13 @@
 #include <stdlib.h>
 #include "../matrix/matrix_image.h"
 
+/**
+ * \file create_string.c
+ * \brief This files contains all the function to get the string from the list
+ * of matrix.
+ * \author William.G
+ */
+
 char *test = "Lorem ipsum dolor sit met\n"\
               "consectetur adipiscing elit\n"\
               "Morbi rhoncus libero et\n"\
@@ -18,11 +25,31 @@ char *test = "Lorem ipsum dolor sit met\n"\
               "elementum varius condimentum\n"\
               "\n"\
               "nec\n"\
-              "abcdefghijklmnopqrstuvwxyz"\
-              "abcdefghijklmnoprstuvwxyz";
+             "abcdefghijklmnopqrstuvwxyz"\
+             "abcdefghijklmnopqrstuvwxyz"\
+             "abcdefghijklmnopqrstuvwxyz"\
+             "abcdefghijklmnopqrstuvwxyz"\
+             "abcdefghijklmnopqrstuvwxyz"\
+             "abcdefghijklmnopqrstuvwxyz"\
+             "abcdefghijklmnopqrstuvwxyz"\
+             "abcdefghijklmnopqrstuvwxyz"\
+             "abcdefghijklmnopqrstuvwxyz"\
+             "abcdefghijklmnopqrstuvwxyz"\
+             "abcdefghijklmnopqrstuvwxyz"\
+             "abcdefghijklmnopqrstuvwxyz"\
+             "abcdefghijklmnopqrstuvwxyz"\
+             "abcdefghijklmnoprstuvwxyz";
 char *start;
 char *end;
 
+/**
+ * \fn char *char_string(List *single_chr)
+ * \brief Create a char from a list of char
+ *
+ * \param single_char : List of character
+ *
+ * \return pointer to the char
+ */
 char *char_string(List *single_chr)
 {
     char *c = malloc(sizeof(char) * 2);
@@ -34,6 +61,15 @@ char *char_string(List *single_chr)
     return c;
 }
 
+/**
+ * \fn char* word_string(List *single_word)
+ * \brief Create a word from a list of word, it call the char_string function
+ * for every char in the word.
+ *
+ * \param single_word : lsit of word
+ *
+ * \return pointer to the word
+ */
 char* word_string(List *single_word)
 {
     List *first_char = single_word->child;
@@ -57,6 +93,15 @@ char* word_string(List *single_word)
     return word;
 }
 
+/**
+ * \fn char* line_string(List *single_line)
+ * \brief Create a line from a list of line, it call the word function and
+ * add space between every word but not the last.
+ *
+ * \param single_line : List of line
+ *
+ * \return pointer to the line
+ */
 char* line_string(List *single_line)
 {
     List *first_word = single_line->child;
@@ -88,6 +133,15 @@ char* line_string(List *single_line)
     return no_space;
 }
 
+/**
+ * \fn char* para_string(List* single_para)
+ * \brief Create a paragraph from a list of paragraph, it call the line_string
+ * and add '\n' to every end of line.
+ *
+ * \param single_para : List of paragraph
+ *
+ * \return pointer to the paragraph
+ */
 char* para_string(List* single_para)
 {
     List *first_line = single_para->child;
@@ -113,6 +167,15 @@ char* para_string(List* single_para)
     return para;
 }
 
+/**
+ * \fn char* text_string(List* list_para)
+ * \brief Create the text from the initial list of paragraph, it call
+ * para_string and add '\n' at theend of every paragraph
+ *
+ * \param list_para : List of paragraph
+ *
+ * \return pointer to the text
+ */
 char* text_string(List* list_para)
 {
     List *first_para = list_para;
@@ -137,24 +200,27 @@ char* text_string(List* list_para)
     return text;
 }
 
+/**
+ * \fn void write_files(char* path, List *l)
+ * \brief Create a string from the list of paragraph.
+ *
+ * \param path : path to save the file
+ * \param l : list of paragraph
+ */
 void write_files(char* path, List *l)
 {
     FILE *fp;
     start = test;
-
-    SaveMatsAsIm(l, 10, "line.bmp");
 
     end = test + LengthStr(test) - 1;
 
     fp = fopen(path, "w");
 
     char *string = text_string(l);
-    char *s = Concatene(string, "0");
 
-    fprintf(fp, "%s", s);
+    fprintf(fp, "%s", string);
 
     free(string);
-    free(s);
 
     fclose(fp);
 }
