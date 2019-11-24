@@ -16,7 +16,6 @@ int main(int argc,char **argv)
     GtkWidget *p_window = NULL;
     GtkWidget *p_main_box = NULL;
     GtkWidget *p_text_view = NULL;
-    GtkWidget *p_button_box = NULL;
     
     /* Init GTK+ */
     gtk_init(&argc,&argv);
@@ -54,14 +53,14 @@ int main(int argc,char **argv)
     gtk_box_pack_start (GTK_BOX (p_main_box), GTK_WIDGET (toolbar_new (p_text_view)), FALSE, FALSE, 0);
 
     /* Creation de la page d'onglets */
-    {
+    /*{
     	GtkWidget *p_notebook = NULL;
 
     	p_notebook = gtk_notebook_new ();
     	gtk_container_add (GTK_CONTAINER (p_main_box), p_notebook);
     	g_signal_connect (G_OBJECT (p_notebook), "switch-page", G_CALLBACK (cb_page_change), NULL);
     	docs.p_notebook = GTK_NOTEBOOK (p_notebook);
-    }
+    }*/
 
     /* Create the text area */
     {
@@ -80,8 +79,6 @@ int main(int argc,char **argv)
 
 
     /* Create button box container */
-    p_button_box = gtk_button_box_new(GTK_ORIENTATION_HORIZONTAL);
-    gtk_box_pack_start (GTK_BOX (p_main_box), p_button_box, FALSE, FALSE, 0);
     s_button_box = gtk_button_box_new(GTK_ORIENTATION_VERTICAL);
     gtk_box_pack_start (GTK_BOX (s_main_box), s_button_box, FALSE, FALSE, 0);
     
@@ -89,6 +86,7 @@ int main(int argc,char **argv)
 
     GtkWidget *image = gtk_image_new_from_file("/home/alexandre/Aled/OCR/image_data/png/lena.png");
     gtk_box_pack_start(GTK_BOX(s_button_box), image, FALSE,FALSE, 100);
+    
     /* Button ocr config */
     {
 	GtkWidget *s_button = NULL;
@@ -115,63 +113,6 @@ int main(int argc,char **argv)
 	s_button = gtk_button_new_with_label("Quit");
 	g_signal_connect (G_OBJECT (s_button), "clicked", G_CALLBACK (cb_quit), NULL);
 	gtk_box_pack_start (GTK_BOX (s_button_box), s_button, FALSE, FALSE, 100);
-    }
-
-
-    /* Text editor button config */
-
-    /* Button new_file config */
-    {
-	GtkWidget *p_button = NULL;
-
-	p_button = gtk_button_new_from_icon_name ("document-new",GTK_ICON_SIZE_BUTTON);
-	g_signal_connect (G_OBJECT (p_button), "clicked", G_CALLBACK (cb_new), p_text_view);
-	gtk_box_pack_start (GTK_BOX (p_button_box), p_button, FALSE, FALSE, 0);
-    }
-    /* Button open config */
-    {
-	GtkWidget *p_button = NULL;
-
-	p_button = gtk_button_new_from_icon_name ("document-open",GTK_ICON_SIZE_BUTTON);
-	g_signal_connect (G_OBJECT (p_button), "clicked", G_CALLBACK (cb_open), p_text_view);
-	gtk_box_pack_start (GTK_BOX (p_button_box), p_button, FALSE, FALSE, 0);
-    }
-
-    /* Button save config */
-    {
-	GtkWidget *p_button = NULL;
-
-	p_button = gtk_button_new_from_icon_name ("document-save",GTK_ICON_SIZE_BUTTON);
-	g_signal_connect (G_OBJECT (p_button), "clicked", G_CALLBACK (cb_save), NULL);
-	gtk_box_pack_start (GTK_BOX (p_button_box), p_button, FALSE, FALSE, 0);
-    }
-
-    /* Button saveAs config */
-    {
-	GtkWidget *p_button = NULL;
-
-	p_button = gtk_button_new_from_icon_name ("document-save-as",GTK_ICON_SIZE_BUTTON);
-	g_signal_connect (G_OBJECT (p_button), "clicked", G_CALLBACK (cb_saveas), NULL);
-	gtk_box_pack_start (GTK_BOX (p_button_box), p_button, FALSE, FALSE, 0);
-    }
-
-    /* Button close config */
-    {
-	GtkWidget *p_button = NULL;
-
-	p_button = gtk_button_new_from_icon_name ("window-close",GTK_ICON_SIZE_BUTTON);
-	g_signal_connect (G_OBJECT (p_button), "clicked", G_CALLBACK (cb_close), NULL);
-	gtk_box_pack_start (GTK_BOX (p_button_box), p_button, FALSE, FALSE, 0);
-    }
-
-
-    /* Button quit config */
-    {
-	GtkWidget *p_button = NULL;
-
-	p_button = gtk_button_new_from_icon_name ("application-exit",GTK_ICON_SIZE_BUTTON);
-	g_signal_connect (G_OBJECT (p_button), "clicked", G_CALLBACK (cb_quit), NULL);
-	gtk_box_pack_start (GTK_BOX (p_button_box), p_button, FALSE, FALSE, 0);
     }
 
     /* Display window */
