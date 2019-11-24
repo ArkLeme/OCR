@@ -162,54 +162,9 @@ void backprop(neuNet *network, int len_output, Matrix *expOutputs, float learnin
 
 }
 
-///////////////////////////////////////////////////////// B A T C H   P R O P A //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////// B A T C OPA //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-/*void batch_Propa(neuNet *network, Matrix *wanted_output, float learning_rate, Matrix *input_data)
-{
-        layer *current_layer;
-		
-	network->layers[0]->values = input_data;
-	network->layers[0]->outputs = Softmax(network->layers[0]->values);
-	//Init weight_batch and biases_batch 
-	//pas sûr su'il faille initialiser ici, puisque cette fonction
-	//va être appellée pour chaque example; et non pas pour chaque lot
-	// /////////J'ai peut etre mal compris
-	//Mauvaises dimensiosn il me semble pour weight
-	current_layer->weight_batch = InitM(current_layer->nbNeurons,1);
-	current_layer->biases_batch = InitM(current_laeyer->nbNeurons,1);
-
-
-	
-	//Propage the input values in every layers of the network
-	for(int i = 1; i < network->nbLay; i++)
-	  {
-	    input_data = network->layers[i-1] -> outputs;
-	    current_layer = network->layers[i];
-
-	    //Calculate the values and input Matrix of the current layer
-	    layer_forward_propa(current_layer,input_data);
-	    
-	    Matrix *multiplication_weights = MultM(current_layer->weights,input_data);
-	    current_layer->values = AddM(multiplication_weights,current_layer->biases);
-	    current_layer->outputs = Softmax(current_layer->values);
-
-
-	    //Init weight and biases batch for each layer
-	    FreeM(multiplication_weights);
-	    input_data = current_layer->outputs;
-	    current_layer->weight_batch = InitM(current_layer->nbNeurons,1);
-	    current_layer->biases_batch = InitM(current_layer->nbNeurons,1);
-	    
-	  }
-
-
-	feedforward_batch(network,input_data);
-	backprop_batch(network, wanted_output, learning_rate);
-	FinalUpdate_batch(network,learning_rate, step);
-	
-	
-}*/
 	
 
 
