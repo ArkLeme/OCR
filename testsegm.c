@@ -8,6 +8,7 @@
 #include "src/process_segmentation/separate_matrix.h"
 #include "src/process_segmentation/process_segm.h"
 #include "src/output_files/create_string.h"
+#include "src/segmentation/segmentation.h"
 
 void testBin(char* path);
 void SaveMat(List *l, int i, char *p);
@@ -31,14 +32,14 @@ void testBin(char* path)
 
     while(lp != NULL)
     {
-        line_segm(lp);
+        lines_segmentation(lp);
         List *ll = lp->child;
         SaveMat(lp, p, "para");
         p++;
 
         while(ll != NULL)
         {
-            word_segm(ll);
+            words_segmentation(ll);
             List *lw = ll->child;
             SaveMat(ll, l, "line");
             l++;
@@ -75,27 +76,27 @@ void testBin(char* path)
     DeleteL(lg);
 }
 
-void char_func(char* path)
+/*void char_func(char* path)
 {
     List* lg = paragraph_segm(path);
     List * lp = lg;
 
-    /*
+    
     int p = 0;
     int l = 0;
     int w = 0;
     int c = 0;
-    */
+    
     while(lp != NULL)
     {
-        line_segm(lp);
+        lines_segmentation(lp);
         List *ll = lp->child;
         //SaveMat(lp, p, "para");
         //p++;
 
         while(ll != NULL)
         {
-            word_segm(ll);
+            words_segmentation(ll);
             List *lw = ll->child;
             //SaveMat(ll, l, "line");
             //l++;
@@ -112,7 +113,7 @@ void char_func(char* path)
                     //SaveMat(lc, c, "char");
                     //c++;
 
-                    /**
+                    **
                      * Liste de char du mot lc, les char sont dans le bon ordre
                      * pour le mort abcde :
                      * lc = a -> b -> c -> d -> e -> NULL
@@ -121,7 +122,7 @@ void char_func(char* path)
                      * doss image_data/rlsa pour voir dans quel ordre elles
                      * sont.
                      */
-                    lc = lc->next;
+                    /*lc = lc->next;
                     //lc = NULL;
                 }
 
@@ -139,7 +140,7 @@ void char_func(char* path)
 
     DeleteL(lg);
 
-}
+}*/
 
 
 void SaveMat(List *l,  int i, char *n)

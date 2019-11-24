@@ -9,7 +9,7 @@
 #include "../sdl_tools/sdl_tools.h"
 #include "../matrix/matrix.h"
 
-void lines_segmentation(Matrix *m,List *listoflines);
-void words_segmentation(Matrix *m, List *listofwords);
+void lines_segmentation(List *listofparagraph);
+void words_segmentation(List *listoflines);
 
 #endif
