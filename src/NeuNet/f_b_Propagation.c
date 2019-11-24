@@ -12,8 +12,8 @@
 //Calulate values and outputs
 void forward_prop(neuNet* network, Matrix *input_data)
 {
-        layer *current_layer;
-		
+    layer *current_layer;
+
 	network->layers[0]->values = input_data;
 	network->layers[0]->outputs = Sig(network->layers[0]->values);
 	
@@ -23,18 +23,15 @@ void forward_prop(neuNet* network, Matrix *input_data)
 	    	input_data = network->layers[i-1] -> outputs;
 	    	current_layer = network->layers[i];
 
-	    	//Calculate the values and input Matrix of the current layer   
+	    	//Calculate the values and input Matrix of the current layer
 	    	Matrix *multiplication_weights = MultM(current_layer->weights,input_data);
 	    	current_layer->values = AddM(multiplication_weights,current_layer->biases);
 	    	current_layer->outputs = Sig(current_layer->values);
 
-
-	    	// PutM(save_acti,i,step,current_layer->outputs);
 	    	FreeM(multiplication_weights);
 	    	input_data = current_layer->outputs;
 	  		
-		  current_layer->errors = NULL; //needed if it is only 
-							//calculate the answer	  
+		   	current_layer->errors = NULL; //needed if it is only 
 	  }
 }
 
@@ -183,6 +180,8 @@ void FinalUpdate_batch(neuNet *network, float learning_rate, int batchSize)
 		
 		MultScalMP(cl->biases_batch,coef);
 		Add_OptiM(cl->biases,cl->biases_batch);//update biases
+//		DisplayM(cl->weights);
+//		DisplayM(cl->biases);
 	}
 }
 

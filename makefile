@@ -2,7 +2,7 @@
 
 CC = gcc
 CPPFLAGS= `pkg-config --cflags sdl` -MMD
-CFLAGS = -fsanitize=address -g -Wall -Wextra -std=c99
+CFLAGS = -g -Wall -Wextra -std=c99
 LDFLAGS = -fsanitize=address
 LDLIBS = -lSDL -lSDL_image -lm `pkg-config --libs sdl`
 

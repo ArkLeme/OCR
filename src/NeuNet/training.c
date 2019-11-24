@@ -4,6 +4,7 @@
 #include "example_gen.h"
 #include "../matrix/matrix.h"
 #include "f_b_Propagation.h"
+#include "../../neuNet.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -61,11 +62,11 @@ Pool** CreateBatches(Pool* p, size_t batchSize)
 void Training(neuNet *n, int epoch, double learning_rate)
 {
 	int batchSize = 10; //Arbritrary value, needs of tests
-//	if(!fopen("neuralNetwork_data/examples.data", "r")) //file does not exist
 		GenerateExamples("neuralNetwork_data/names.data");
 	Pool* pool = ReadExamples("neuralNetwork_data/examples.data");
 	for(int i = 0; i < epoch; i++)
 	{
+		int success = 0;	
 		Pool** batches = CreateBatches(pool, batchSize);
 		for(size_t b = 0; b < pool->size/batchSize +1; b++)
 		{
@@ -79,20 +80,19 @@ void Training(neuNet *n, int epoch, double learning_rate)
 				forward_prop(n, mat);
 				Matrix* expected_out = CreateExpected(batches[b]->results[m]);
 				backprop_batch(n, expected_out);
+				if(GetOutput(n) == batches[b]->results[m] - 'a')
+					success++;
 				ClearNeuNet(n);
 				FreeM(expected_out);
-				printf("%c", (batches[b]->results[m]));
 			}
 			FinalUpdate_batch(n,learning_rate, batchSize);
 			FreeBatchMatrix(n);
-			printf(" %li\n", batches[b]->size);
 		}
 		for(size_t i = 0; i < pool->size/batchSize+1; i++)
 			FreePoolP(*(batches+i));
 		free(batches);
-		printf("\nepoch %i finished\n", i);
+		printf("epoch %i : %i/%li\n", i, success, pool->size);
 	}
-//	FreePoolP(pool);
 	FreePool(pool);
 }
 

@@ -86,18 +86,8 @@ int main(int argc, char** argv)
 	neuNet *network = init_network(layerSizes,3); 
 	if(argc == 2 && *argv[1] == 't')
 	{
-		Training(network, 10, 0.01);
+		Training(network, 50000, 2.5);
 		printf("Training completed\n");
-		List *l = Parcours("image_data/png/ocr.png");
-		List* save = l;
-		while(l)
-		{
-			DisplayM(l->mat);
-			printf("%c\n", Calculate(l->mat, network));
-			getchar();
-			l=l->next;
-		}
-		DeleteL(save);
 	}
 	else
 	{	
