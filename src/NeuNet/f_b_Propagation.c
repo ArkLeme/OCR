@@ -9,10 +9,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////// FORWARD PROPAGATION /////////////////////////////////////
 
+
+/*
 //Calulate values and outputs
 void forward_prop(neuNet* network, Matrix *input_data)
 {
-    layer *current_layer;
+        layer *current_layer;
 
 	network->layers[0]->values = input_data;
 	network->layers[0]->outputs = Sig(network->layers[0]->values);
@@ -33,8 +35,52 @@ void forward_prop(neuNet* network, Matrix *input_data)
 	  		
 		   	current_layer->errors = NULL; //needed if it is only 
 	  }
-}
+}*/
 
+
+//Calulate values and outputs
+void forward_prop(neuNet* network, Matrix *input_data)
+{
+    	layer *current_layer;
+	int i =0;
+	
+	//Layer number 0
+	network->layers[i]->values = input_data;
+	network->layers[i]->outputs = Sig(network->layers[0]->values);
+	
+	i+=1;
+	//Propage the input values in every layers of the network, startin from layer 1
+	while(i<network->nbLay-1)
+	//for(int i = 1; i < network->nbLay-1; i++)
+	  {
+	    	input_data = network->layers[i-1] -> outputs;
+	    	current_layer = network->layers[i];
+
+	    	//Calculate the values and input Matrix of the current layer
+	    	Matrix *multiplication_weights = MultM(current_layer->weights,input_data);
+	    	current_layer->values = AddM(multiplication_weights,current_layer->biases);
+	    	current_layer->outputs = Sig(current_layer->values);
+
+	    	FreeM(multiplication_weights);
+	    	input_data = current_layer->outputs;
+	  		
+		current_layer->errors = NULL; //needed if it is only 
+		i+=1;
+	  }
+
+		
+
+		input_data = network->layers[i-1] -> outputs;
+	    	current_layer = network->layers[i];
+
+	    	//Calculate the values and input Matrix of the current layer
+	    	Matrix *multiplication_weights = MultM(current_layer->weights,input_data);
+	    	current_layer->values = AddM(multiplication_weights,current_layer->biases);
+	    	current_layer->outputs = Softmax(current_layer->values);
+
+	    	FreeM(multiplication_weights);
+	    	input_data = current_layer->outputs;
+}
 
 
 
@@ -196,9 +242,9 @@ void backprop_batch(neuNet *network, Matrix *expOutputs)
 	Matrix* minus = AddM(ll->outputs, neg);
 	FreeM(neg);
 
-	Matrix *sPrimeValues = (SigPrime(ll->values));
+	Matrix *sPrimeValues = (softprime(ll->values));
 	//updates errors martrix
-	ll->errors = MultValM(minus, sPrimeValues);
+	ll->errors = MultM(sPrimeValues,minus);
 	
 	FreeM(sPrimeValues);
 	FreeM(minus);

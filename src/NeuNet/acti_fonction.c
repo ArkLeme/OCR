@@ -135,8 +135,8 @@ Matrix *softprime(Matrix *input)
 	}
 
        
-        return Addition_soft(output);
-	//return output;
+        //return Addition_soft(output);
+	return output;
 }
 
 
