@@ -92,7 +92,7 @@ int main(int argc, char** argv)
 	}
 	else
 	{	Training(network, 2, 2.5);
-		//SaveNeuNet(network);
+		SaveNeuNet(network);
 		neuNet *network_load;
 		network_load = LoadNeuNet();
 

@@ -19,6 +19,7 @@ void SaveNeuNet(neuNet *n)
 			fputc(n->layers[i]->nbNeurons,file);
 			fputc(' ', file);
 		}
+		fputc('\n',file);
 			
 		for(int i = 0;i < n->nbLay; i++)
 		{
@@ -26,14 +27,17 @@ void SaveNeuNet(neuNet *n)
 			printf("%i",i);
 			
 			printf("biases layer %i",i);
-			DisplayM(cL->biases);
-			fwrite(cL->biases, sizeof(double), cL->biases->size-1, file);  //Segfault 
+			
+			if(cL->biases->size != fwrite(cL->biases, sizeof(double), cL->biases->size-1, file))
+				{printf("Pas write tous les élèements !!");}
+			else
+{ 
 			fputc('\n', file);
 
 			printf("weights layer %i", i);
 			DisplayM(cL->weights);
 			fwrite(cL->weights, sizeof(double), cL->weights->size-1, file);
-			fputc('\n', file);
+			fputc('\n', file);}
 				
 			
 		
@@ -61,7 +65,7 @@ neuNet *LoadNeuNet()
 	{
 		int layers_nbNeurons[3];
 		int NbLay =0;
-		char r = fgetc(file);
+		int r = fgetc(file);
 		
 		
 
