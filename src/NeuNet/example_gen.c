@@ -49,6 +49,8 @@ Pool* ReadExamples(char* path)
 		pool->examples[i] = m;
 	}
 	fclose(f);
+	for(size_t i = 0; i < pool->size; i++)
+		printf("%c", pool->results[i]);
 	return pool;
 }
 
@@ -69,9 +71,11 @@ void GenerateExamples(char* path)
 	{
 		fgets(text, 10000, f);
 		sum += GenExample(filename, text, fe);
-		free(filename);
-		free(text);
+		//free(filename);
+		//free(text);
 	}
+	free(filename);
+	free(text);
 	fclose(f);
 	fclose(fe);
 	char *itoa = Itoa(sum);
@@ -94,7 +98,8 @@ int GenExample(char* ImagePath, char* text, FILE*f)
 	int i = 0;
 	while(l)
 	{
-		if(text[i] == ' ') i++; //to 'remove' space in the string, à optimiser
+		while(text[i] == ' ') 
+			i++; //to 'remove' space in the string, à optimiser
 		fputc(text[i], f);
 		fputc('\n', f);
 		Matrix* m  = l->mat;
