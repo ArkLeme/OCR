@@ -6,7 +6,7 @@
 #include "toolbar.h"
 
 
-docs_t docs = {NULL, NULL, NULL};
+docs_t docs = {NULL, NULL, NULL,NULL};
 
 int main(int argc,char **argv)
 {
@@ -30,8 +30,10 @@ int main(int argc,char **argv)
     p_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(p_window), "OCR");
     gtk_window_maximize (GTK_WINDOW(p_window));
-    docs.p_main_window = GTK_WINDOW (p_window);
 
+    docs.p_main_window = GTK_WINDOW (p_window);
+    docs.s_start_window = GTK_WINDOW (s_window);
+    
     /* Callback quit if window is destroy */
     
     g_signal_connect(G_OBJECT(p_window), "destroy", G_CALLBACK(cb_quit), NULL); 
@@ -77,7 +79,7 @@ int main(int argc,char **argv)
     
     /* Start window button config */
 
-    GtkWidget *image = gtk_image_new_from_file("/home/alexandre/Aled/OCR/image_data/png/lena.png");
+    GtkWidget *image = gtk_image_new_from_file("/home/alexandre/Aled/OCR/image_data/UI/ocr.jpg");
     gtk_box_pack_start(GTK_BOX(s_button_box), image, FALSE,FALSE, 100);
     
     /* Button ocr config */
@@ -94,7 +96,7 @@ int main(int argc,char **argv)
 	GtkWidget *s_button = NULL;
 
 	s_button = gtk_button_new_with_label("Edit Text");
-	g_signal_connect (G_OBJECT (s_button), "clicked", G_CALLBACK (cb_edit), p_window);
+	g_signal_connect (G_OBJECT (s_button), "clicked", G_CALLBACK (cb_edit), s_window);
 	gtk_box_pack_start (GTK_BOX (s_button_box), s_button, FALSE, FALSE, 100);
     }
 
@@ -109,7 +111,7 @@ int main(int argc,char **argv)
     }
 
     /* Display window */
-    gtk_widget_show_all(p_window);
+    gtk_widget_show_all(s_window);
 
     /* Exec gtk main loop */
     gtk_main();

@@ -3,10 +3,32 @@
 #include "document.h"
 
 static void open_file (const gchar *, GtkTextView *);
+static void open_ocr(gchar *, GtkTextView *);
+static gchar* ocr(gchar *);
 
 void cb_ocr(GtkWidget *s_widget, gpointer user_data)
 {
-    g_print("OCR");
+    GtkWidget *p_dialog = NULL;
+
+    p_dialog = gtk_file_chooser_dialog_new ("Choose picture", NULL,
+                                          GTK_FILE_CHOOSER_ACTION_OPEN,
+                                          ("Cancel"), GTK_RESPONSE_CANCEL,
+                                          ("Launch OCR"), GTK_RESPONSE_ACCEPT,
+                                          NULL);
+
+    if (gtk_dialog_run (GTK_DIALOG (p_dialog)) == GTK_RESPONSE_ACCEPT)
+    {
+	gchar *file_name = NULL;
+	
+	file_name = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (p_dialog));
+	open_ocr (file_name,user_data);
+	
+	g_free (file_name), file_name = NULL;
+    }
+    gtk_widget_destroy (p_dialog);
+    
+    gtk_widget_hide(GTK_WIDGET(docs.s_start_window));
+    gtk_widget_show_all(GTK_WIDGET(docs.p_main_window));
 
     (void) s_widget;
     (void) user_data;
@@ -14,11 +36,11 @@ void cb_ocr(GtkWidget *s_widget, gpointer user_data)
 
 void cb_edit(GtkWidget *s_widget,gpointer user_data)
 {
-    gtk_widget_show_all(GTK_WIDGET(user_data));
 
+    gtk_widget_hide(GTK_WIDGET(user_data));
+    gtk_widget_show_all(GTK_WIDGET(docs.p_main_window));
 
     (void) s_widget;
-    (void) user_data;
 }
 
 
@@ -252,8 +274,7 @@ static void open_file (const gchar *file_name, GtkTextView *p_text_view)
 
 	    /* To avoid error with char encoding */
 	    utf8 = g_locale_to_utf8 (contents, -1, NULL, NULL, NULL);
-	    g_free (contents);
-	    contents = NULL;
+	    g_free (contents) ,contents = NULL;
 	    gtk_text_buffer_insert (p_text_buffer, &iter, utf8, -1);
 	    g_free (utf8);
 	    utf8 = NULL;
@@ -265,4 +286,45 @@ static void open_file (const gchar *file_name, GtkTextView *p_text_view)
 	   print_warning ("Failed to open %s\n", file_name);
 	}
     }
+}
+
+static void open_ocr(gchar *file_name, GtkTextView *p_text_view)
+{
+    g_return_if_fail (file_name && p_text_view);
+    {
+	gchar *contents = ocr(file_name);
+	docs.actif = g_malloc (sizeof (*docs.actif));
+	docs.actif->chemin = g_strdup ("temp.txt");
+
+	docs.actif->p_text_view = p_text_view;
+	docs.actif->sauve = TRUE;
+
+	/* Copie of contents in GtkTextView */
+	gchar *utf8 = NULL;
+	GtkTextIter iter;
+	GtkTextBuffer *p_text_buffer = NULL;
+
+	cb_new(NULL, p_text_view);
+	gtk_widget_set_sensitive (GTK_WIDGET (docs.actif -> p_text_view), TRUE);
+
+	/* Get buffer of GtkTextView to change text */
+	p_text_buffer = gtk_text_view_get_buffer (p_text_view);
+	gtk_text_buffer_get_iter_at_line (p_text_buffer, &iter, 0);
+
+	/* To avoid error with char encoding */
+	utf8 = g_locale_to_utf8 (contents, -1, NULL, NULL, NULL);
+	//g_free (contents) , contents = NULL;
+	gtk_text_buffer_insert (p_text_buffer, &iter, utf8, -1);
+	g_free (utf8);
+	utf8 = NULL;
+	gtk_text_buffer_insert (p_text_buffer, &iter, contents, -1);
+	
+	docs.actif ->sauve = FALSE;
+    }
+} 
+
+static gchar* ocr(gchar *file_name)
+{
+    gchar *texte = file_name;
+    return texte;
 }
