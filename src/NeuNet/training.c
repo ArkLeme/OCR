@@ -26,7 +26,7 @@ void ShufflePool(Pool*p)
 Matrix* CreateExpected(char c)
 {
 	Matrix* m = InitM(26, 1);
-	PutM(m, (int)(c - 'a'), 1, 1);
+	PutM(m, c - 'a', 0, 1);
 	return m;
 }
 
@@ -57,7 +57,6 @@ Pool** CreateBatches(Pool* p, size_t batchSize)
 	*(batches + batchNb-1) = lastBatch;
 	return batches; 
 }
-
 
 void Training(neuNet *n, int epoch, double learning_rate)
 {
