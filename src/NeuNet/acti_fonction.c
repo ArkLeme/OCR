@@ -56,7 +56,7 @@ Matrix* Softmax(Matrix *input)
 {
 	Matrix *output = InitM(input->line,input->col);
   	double sum = 0;
-  	float value = 0;
+  	double value = 0;
 	double softed_value = 0;
 	double max;
 
@@ -81,11 +81,19 @@ Matrix* Softmax(Matrix *input)
 		for(int j = 0; j<input->line; j++)
 		{
 			value = GetM(input,j,i);
-			softed_value = Soft(sum,value, max);
+			softed_value = Soft(sum,value, 0);
 			PutM(output,j,i,softed_value);
 			
 		}
 	}
+
+	sum=0;
+
+	for(int k=0; k<output->line; k++)
+	{
+		sum+= GetM(output,k,0);
+	}
+	printf("%f \n", sum);	
 
 	return output;
 
