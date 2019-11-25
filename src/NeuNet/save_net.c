@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "save_net.h"
+#include "init_Network.h"
 
 void SaveNeuNet(neuNet *n)
 {
@@ -13,26 +14,28 @@ void SaveNeuNet(neuNet *n)
 
 	if(file != NULL)
 	{
+		for(int i = 0;i < n->nbLay; i++)
+		{
+			fputc(n->layers[i]->nbNeurons,file);
+			fputc(' ', file);
+		}
 			
 		for(int i = 0;i < n->nbLay; i++)
 		{
 			layer *cL = n->layers[i];
 			printf("%i",i);
-			if(cL->biases)
-			{
-				DisplayM(cL->biases);
 			
-				fwrite(cL->biases, sizeof(double), cL->biases->size-1, file);  //Segfault 
-				fputc('\n', file);
-			}
-			
-			if(cL->weights)
-			{
-				DisplayM(cL->weights);
-				fwrite(cL->weights, sizeof(double), cL->weights->size-1, file);
-				fputc('\n', file);
+			printf("biases layer %i",i);
+			DisplayM(cL->biases);
+			fwrite(cL->biases, sizeof(double), cL->biases->size-1, file);  //Segfault 
+			fputc('\n', file);
+
+			printf("weights layer %i", i);
+			DisplayM(cL->weights);
+			fwrite(cL->weights, sizeof(double), cL->weights->size-1, file);
+			fputc('\n', file);
 				
-			}
+			
 		
 		}
 	}
@@ -44,42 +47,49 @@ void SaveNeuNet(neuNet *n)
 	fclose(file);
 }
 
-/*void LoadNeuNet()
+neuNet *LoadNeuNet()
 {
-	//DEPRECATED
-	//we need to use fread/fwrite (efficiency)
-	FILE *p;
-	p = fopen("network", "w");
-	if(p == NULL)
+	
+	FILE *file;
+	file = fopen("network", "w");
+	if(file == NULL)
 	{
 		//errx("File can't be created");
+		printf("rien à loader");
 	}
-
-
-	int nbNeurons;
-	int nbNeurons_precLayer = 0;	
-
-
-	fprintf(p, "%i\n", n->nbLay);	
-	for(int i = 0;i < n->nbLay; i++)
+	else
 	{
-		layer cL = n->layers[i];
-
-		fprintf(p, "%i\n", cL->nbNeurons);
-		fwrite(cL->biases, sizeof(double), cL->biases->size, p);
-		fwrite(cL->weights, sizeof(double), cL->weights->size, p);
+		int layers_nbNeurons[3];
+		int NbLay =0;
+		char r = fgetc(file);
 		
 		
-	}
-	for(int i = 0; i < n->nbLay; i++)
-	{
-		layer* cL = n->layers[i];
-		for(int j = 0; j < cL->weights->size; j++)
+
+		while(r)		
 		{
-			fprintf(p,"%f\n", GetPosM(cL->weights, j));
+			layers_nbNeurons[NbLay] = r;
+			fgetc(file);
+			r = fgetc(file);
+			NbLay+=1;
 		}
-	}
-	
 		
-}*/
+		neuNet *network = init_network(layers_nbNeurons, NbLay);
+		
+		
+		for(int i = 0;i < network->nbLay; i++)
+		{
+			layer *cL = network->layers[i];
+
+			fread(cL->biases, sizeof(double), cL->biases->size, file);
+			fgetc(file);
+			fread(cL->weights, sizeof(double), cL->weights->size, file);
+			fgetc(file);		
+		
+		}
+	 	
+	}
+
+
+		
+}
 

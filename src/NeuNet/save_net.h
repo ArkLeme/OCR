@@ -3,6 +3,6 @@
 
 
 void SaveNeuNet(neuNet* n);
-void LoadNeuNet();
+neuNet* LoadNeuNet();
 
 #endif
