@@ -5,6 +5,7 @@
 #include <err.h>
 #include <stdio.h>
 #include <math.h>
+#include "cross_entropy.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////// FORWARD PROPAGATION /////////////////////////////////////
@@ -193,20 +194,30 @@ void backprop_batch(neuNet *network, Matrix *expOutputs)
 	layer *ll =network->layers[network->nbLay -1]; //last layer
 	layer *pl = network->layers[network->nbLay -2]; //precedant layer
 	
-	//special case for last layer
+	//dError
 	Matrix *neg = MultScalM(expOutputs, -1);
 	Matrix* minus = AddM(ll->outputs, neg);
 	FreeM(neg);
-
 	Matrix *sPrimeValues = (softprime(ll->values));
 	//updates errors martrix
 	ll->errors = MultM(sPrimeValues,minus);
-	
 	FreeM(sPrimeValues);
 	FreeM(minus);
 
+	//cross entropy OK
+	/*Matrix *ln = LogM(ll->outputs);
+	Add_OptiM(ln,expOutputs);
+	DisplayM(ln);
+	Matrix *neg = MultScalM(ln, -1);
+	FreeM(ln);
+	ll->errors = neg;
+	FreeM(neg);*/
+
+		
 	//Update Sum of Errors and Erros*Output(layer-1)
 	Matrix* transpose_out = TransM(pl->outputs);
+	
+	//DisplayM(transpose_out);
 	Matrix *update = MultM(ll->errors,transpose_out);
 	Add_OptiM(ll->weight_batch, update);
 	Add_OptiM(ll->biases_batch,ll->errors);
