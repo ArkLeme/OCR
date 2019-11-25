@@ -10,11 +10,12 @@ static void print_message (GtkMessageType type, const gchar *format, va_list va)
   gchar *message = NULL;
   GtkWidget *p_dialog = NULL;
 
-  message = g_strdup_vprintf (format, va);
+  message = g_strdup_vprintf (format,va);
   p_dialog = gtk_message_dialog_new (docs.p_main_window, GTK_DIALOG_MODAL, type, GTK_BUTTONS_CLOSE, message);
   g_free (message), message = NULL;
   gtk_dialog_run (GTK_DIALOG (p_dialog));
   gtk_widget_destroy (p_dialog);
+  va_end(va);
 }
 
 void print_info (char *format, ...)

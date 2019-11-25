@@ -17,7 +17,6 @@ typedef struct
   GList *tous;
   document_t *actif;
   GtkWindow *p_main_window;
-  GtkNotebook *p_notebook;
 } docs_t;
 
 /* Global variable */

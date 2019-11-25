@@ -10,7 +10,7 @@ GtkMenuBar *menu_new (gpointer user_data)
 
   p_menu_bar = gtk_menu_bar_new ();
 
-  /* Menu "Fichier" */
+  /* Menu "File" */
   {
     GtkWidget *p_menu = NULL;
     GtkWidget *p_menu_item = NULL;
