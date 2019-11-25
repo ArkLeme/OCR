@@ -1,9 +1,9 @@
 #include <stdlib.h>
 #include <gtk/gtk.h>
-#include "callback.h"
-#include "document.h"
-#include "menu.h"
-#include "toolbar.h"
+#include "src/UI/callback.h"
+#include "src/UI/document.h"
+#include "src/UI/menu.h"
+#include "src/UI/toolbar.h"
 
 
 docs_t docs = {NULL, NULL, NULL,NULL};
@@ -115,7 +115,7 @@ int main(int argc,char **argv)
 
     /* Exec gtk main loop */
     gtk_main();
-
+    
     return EXIT_SUCCESS;
 }
 

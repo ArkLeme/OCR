@@ -104,7 +104,7 @@ void cb_close (GtkWidget *p_widget, gpointer user_data)
 						"No",GTK_RESPONSE_NO,
 						"Cancel",GTK_RESPONSE_CANCEL, NULL);
 	    p_label = gtk_label_new ("Save changes ?");
-	    gtk_box_pack_start (GTK_BOX (p_dialog), p_label, TRUE, TRUE, 0);
+	    gtk_box_pack_start (GTK_BOX(p_dialog), p_label, TRUE, TRUE, 5);
 	    gtk_widget_show_all (p_dialog);
 	    switch (gtk_dialog_run (GTK_DIALOG (p_dialog)))
 	    {
