@@ -22,6 +22,28 @@ int main(int argc, char** argv)
 
 void testBin(char* path)
 {
+    SDL_Surface* nim = LoadImage(path);
+    SDL_Surface* nb = GrayScale(nim);
+    SDL_Surface* ncon = Contrast(nb);
+    SDL_Surface* nbin = Otsu(ncon);
+
+
+    SaveImage(ncon, "testnc.bmp");
+    SaveImage(nbin, "testnbin.bmp");
+    SDL_FreeSurface(nim);
+
+    SDL_Surface* im = LoadImage(path);
+    SDL_Surface* b = testIm(im);
+    SDL_Surface* con = Contrast(b);
+    SDL_Surface* bin = Otsu(con);
+
+
+    SaveImage(con, "testc.bmp");
+    SaveImage(nb, "testnb.bmp");
+    SaveImage(bin, "testbin.bmp");
+    SaveImage(b, "testb.bmp");
+    SDL_FreeSurface(im);
+
     List* lg = paragraph_segm(path);
     List * lp = lg;
 
@@ -72,7 +94,7 @@ void testBin(char* path)
         //lp = NULL;
     }
 
-    write_files("test.txt", lg);
+    //write_files("test.txt", lg);
     DeleteL(lg);
 }
 

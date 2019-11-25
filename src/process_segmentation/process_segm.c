@@ -23,13 +23,15 @@ Matrix* get_mat_from_png(char *path)
 {
 	SDL_Surface *input = LoadImage(path);
 	SDL_Surface *gray = GrayScale(input);
-	SDL_Surface *contrast = Contrast(gray);
+    SDL_Surface *brightness = testIm(gray);
+	SDL_Surface *contrast = Contrast(brightness);
 	SDL_Surface *bin = Otsu(contrast);
 
 	Matrix *m = GetMatFromIm(bin);
 
     SaveMatAsIm(m, "image_data/rlsa/bin.bmp");
 
+    SDL_FreeSurface(brightness);
     SDL_FreeSurface(input);
 	SDL_FreeSurface(gray);
 	SDL_FreeSurface(contrast);
@@ -250,7 +252,7 @@ List* remove_point(List *c)
     while(first != NULL)
     {
         List* next = first->next;
-        if(next != NULL && ((Matrix*) (next->mat))->size < 30)
+        if(next != NULL && ((Matrix*) (next->mat))->size < 9)
         {
             first->next = next->next;
             FreeL(next);
@@ -259,7 +261,7 @@ List* remove_point(List *c)
         first = first->next;
     }
 
-    if(c != NULL && ((Matrix*) (c->mat))->size < 20)
+    if(c != NULL && ((Matrix*) (c->mat))->size < 9)
     {
         return RemoveFL(c);
     }
