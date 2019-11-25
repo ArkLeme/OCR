@@ -89,12 +89,6 @@ Matrix* Softmax(Matrix *input)
 
 	sum=0;
 
-	for(int k=0; k<output->line; k++)
-	{
-		sum+= GetM(output,k,0);
-	}
-	printf("%f \n", sum);	
-
 	return output;
 
 }

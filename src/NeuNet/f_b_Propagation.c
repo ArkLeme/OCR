@@ -77,7 +77,7 @@ void forward_prop(neuNet* network, Matrix *input_data)
 	    	Matrix *multiplication_weights = MultM(current_layer->weights,input_data);
 	    	current_layer->values = AddM(multiplication_weights,current_layer->biases);
 	    	current_layer->outputs = Softmax(current_layer->values);
-	//DisplayM(current_layer->outputs);
+		
 
 	    	FreeM(multiplication_weights);
 	    	input_data = current_layer->outputs;

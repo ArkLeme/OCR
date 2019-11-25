@@ -7,6 +7,45 @@
 
 void SaveNeuNet(neuNet *n)
 {
+	
+	FILE *file;
+	file = fopen("network_save", "w");
+
+	if(file != NULL)
+	{
+			
+		for(int i = 0;i < n->nbLay; i++)
+		{
+			layer *cL = n->layers[i];
+			printf("%i",i);
+			if(cL->biases)
+			{
+				DisplayM(cL->biases);
+			
+				fwrite(cL->biases, sizeof(double), cL->biases->size-1, file);  //Segfault 
+				fputc('\n', file);
+			}
+			
+			if(cL->weights)
+			{
+				DisplayM(cL->weights);
+				fwrite(cL->weights, sizeof(double), cL->weights->size-1, file);
+				fputc('\n', file);
+				
+			}
+		
+		}
+	}
+	else
+	{ printf("Pas de fichier où écrire !");
+}
+
+	
+	fclose(file);
+}
+
+/*void LoadNeuNet()
+{
 	//DEPRECATED
 	//we need to use fread/fwrite (efficiency)
 	FILE *p;
@@ -15,10 +54,22 @@ void SaveNeuNet(neuNet *n)
 	{
 		//errx("File can't be created");
 	}
+
+
+	int nbNeurons;
+	int nbNeurons_precLayer = 0;	
+
+
 	fprintf(p, "%i\n", n->nbLay);	
 	for(int i = 0;i < n->nbLay; i++)
 	{
-		fprintf(p, "%i\n", n->layers[i]->nbNeurons);
+		layer cL = n->layers[i];
+
+		fprintf(p, "%i\n", cL->nbNeurons);
+		fwrite(cL->biases, sizeof(double), cL->biases->size, p);
+		fwrite(cL->weights, sizeof(double), cL->weights->size, p);
+		
+		
 	}
 	for(int i = 0; i < n->nbLay; i++)
 	{
@@ -28,17 +79,7 @@ void SaveNeuNet(neuNet *n)
 			fprintf(p,"%f\n", GetPosM(cL->weights, j));
 		}
 	}
-	fclose(p);
-}
-
-void LoadNeuNet()
-{
-	FILE *p = fopen("network", "r");
-	if(p == NULL)
-	{
-		//errx("File can't be created");
-	}
 	
 		
-}
+}*/
 

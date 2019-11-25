@@ -90,12 +90,9 @@ int main(int argc, char** argv)
 		printf("Training completed\n");
 	}
 	else
-	{	
-		Matrix *input = InitM(2,1);
-		int layerSizes[] = {2,3,1};
-		neuNet *network = init_network(layerSizes,3); 
-		train(network, 2, 0.1);
-		FreeM(input);
+	{	Training(network, 2, 2.5);
+		SaveNeuNet(network);
+		
 	}	
 	freeNeuNet(network);
 
