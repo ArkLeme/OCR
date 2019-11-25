@@ -216,6 +216,8 @@ void backprop_batch(neuNet *network, Matrix *expOutputs)
 		
 	//Update Sum of Errors and Erros*Output(layer-1)
 	Matrix* transpose_out = TransM(pl->outputs);
+	//printf("col = %i",pl->outputs->col);
+	//printf("line = %i", pl->outputs->line);
 	
 	//DisplayM(transpose_out);
 	Matrix *update = MultM(ll->errors,transpose_out);
