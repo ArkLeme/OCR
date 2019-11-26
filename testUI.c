@@ -26,7 +26,7 @@ int main(int argc,char **argv)
     /* Create start window */
     s_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(s_window), "OCR");
-    gtk_window_maximize (GTK_WINDOW(s_window));
+    gtk_window_resize (GTK_WINDOW(s_window),300,300);
     
     /* Create main window */
     p_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
