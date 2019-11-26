@@ -252,21 +252,44 @@ List* remove_point(List *c)
     while(first != NULL)
     {
         List* next = first->next;
-        if(next != NULL && ((Matrix*) (next->mat))->size < 9)
+
+        if(next != NULL)
         {
-            first->next = next->next;
-            FreeL(next);
+            Matrix *m = ((Matrix*) (next->mat));
+            if(is_point(m))
+            {
+                first->next = next->next;
+                FreeL(next);
+            }
         }
 
         first = first->next;
     }
 
-    if(c != NULL && ((Matrix*) (c->mat))->size < 9)
+    if(c != NULL)
     {
-        return RemoveFL(c);
+        Matrix *m = ((Matrix*) (c->mat));
+        if(is_point(m))
+            return RemoveFL(c);
     }
 
     return c;
+}
+
+int is_point(Matrix *m)
+{
+    if(m->col != m->line)
+        return 0;
+
+    for(int i = 0; i<m->size; i++)
+    {
+        if((int) GetPosM(m, i) == 0)
+        {
+            return 0;
+        }
+    }
+
+    return 1;
 }
 
 /**

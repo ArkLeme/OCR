@@ -54,7 +54,7 @@ void testBin(char* path)
 
     while(lp != NULL)
     {
-        lines_segmentation(lp);
+        line_segm(lp);
         List *ll = lp->child;
         SaveMat(lp, p, "para");
         p++;
