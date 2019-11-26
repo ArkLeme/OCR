@@ -11,7 +11,9 @@ static void print_message (GtkMessageType type, const gchar *format, va_list va)
   GtkWidget *p_dialog = NULL;
 
   message = g_strdup_vprintf (format,va);
-  p_dialog = gtk_message_dialog_new (docs.p_main_window, GTK_DIALOG_MODAL, type, GTK_BUTTONS_CLOSE, message);
+  p_dialog = gtk_message_dialog_new (GTK_WINDOW(docs.p_main_window), GTK_DIALOG_MODAL, type, GTK_BUTTONS_NONE,
+	  message, format,va);
+  gtk_dialog_add_button (GTK_DIALOG(p_dialog),"Close",GTK_RESPONSE_CLOSE);
   g_free (message), message = NULL;
   gtk_dialog_run (GTK_DIALOG (p_dialog));
   gtk_widget_destroy (p_dialog);

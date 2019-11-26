@@ -31,8 +31,8 @@ int main(int argc,char **argv)
     gtk_window_set_title(GTK_WINDOW(p_window), "OCR");
     gtk_window_maximize (GTK_WINDOW(p_window));
 
-    docs.p_main_window = GTK_WINDOW (p_window);
-    docs.s_start_window = GTK_WINDOW (s_window);
+    docs.p_main_window = p_window;
+    docs.s_start_window = s_window;
     
     /* Callback quit if window is destroy */
     

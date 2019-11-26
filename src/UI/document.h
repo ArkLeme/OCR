@@ -16,8 +16,8 @@ typedef struct
 {
   GList *tous;
   document_t *actif;
-  GtkWindow *p_main_window;
-  GtkWindow *s_start_window;
+  GtkWidget *p_main_window;
+  GtkWidget *s_start_window;
 } docs_t;
 
 /* Global variable */
