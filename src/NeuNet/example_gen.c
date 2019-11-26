@@ -49,8 +49,7 @@ Pool* ReadExamples(char* path)
 		pool->examples[i] = m;
 	}
 	fclose(f);
-	for(size_t i = 0; i < pool->size; i++)
-		printf("%c", pool->results[i]);
+	printf("ok generation\n");
 	return pool;
 }
 
@@ -71,18 +70,19 @@ void GenerateExamples(char* path)
 	{
 		fgets(text, 10000, f);
 		sum += GenExample(filename, text, fe);
-		//free(filename);
-		//free(text);
+		printf("%s\n%s", filename, text);
 	}
 	free(filename);
 	free(text);
 	fclose(f);
 	fclose(fe);
 	char *itoa = Itoa(sum);
+	remove("neuralNetwork_data/size.data");
 	f = fopen("neuralNetwork_data/size.data", "w");
 	fprintf(f, "%s\n", itoa);
 	fclose(f);
 	free(itoa);
+	printf("ok gen");
 }
 
 /*!
@@ -94,26 +94,24 @@ void GenerateExamples(char* path)
 int GenExample(char* ImagePath, char* text, FILE*f)
 {
 	List* l = Parcours(ImagePath);
+	List*save  = l;
 	int nbChar = 0;
 	int i = 0;
 	while(l)
 	{
-		while(text[i] == ' ') 
+		if(text[i] == ' ') 
 			i++; //to 'remove' space in the string, à optimiser
 		fputc(text[i], f);
 		fputc('\n', f);
 		Matrix* m  = l->mat;
 		fwrite(m->matrix, sizeof(double), m->size, f);
 		fputc('\n', f);
-/*		
 		//DISPLAY FOR TESTING
-		printf("%c\n",text[i]);
-		*/
-//		DisplayM(m);
-		//getchar();
-		l = RemoveFL(l); //next element in l
+		DisplayM(m);
+		l = l->next; //next element in l
 		i++;
 		nbChar++;
 	}
+	DeleteL(save);
 	return nbChar;
 }

@@ -18,10 +18,10 @@ Matrix* InitM(int l, int c)
 //Put element e in matrix at [i,j]
 void PutM(Matrix* m, int i, int j, double e)
 {
-	if(i < 0 || i >= m -> line || j < 0 || j > m -> col)
+/*	if(i < 0 || i >= m -> line || j < 0 || j > m -> col)
 		errx(1, "Put Index outside of matrix i=%i, j=%i, h=%i, w=%i\n",
 						i, j, m -> line, m -> col);
-	*((m -> matrix) + (m -> col) * i + j) = e;
+*/	*((m -> matrix) + (m -> col) * i + j) = e;
 }
 
 //Create Matrix from string

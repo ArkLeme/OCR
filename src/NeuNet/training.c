@@ -32,7 +32,7 @@ Matrix* CreateExpected(char c)
 
 Pool** CreateBatches(Pool* p, size_t batchSize)
 {
-	ShufflePool(p);
+//	ShufflePool(p);
 	size_t batchNb = p->size/batchSize +1;
 	Pool** batches = malloc(sizeof(Pool*) * batchNb); 
 	size_t i = 0;
@@ -61,7 +61,7 @@ Pool** CreateBatches(Pool* p, size_t batchSize)
 void Training(neuNet *n, int epoch, double learning_rate)
 {
 	int batchSize = 10; //Arbritrary value, needs of tests
-		GenerateExamples("neuralNetwork_data/names.data");
+	GenerateExamples("neuralNetwork_data/names.data");
 	Pool* pool = ReadExamples("neuralNetwork_data/examples.data");
 	for(int i = 0; i < epoch; i++)
 	{
