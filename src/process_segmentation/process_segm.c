@@ -278,18 +278,17 @@ List* remove_point(List *c)
 
 int is_point(Matrix *m)
 {
-    if(m->col != m->line)
+    if(m->col > 4 || m->line > 4)
         return 0;
 
+    int white = 0;
     for(int i = 0; i<m->size; i++)
     {
         if((int) GetPosM(m, i) == 0)
-        {
-            return 0;
-        }
+            white++;
     }
 
-    return 1;
+    return  white < m->size/2;
 }
 
 /**
