@@ -4,6 +4,12 @@
 #include "../matrix/matrix.h"
 #include "../sdl_tools/sdl_tools.h"
 
+/**
+ * \file matrix_image.h
+ * \brief header of matrix_image.c
+ * \author William.G
+ */
+
 /*
  * Save matrix as image
  * m is a pointeur to the matrix

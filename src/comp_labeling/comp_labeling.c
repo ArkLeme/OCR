@@ -32,6 +32,20 @@ Matrix *CompLabeling(Matrix *m, int* maxLabel)
 	return sp;
 }
 
+int mini(int a, int b)
+{
+    if(b == 0)
+        return a;
+
+    if(a == 0)
+        return b;
+
+    if(b > a)
+        return a;
+
+    return b;
+}
+
 /**
  * \fn Matrix *FirstPass(Matrix *m, int *maxLabel)
  * \brief First pass in the Matrix, the purpose is to set a temporary label to
@@ -59,20 +73,24 @@ Matrix* FirstPass(Matrix* m, int* maxLabel)
 				//Get top and left pixel
 				int top = i > 0 ? GetM(output, i - 1, j) : 0;
 				int left = j > 0 ? GetM(output, i, j - 1) : 0;
+                int topleft = 0;
+
+                if(i > 0 && j > 0)
+                    topleft = GetM(output, i - 1, j - 1);
 
 				//Incremete label if there is no adjacent black pixel
-				if(top == 0 && left == 0)
+				if(top == 0 && left == 0 && topleft == 0)
 				{
 					*maxLabel += 1;
 					label = *maxLabel;
 				}
 				//Place the minimal label to our pixel
-				else if(top == 0)
-					label = left;
-				else if(left == 0)
-					label = top;
-				else
-					label = top < left ? top : left;
+
+                else
+                {
+                    int min1 = mini(top, left);
+                    label= mini(topleft, min1);
+                }
 
 				PutM(output, i, j, label);
 			}
@@ -110,6 +128,33 @@ Matrix *SecondPass(Matrix *m, Graph *g)
 	return output;
 }
 
+void swap(int i, int j, int *l)
+{
+    int temp = l[i];
+    l[i] = l[j];
+    l[j] = temp;
+}
+
+void sort_label(int *list, int l)
+{
+    for(int i = 0; i < l; i++)
+    {
+        for(int j = 0; j < l - i - 1; j++)
+        {
+            if(list[j] > list[j + 1])
+                swap(j, j + 1, list);
+        }
+    }
+}
+
+int next_value(int i, int *list, int l)
+{
+    while(i < l && list[i] == 0)
+        i++;
+
+    return i;
+}
+
 /**
  * \fn Graph *CreateGraph(Matrix *m, int maxLabel)
  * \brief Create the Graph of the connection between every label
@@ -131,14 +176,25 @@ Graph *CreateGraph(Matrix *m, int maxLabel)
 		{
 			int top = i > 0 ? GetM(m, i - 1, j) : 0;
 			int left = j > 0 ? GetM(m, i, j - 1) : 0;
+            int topleft = 0;
 
-			if(top != 0 && left != 0 && top != left)
-			{
-				if(top > left)
-					Union(g -> subsets, top, left);
-				else
-					Union(g -> subsets, left, top);
-			}
+            if(i > 0 && j > 0)
+                    topleft = GetM(m, i - 1, j - 1);
+
+            int buffer[] = {top, left, topleft};
+            int l = 3;
+
+            sort_label(buffer, l);
+
+            int i = next_value(0, buffer, l);
+
+            while(i < l)
+            {
+                int j = next_value(i + 1, buffer, l);
+                if(j < l)
+                    Union(g->subsets, buffer[i], buffer[j]);
+                i = j;
+            }
 		}
 	}
 

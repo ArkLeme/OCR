@@ -57,6 +57,7 @@ doc
 # Ignore doxygen documentation generation
 doxygen/*
 *.html
+*.bmp
 
 # Avoid conflict
 main.c

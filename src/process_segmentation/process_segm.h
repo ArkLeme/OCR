@@ -9,6 +9,8 @@
  * \author William.G
  */
 
+Matrix* get_mat_from_png(char *path);
+
 List* first_segmentation(char *path);
 
 List* paragraph_segm(char *path);
@@ -20,6 +22,8 @@ List* word_segm(List* p);
 List* char_segm(List *p);
 
 List* remove_point(List *w);
+
+int is_point(Matrix *m);
 
 List* sort_list(List *c);
 

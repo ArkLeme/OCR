@@ -69,8 +69,16 @@ float limit(Matrix *m, int begin, int end)
     }
     return (white_count / nb_white);
 }
-void lines_segmentation(Matrix *m, List *listoflines)
-{   
+void lines_segmentation(List *listofparagraph)
+{
+    Matrix *m = listofparagraph->mat;
+
+    Matrix *li = InitM(0,0);
+    PosM* p1 = InitP(0,0,0,0);
+    List *lp = InitL(li,p1);
+
+    List *listoflines = lp;
+
     //variable for loop
     int x;
     int y;
@@ -112,12 +120,12 @@ void lines_segmentation(Matrix *m, List *listoflines)
 	    if(x - 1 > 0)
 		posX1 = x -1;
         }
-        if(!black && line) // if previous line had black pixels but this one is white
+        if((!black && line) || (line && y == ( m->line -1) )) // if previous line had black pixels but this one is white
         {
             line = 0; // make back line = false
             end = y; // conserve the index of the end
 
-            posX2 = x;
+            posX2 = m -> col;
 	    k =0;
 	    l = 0;
 	    j = begin;
@@ -145,10 +153,21 @@ void lines_segmentation(Matrix *m, List *listoflines)
         }
         black = 0; // black = false
     }
+
+    lp = RemoveFL(lp);
+    listofparagraph-> child = lp;
 }
 
-void words_segmentation(Matrix *m, List *listofwords)
+void words_segmentation(List *listoflines)
 {
+    Matrix *m = listoflines->mat;
+
+    Matrix *word = InitM(0,0);
+    PosM* p2 = InitP(0,0,0,0);
+    List *lp = InitL(word,p2);
+
+    List *listofwords = lp;
+
     //variable for loops
     int x;
     int y;
@@ -217,7 +236,7 @@ void words_segmentation(Matrix *m, List *listofwords)
 	    if(x-1 > 0)
 		posX1 = x-1;
         }
-        if(!c && end_draw) // color the next column of the word
+        if((!c && end_draw) || (c && x == m->col -1)) // color the next column of the word
         {
             end_draw = 0;// last line traced -> reset
 	    white_count = 0;
@@ -248,5 +267,8 @@ void words_segmentation(Matrix *m, List *listofwords)
 	    listofwords = listofwords -> next; 
         }
     }
+
+    lp = RemoveFL(lp);
+    listoflines -> child = lp;
 }
 
