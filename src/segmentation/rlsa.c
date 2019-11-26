@@ -71,8 +71,9 @@ return output;
 Matrix *Vrlsa(Matrix *m, int limit)
 {
     if(limit == 0)
+	{
         return CopyMatrix(m, 0, 0, m->col - 1, m->line - 1);
-
+	}
 	Matrix *output = InitM(m -> line, m -> col);
 	int zero_count = 0; //Number of 0 aside
 

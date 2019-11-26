@@ -165,12 +165,32 @@ void DisplayM(Matrix* m);
  */
 void FreeM(Matrix *m);
 
+
+/*
+ * Fill up the Matrix with 0
+ * m is the matrix
+ */
+
+void FillupM(Matrix *m);
+
+/* DEPRECATED DESCRIPTION
+ * Add two matrix and return the first one
+ * m1 is the first matrix
+ * m3 the second
+ * return m1
+ */
+
+void Add_OptiM(Matrix *m1, Matrix *m2);
+
+
+
 /*
  * Add two matrix and return a new one
  * m1 is the first matrix
  * m3 the second
  * return a new matrix
  */
+
 Matrix *AddM(Matrix *m1, Matrix *m2);
 
 /*
@@ -219,6 +239,7 @@ Matrix *MultValM(Matrix *m1, Matrix *m2);
  * return a new matrix
  */
 Matrix *MultScalM(Matrix *m1, double v);
+void MultScalMP(Matrix *m, double v);
 
 /*
  * Copy a part of a matrix
@@ -298,4 +319,5 @@ List * RemoveLL(List* l);
  */
 void DeleteL(List* l);
 
+Matrix* InitMWithValues(int c, int l, double*m);
 #endif

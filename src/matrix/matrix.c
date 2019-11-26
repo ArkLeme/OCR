@@ -42,10 +42,10 @@ Matrix* InitM(int l, int c)
  */
 void PutM(Matrix* m, int i, int j, double e)
 {
-	if(i < 0 || i >= m -> line || j < 0 || j > m -> col)
+/*	if(i < 0 || i >= m -> line || j < 0 || j > m -> col)
 		errx(1, "Put Index outside of matrix i=%i, j=%i, h=%i, w=%i\n",
 						i, j, m -> line, m -> col);
-	*((m -> matrix) + (m -> col) * i + j) = e;
+*/	*((m -> matrix) + (m -> col) * i + j) = e;
 }
 
 /**
@@ -136,7 +136,7 @@ void DisplayM(Matrix* m)
 		printf("[ ");
 		for(int j = 0; j < m -> col; j++)
 		{
-			printf("%f ", GetM(m, i, j));
+			printf("%i ",(int) GetM(m, i, j));
 		}
 		printf("]\n");
 	}
@@ -153,6 +153,38 @@ void FreeM(Matrix *m)
 {
 	free(m -> matrix);
 	free(m);
+}
+
+//Fill up the Matrix with 0
+void FillupM(Matrix* m)
+{
+	for(int i = 0; i < m -> line; i++)
+	{
+		for(int j = 0; j < m -> col; j++)
+		{
+			PutM(m, i, j,0);
+		}
+		
+	}
+	
+}
+
+//Addition atrix without creating a new Matrix
+void Add_OptiM(Matrix* m1, Matrix* m2)
+{
+	if(m1 -> col != m2 -> col || m1 -> line != m2 -> line)
+		errx(1, "Add Matrix do not have the same dimension :\
+						m1w=%i, mw2=%i, m1h=%i, m2h=%i\n",
+						m1 -> col, m2 -> col, m1 -> line, m2 -> line);
+
+	
+	for(int i = 0; i < m1 -> line; i++)
+	{
+		for(int j=0; j<m1->col;j++)
+		{
+			*((m1 -> matrix) + (m1 -> col) * i + j) +=  GetM(m2, i,j);
+		}
+	}
 }
 
 /**
@@ -350,6 +382,18 @@ Matrix* MultScalM(Matrix *m1, double v)
 	return m;
 }
 
+void MultScalMP(Matrix *m, double v)
+{
+	for(int i = 0; i < m -> line; i++)
+	{
+		for(int j = 0; j < m -> col; j++)
+		{
+			PutM(m, i, j, v * GetM(m, i, j));
+		}
+	}
+}
+
+
 /**
  * \fn Matrix* CopyMatrix(Matrix *m, int mx, int my, int Mx, int My)
  * \brief Copy a Matrix from position (mx,my) to (Mx,My)
@@ -400,7 +444,7 @@ Matrix* normalize_dimension(Matrix *m)
         }
     }
 
-    FreeM(m);
+    //FreeM(m);
     return out;
 }
 
@@ -576,4 +620,14 @@ void DeleteL(List *l)
 	{
 		l = RemoveFL(l);
 	}
+}
+
+Matrix* InitMWithValues(int c, int l, double*m)
+{
+	Matrix* temp = malloc(sizeof(Matrix));
+	temp -> line = l;
+	temp -> col = c;
+	temp -> size = c*l;
+	temp->matrix = m;
+	return temp;
 }

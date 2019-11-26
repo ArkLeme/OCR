@@ -2,7 +2,7 @@
 
 CC = gcc
 CPPFLAGS= `pkg-config --cflags sdl` -MMD
-CFLAGS = -fsanitize=address -g -Wall -Wextra -std=c99
+CFLAGS = -g -Wall -Wextra -std=c99
 LDFLAGS = -fsanitize=address
 LDLIBS = -lSDL -lSDL_image -lm `pkg-config --libs sdl`
 
@@ -16,7 +16,7 @@ DEP = $(SRC:.c=.d)
 BMP = $(shell find ./image_data -type f -name "*.bmp") 
 
 # All exec we want to clean
-EXEC = main testsegm segmA
+EXEC = main testsegm segmA neuNet
 
 # Shortcut name
 SHORTCUT = doc.html
@@ -57,6 +57,8 @@ main: main.c $(OBJ) ## Generate the executable, use ./main path_of_the_image to 
 testsegm: testsegm.c $(OBJ)
 
 segmA: segmA.c $(OBJ)
+
+neuNet: neuNet.c $(OBJ) ##t option to test in/out functions for example
 
 # Help function to use the makefile
 # It "just" detect every rules in this makefile and the print it
