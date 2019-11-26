@@ -29,7 +29,7 @@ void cb_ocr(GtkWidget *s_widget, gpointer user_data)
 	    GtkWidget *test_image = NULL;
 
 	    test_dialog = gtk_dialog_new_with_buttons ("Use this picture ?",
-						GTK_WINDOW(docs.s_start_window),
+						GTK_WINDOW(docs.p_main_window),
 						GTK_DIALOG_MODAL,
 						"Yes",GTK_RESPONSE_YES,
 						"No",GTK_RESPONSE_NO,
@@ -58,6 +58,11 @@ void cb_ocr(GtkWidget *s_widget, gpointer user_data)
 	    gtk_widget_destroy (test_dialog);
 	}
 
+	gtk_widget_destroy (p_dialog);
+
+	gtk_widget_show_all(docs.p_main_window);
+	gtk_widget_hide(docs.s_start_window);
+
 	open_ocr (file_name,user_data);
 	
 	g_free (file_name), file_name = NULL;
@@ -67,13 +72,9 @@ void cb_ocr(GtkWidget *s_widget, gpointer user_data)
 	gtk_widget_destroy(p_dialog);
 	return;
     }
-    gtk_widget_destroy (p_dialog);
-    
-    gtk_widget_hide(docs.s_start_window);
-    gtk_widget_show_all(docs.p_main_window);
 
+    gtk_widget_show_all(docs.p_main_window);
     (void) s_widget;
-    (void) user_data;
 }
 
 void cb_edit(GtkWidget *s_widget,gpointer user_data)
@@ -336,6 +337,7 @@ static void open_ocr(gchar *file_name, GtkTextView *p_text_view)
     g_return_if_fail (file_name && p_text_view);
     {
 	gchar *contents = ocr(file_name);
+
 	docs.actif = g_malloc (sizeof (*docs.actif));
 	docs.actif->chemin = g_strdup ("temp.txt");
 
@@ -365,9 +367,29 @@ static void open_ocr(gchar *file_name, GtkTextView *p_text_view)
 	docs.actif ->sauve = FALSE;
     }
 } 
-
 static gchar* ocr(gchar *file_name)
 {
+    /*GtkWidget *p_dialog;
+    GtkWidget *p_progressbar;
+    gdouble dFraction;
+
+    p_dialog =	gtk_dialog_new_with_buttons("Progressing...",GTK_WINDOW(docs.p_main_window),
+	    GTK_DIALOG_DESTROY_WITH_PARENT,"Loading...",GTK_RESPONSE_NONE,NULL);
+    
+    p_progressbar = gtk_progress_bar_new();
+
+    gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area (GTK_DIALOG(p_dialog))), p_progressbar,
+	    TRUE, FALSE, 0);
+
+    dFraction = gtk_progress_bar_get_fraction(GTK_PROGRESS_BAR(p_progressbar));
+    dFraction = 0.0;
+    gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(p_progressbar),dFraction);
+
+    gtk_window_set_transient_for(GTK_WINDOW(p_dialog),GTK_WINDOW(docs.p_main_window));
+    gtk_widget_show_all(docs.p_main_window);
+    gtk_widget_show_all(p_dialog);*/
+
     gchar *texte = file_name;
     return texte;
 }
+

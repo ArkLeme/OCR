@@ -18,6 +18,8 @@ int main(int argc,char **argv)
     GtkWidget *p_main_box = NULL;
     GtkWidget *p_text_view = NULL;
     
+
+    g_resource_load ("image_data/UI/icon/png",NULL);
     /* Init GTK+ */
     gtk_init(&argc,&argv);
 
