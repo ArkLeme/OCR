@@ -1,6 +1,12 @@
 #ifndef STRING_OPERATION
 #define STRING_OPERATION
 
+/**
+ * \file string_operation.h
+ * \brief header of string_operation.c
+ * \author William.G
+ */
+
 /*
  * Find the length of the string
  * s is the string

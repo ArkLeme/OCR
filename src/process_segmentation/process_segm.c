@@ -4,17 +4,34 @@
 #include "separate_matrix.h"
 #include "../preprocessing/preprocessing.h"
 
-Matrix* get_mat_from_png(char* path)
+/**
+ * \file process_segm.c
+ * \brief This files apply all segmentation algorithm.
+ * \author William.G
+ */
+
+
+/**
+ * \fn Matrix* get_mat_from_png(char *path)
+ * \brief Aplpy all prepocessing to an image and return the binary Matrix.
+ *
+ * \param path : path of the png
+ *
+ * \return binary matrix
+ */
+Matrix* get_mat_from_png(char *path)
 {
 	SDL_Surface *input = LoadImage(path);
 	SDL_Surface *gray = GrayScale(input);
-	SDL_Surface *contrast = Contrast(gray);
+    SDL_Surface *brightness = testIm(gray);
+	SDL_Surface *contrast = Contrast(brightness);
 	SDL_Surface *bin = Otsu(contrast);
 
 	Matrix *m = GetMatFromIm(bin);
 
     SaveMatAsIm(m, "image_data/rlsa/bin.bmp");
 
+    SDL_FreeSurface(brightness);
     SDL_FreeSurface(input);
 	SDL_FreeSurface(gray);
 	SDL_FreeSurface(contrast);
@@ -25,6 +42,18 @@ Matrix* get_mat_from_png(char* path)
 	return m;
 }
 
+
+/**
+ * \fn Matrix* apply_rlsa(Matrix *m, int vr, int cr)
+ * \brief apply rlsa to matrix with vr as vertical treshold
+ * and cr as horizontal treshold.
+ *
+ * \param m : matrix
+ * \param vr : vertical threshold
+ * \param cr : horizontal treshold
+ *
+ * \return new matrix
+ */
 Matrix* apply_rlsa(Matrix *m, int vr, int cr)
 {
 
@@ -38,6 +67,14 @@ Matrix* apply_rlsa(Matrix *m, int vr, int cr)
     return rv;
 }
 
+/**
+ * \fn List* first_segmentation(char *path)
+ * \brief Old function, it is not use, but it can be usefull for DEBUG
+ *
+ * \param path : path of the image
+ *
+ * \return List of paragraph
+ */
 List* first_segmentation(char *path)
 {
     Matrix *m = get_mat_from_png(path);
@@ -65,6 +102,15 @@ List* first_segmentation(char *path)
     return l;
 }
 
+ /**
+ * \fn List* paragraph_segm(char *path)
+ * \brief Apply the first segmentation, it take the path of the file
+ * and it return a List of paragraph.
+ *
+ * \param path : path of the image
+ *
+ * \return List of paragraph
+ */
 List* paragraph_segm(char *path)
 {
     Matrix *m = get_mat_from_png(path);
@@ -91,6 +137,15 @@ List* paragraph_segm(char *path)
 
 }
 
+ /**
+ * \fn List* line_segm(List* p)
+ * \brief Apply the second segmentation, it take a paragraph
+ * and it set child of p as List of line.
+ *
+ * \param p : One paragraph
+ *
+ * \return List of paragraph
+ */
 List* line_segm(List* p)
 {
     int ml = 0;
@@ -118,6 +173,15 @@ List* line_segm(List* p)
     return p;
 }
 
+ /**
+ * \fn List* word_segm(List* p)
+ * \brief Apply the third segmentation, it take a line
+ * and it set child of p as List of word.
+ *
+ * \param p : One line
+ *
+ * \return List of paragraph
+ */
 List* word_segm(List* p)
 {
     int ml = 0;
@@ -141,6 +205,15 @@ List* word_segm(List* p)
     return p;
 }
 
+ /**
+ * \fn List* char_segm(List* p)
+ * \brief Apply the fourth segmentation, it take a word
+ * and it set child of p as List of char.
+ *
+ * \param p : One word
+ *
+ * \return List of paragraph
+ */
 List* char_segm(List* w)
 {
     int ml = 0;
@@ -162,6 +235,16 @@ List* char_segm(List* w)
     return w;
 }
 
+
+/**
+ * \fn List* remove_point(List *c)
+ * \brief Delete little matrix which are not char, such as point or some
+ * unwanted noise in the image.
+ *
+ *\param c : List of char
+
+ \return the list
+ */
 List* remove_point(List *c)
 {
     List *first = c;
@@ -169,23 +252,54 @@ List* remove_point(List *c)
     while(first != NULL)
     {
         List* next = first->next;
-        if(next != NULL && ((Matrix*) (next->mat))->size < 30)
+
+        if(next != NULL)
         {
-            first->next = next->next;
-            FreeL(next);
+            Matrix *m = ((Matrix*) (next->mat));
+            if(is_point(m))
+            {
+                first->next = next->next;
+                FreeL(next);
+            }
         }
 
         first = first->next;
     }
 
-    if(c != NULL && ((Matrix*) (c->mat))->size < 20)
+    if(c != NULL)
     {
-        return RemoveFL(c);
+        Matrix *m = ((Matrix*) (c->mat));
+        if(is_point(m))
+            return RemoveFL(c);
     }
 
     return c;
 }
 
+int is_point(Matrix *m)
+{
+    if(m->col > 4 || m->line > 4)
+        return 0;
+
+    int white = 0;
+    for(int i = 0; i<m->size; i++)
+    {
+        if((int) GetPosM(m, i) == 0)
+            white++;
+    }
+
+    return  white < m->size/2;
+}
+
+/**
+ * \fn List* sort_list(List *c)
+ * \brief Sort a list of char, the component labeling do not sort the char in
+ * the correct order so we must sort them.
+ *
+ * \param c : List of char
+ *
+ * \return List of char
+ */
 List* sort_list(List *c)
 {
     List* first = c;
@@ -208,6 +322,13 @@ List* sort_list(List *c)
     return c;
 }
 
+/**
+ * \fn void swap_list(List *c1, List *c2)
+ * \brief swap 2 element in the list
+ *
+ * \param c1 : first list
+ * \param c2 : second list
+ */
 void swap_list(List *c1, List *c2)
 {
     PosM *p = c1->pos;

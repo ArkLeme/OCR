@@ -7,6 +7,14 @@
 #include "init_Network.h"
 #include <string.h>
 
+
+
+/*!
+ * \author jeanne.morin
+ * \Save the network in a binary file
+ * \param network is the current network, needed to be saved.
+ */
+
 void SaveNeuNet(neuNet *n)
 {
 	
@@ -67,7 +75,10 @@ void SaveNeuNet(neuNet *n)
 	fclose(file);
 }
 
-
+/*!
+ * \author jeanne.morin
+ * \Load the network from the save file, written in binary.
+ */
 
 neuNet *LoadNeuNet()
 {

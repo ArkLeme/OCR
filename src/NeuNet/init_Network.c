@@ -25,6 +25,11 @@ int random_int(int max_value)
   
  }
 
+/*!
+ * \author jeanne.morin
+ * \brief Initialize matrix biases and weights of a layer to random double from -0.75 to 0.75
+ * \param layer which biases and weights need to be initialize
+*/
 
 //Initialize biases and weights matrix with random it between 0 and 1
 void  Init_biases_weights(layer* Layer)
@@ -48,6 +53,13 @@ void  Init_biases_weights(layer* Layer)
 	
 }
 
+/*!
+ * \author jeanne.morin
+ * \brief Initalize a layer and all its components.
+ * \param nbNeurons is the number of neurons that the layer initalized has.
+ * \param nbNuerons_prec is the number of neurons that the precedent layer of the current network has.
+ * \return layer initialize
+ */
 
 layer *init_layer(int nbNeurons, int nbNeurons_prec)
 {
@@ -81,7 +93,13 @@ layer *init_layer(int nbNeurons, int nbNeurons_prec)
 
 
 
-
+/*!
+ * \author jeanne.morin
+ * \brief initialize a network and all its components
+ * \param layer_size[] is the list of the number of neurons for each layer of the network initalized.
+ * \param nbLayers is the number of layers the network initialized will have.
+ * \return the network initialized.
+ */
 //take the nbLayer wanted and the size of each layer_size
 neuNet* init_network(int layer_size[], size_t nbLayers)
 {

@@ -3,6 +3,12 @@
 
 #include "../matrix/matrix.h"
 
+/**
+ * \file rlsa.h
+ * \brief header of rlsa.c
+ * \author William.G
+ */
+
 /*
  * Apply horizontal lrsa
  * m is the matrix

@@ -12,6 +12,13 @@
 
 
 /*
+
+/*!
+ * \author jeanne.morin
+ * \brief propagate value from the first layer to the last layer of the current network, using sigmoide as activation function for every layer
+ * \param network is the network structure in which the values will be propagate.
+ * \param input_data is the input given to the first layer of the current layer and that will be propagate in this network.
+ */
 //Calulate values and outputs
 void forward_prop(neuNet* network, Matrix *input_data)
 {
@@ -38,7 +45,12 @@ void forward_prop(neuNet* network, Matrix *input_data)
 	  }
 }*/
 
-
+/*!
+ * \author jeanne.morin
+ * \brief propagate value from the first layer to the last layer of the current network, using softmax as activation fonction for the last Layer
+ * \param network is the network structure in which the values will be propagate.
+ * \param input_data is the input given to the first layer of the current layer and that will be propagate in this network.
+ */
 //Calulate values and outputs
 void forward_prop(neuNet* network, Matrix *input_data)
 {
@@ -170,7 +182,13 @@ void backprop(neuNet *network, int len_output, Matrix *expOutputs, float learnin
 	
 
 
-
+/*!
+ * \author jeanne.morin
+ * \brief update the wieghts and biases of the network
+ * \param network is the current network the funtion will work in.
+ * \param learning_rate is the learning rate used to calculate erros of a layer.
+ * \param batchSize is the number of element in the batch used.
+ */
 void FinalUpdate_batch(neuNet *network, float learning_rate, int batchSize)
 {
 	layer *cl;
@@ -183,11 +201,17 @@ void FinalUpdate_batch(neuNet *network, float learning_rate, int batchSize)
 		
 		MultScalMP(cl->biases_batch,coef);
 		Add_OptiM(cl->biases,cl->biases_batch);//update biases
-//		DisplayM(cl->weights);
-//		DisplayM(cl->biases);
+
 	}
 }
 
+
+/*!
+ * \author jeanne.morin
+ * \brief propagate the erros back from the last layer to the first layer without updating wieghts and biases.
+ * \param network is the current network where the function will bakc propagate the errors.
+ * \param expOutputs is the matrix expected as output of the network for the exemple given in input to the network.
+ */
 
 void backprop_batch(neuNet *network, Matrix *expOutputs)
 {

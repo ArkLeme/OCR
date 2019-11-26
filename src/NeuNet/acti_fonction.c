@@ -52,6 +52,13 @@ Matrix* SigPrime(Matrix *m)
 
 ///////////////////////////////S O F T P R I M E //////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+/*!
+ * \author jeanne.morin
+ * \brief Calcul softmax for each component of the matrix input.
+ * \param  input, the matrix use by softmax.
+ * \return Matrix(input->line,input->col).
+ */
 Matrix* Softmax(Matrix *input)
 {
 	Matrix *output = InitM(input->line,input->col);
@@ -93,6 +100,13 @@ Matrix* Softmax(Matrix *input)
 
 }
 
+
+/*!
+ * \author jeanne.morin
+ * \brief calculate softmax derivative of  given matrix
+ * \param input, Matrix that will be use as parameter for softmax derivative
+ * \return Matrix(input->line,input->line), softmax derivative
+ */
 Matrix *softprime(Matrix *input)
 {
   	Matrix *output = InitM(input->line,input->line);
@@ -142,37 +156,29 @@ Matrix *softprime(Matrix *input)
 }
 
 
-
-Matrix* Addition_soft(Matrix* input)
-{
-	Matrix *output= InitM(input->line, 1);
-	double result;
-
-	for(int i=0; i <input->line; i++)
-	{
-		result=0;
-		
-		for(int j=0; j< input->col; j++)
-		{
-			
-			//printf("%f  ", GetM(input,i,j));
-			result+= GetM(input,i,j);
-			
-		}
-
-		//printf("%f  \n",result);
-		PutM(output,i,0,result);
-		
-	}
-
-	FreeM(input);
-	return output;
-}
-
+/*!
+ * \author jeanne.morin
+ * \brief apply Softmax function to a single value
+ * \param sum summarizes exponential function of every component of a vector.
+ * \param z element softmax will be applied to.
+ * \param shift the maximum value of the component from a vector.
+ * \return double Softmax applied to z.
+ */
 double Soft(double sum, double z, double shift)
 {
    return exp(z-shift)/sum;
+
 }
+
+/*!
+ * \author jeanne.morin
+ * \brief apply Softmax derivate function to a single value
+ * \param sum summarizes exponential function of every component of the vector.
+ * \param z element softmax derivate will be applied to.
+ * \param shift the maximum value of the component from the vector.
+ * \param delta 1 or 0 depanding on the derivate case this element represents.
+ * \return double Softmax derivates applied to z.
+ */
 
 double Soft_prime(double sum, double z, int delta, double shift)
 {

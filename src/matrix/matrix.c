@@ -3,7 +3,22 @@
 #include <err.h>
 #include <stdio.h>
 
-//Init matrix
+/**
+ * \file matrix.c
+ * \brief This files contains almost every function using Matrix.
+ * \author William.G
+ */
+
+/**
+ * \fn Matrix* InitM(int l, int c)
+ * \brief Init the Matrix structure, it calloc the good size of element, we set
+ * it at 0 by default because in the pretraitement it represenent black pixel.
+ *
+ * \param l : height of the Matrix : number of line.
+ * \paral c : width of the Matrix : number of column.
+ *
+ * \return pointer to the structure
+ */
 Matrix* InitM(int l, int c)
 {
 	int size = l * c;
@@ -15,7 +30,16 @@ Matrix* InitM(int l, int c)
 	return temp;
 }
 
-//Put element e in matrix at [i,j]
+/**
+ * \fn void PutM(Matrix* m, int i, int j, double e)
+ * \brief Place the element e at the position ith line and the jth column
+ * in the Matrix m
+ *
+ * \param m : Matrix
+ * \param i : ith line
+ * \param j : jth column
+ * \param e : element we insert
+ */
 void PutM(Matrix* m, int i, int j, double e)
 {
 /*	if(i < 0 || i >= m -> line || j < 0 || j > m -> col)
@@ -24,7 +48,17 @@ void PutM(Matrix* m, int i, int j, double e)
 */	*((m -> matrix) + (m -> col) * i + j) = e;
 }
 
-//Create Matrix from string
+/**
+ * \fn Matrix *InitStringM(int l, int c, char* str)
+ * \brief Create a Matrix with a string as argument, the length of the string
+ * must be l * c.
+ *
+ * \param l : number of line
+ * \param c : number of column
+ * \param str : the string
+ *
+ * \return pointer to the Matrix
+ */
 Matrix *InitStringM(int l, int c, char* str)
 {
 	Matrix *output = InitM(l, c);
@@ -37,7 +71,14 @@ Matrix *InitStringM(int l, int c, char* str)
 	return output;
 }
 
-//Put element e in matrix at [i/col, i%col]
+/**
+ * \fn void PutPosM(Matrix* m, int pos, double e)
+ * \brief Since our Matrix are represented as a single array, we can insert an
+ * element with only on index.
+ *
+ * \param pos : index in the Matrix, pos = i * col + j
+ * \param e : element inserted
+ */
 void PutPosM(Matrix* m, int pos, double e)
 {
 	if(pos < 0 || pos >= m -> size)
@@ -47,7 +88,16 @@ void PutPosM(Matrix* m, int pos, double e)
 }
 
 
-//Get element e in matrix at [i,j]
+/**
+ * \fn double GetM(Matrix* m, int i, int j)
+ * \brief Get the element at the ith line and jth collumn in the m Matrix
+ *
+ * \param m : Matrix
+ * \param i : ith line
+ * \param j : jth column
+ *
+ * \return the element at this position
+ */
 double GetM(Matrix* m, int i, int j)
 {
 	if(i < 0 || i >= m -> line || j < 0 || j > m -> col)
@@ -56,7 +106,15 @@ double GetM(Matrix* m, int i, int j)
 	return *(m -> matrix + m -> col * i + j);
 }
 
-//Get element e in matrix at [i/col, i%col]
+/**
+ * \fn double GetPosM(Matrix* m, int pos)
+ * \brief Get the element at the pos index in the Matrix
+ *
+ * \param m : Matrix
+ * \param pos : position of the element, pos = i * col + j
+ *
+ * \return the element at this position
+ */
 double GetPosM(Matrix* m, int pos)
 {
 	if(pos < 0 || pos >= m -> size)
@@ -65,7 +123,12 @@ double GetPosM(Matrix* m, int pos)
 	return *(m -> matrix + pos);
 }
 
-//Display Matrix
+/**
+ * \fn void DisplayM(Matrix* m)
+ * \brief Display the matrix in the console
+ *
+ * \param m : Matrix
+ */
 void DisplayM(Matrix* m)
 {
 	for(int i = 0; i < m -> line; i++)
@@ -80,7 +143,12 @@ void DisplayM(Matrix* m)
 	printf("\n");
 }
 
-//Free Matrix
+/**
+ * \fn void FreeM(Matrix *m)
+ * \brief Free the Matrix and the array of double
+ *
+ * \param m : Matrix
+ */
 void FreeM(Matrix *m)
 {
 	free(m -> matrix);
@@ -119,7 +187,16 @@ void Add_OptiM(Matrix* m1, Matrix* m2)
 	}
 }
 
-//Addition Matrix
+/**
+ * \fn Matrix* AddM(Matrix* m1, Matrix* m2)
+ * \brief Addition of 2 matrix, it return a new matrix.
+ * It return an error if both matrix do not have the same size
+ *
+ * \param m1 : first matrix
+ * \param m2 : second matrix
+ *
+ * \return new matrix
+ */
 Matrix* AddM(Matrix* m1, Matrix* m2)
 {
 	if(m1 -> col != m2 -> col || m1 -> line != m2 -> line)
@@ -136,7 +213,16 @@ Matrix* AddM(Matrix* m1, Matrix* m2)
 	return m;
 }
 
-//Multiplication Matrix
+/**
+ * \fn Matrix* MultM(Matrix *m1, Matrix *m2)
+ * \brief Multiplication of 2 matrix, it return a new matrix.
+ * It return an error if both matrix fo not have the good size
+ *
+ * \param m1 : first matrix
+ * \param m2 : second matrix
+ *
+ * \return new matrix
+ */
 Matrix* MultM(Matrix *m1, Matrix *m2)
 {
 	if(m1 -> col != m2 -> line)
@@ -158,7 +244,14 @@ Matrix* MultM(Matrix *m1, Matrix *m2)
 	return m;
 }
 
-//Transpose Matrix
+/**
+ * \fn Matrix* TransM(Matrix* m1)
+ * \brief Transpose of a matrix, it return a new one
+ *
+ * \param m1 : matrix
+ *
+ * \return new matrix
+ */
 Matrix* TransM(Matrix* m1)
 {
 	Matrix* m = InitM(m1 -> col, m1 -> line);
@@ -173,7 +266,16 @@ Matrix* TransM(Matrix* m1)
 	return m;
 }
 
-//And on Matrix
+/**
+ * \fn Matrix* AndM(Matrix *m1, Matrix *m2)
+ * \brief compute the and gate on 2 matrix and return a new one.
+ * return an error if both matrix do not have the same size
+ *
+ * \param m1 : first matrix
+ * \param m2 : second matrix
+ *
+ * \return new matrix
+ */
 Matrix* AndM(Matrix *m1, Matrix *m2)
 {
 	if(m1 ->col != m2 -> col || m1 -> line != m2 -> line)
@@ -195,8 +297,16 @@ Matrix* AndM(Matrix *m1, Matrix *m2)
 	return m;
 }
 
-
-//Or on Matrix
+/**
+ * \fn Matrix* OrM(Matrix *m1, Matrix *m2)
+ * \brief compute the OR gate on 2 matrix and return a new one.
+ * return an error if both matrix do not have the same size
+ *
+ * \param m1 : first matrix
+ * \param m2 : second matrix
+ *
+ * \return new matrix
+ */
 Matrix* OrM(Matrix *m1, Matrix *m2)
 {
 	if(m1 -> col != m2 -> col || m1 -> line != m2 -> line)
@@ -218,7 +328,17 @@ Matrix* OrM(Matrix *m1, Matrix *m2)
 	return m;
 }
 
-//Multiple 2 Matrix value by value
+/**
+ * \fn Matrix* MultValM(Matrix* m1, Matrix* m2)
+ * \brief Mult element by element, know as the hadamard product or element wise
+ * operation.
+ * Return an error if both matrix do not have the same size.
+ *
+ * \param m1 : first matrix
+ * \param m2 : second matrix
+ *
+ * \return new matrix
+ */
 Matrix* MultValM(Matrix* m1, Matrix* m2)
 {
 	if(m1 -> col != m2 -> col || m1 -> line != m2 -> line)
@@ -238,7 +358,15 @@ Matrix* MultValM(Matrix* m1, Matrix* m2)
 	return m;
 }
 
-//Multiple Matrix by scalar
+/**
+ * Matrix* MultScalM(Matrix *m1, double v)
+ * \brief Multiply matrix by a scalar.
+ *
+ * \param m1 : matrix
+ * \param v : scalar
+ *
+ * \return new matrix
+ */
 Matrix* MultScalM(Matrix *m1, double v)
 {
 	Matrix *m = InitM(m1 -> line, m1 -> col);
@@ -265,7 +393,19 @@ void MultScalMP(Matrix *m, double v)
 	}
 }
 
-//Copy one matrix from position to another position
+
+/**
+ * \fn Matrix* CopyMatrix(Matrix *m, int mx, int my, int Mx, int My)
+ * \brief Copy a Matrix from position (mx,my) to (Mx,My)
+ *
+ * \param m : matrix
+ * \param mx : lower x position
+ * \param my : lower y position
+ * \param Mx : higher x position
+ * \param My : higher y postion
+ *
+ * \return new matrix
+ */
 Matrix* CopyMatrix(Matrix *m, int mx, int my, int Mx, int My)
 {
 	int diffX = Mx - mx + 1;
@@ -284,6 +424,14 @@ Matrix* CopyMatrix(Matrix *m, int mx, int my, int Mx, int My)
 	return out;
 }
 
+/**
+ * \fn Matrix* normalize_dimension(Matrix *m)
+ * \brief Copy a matrix in a 28*28 matrix at the top left
+ *
+ * \param m : matrix
+ *
+ * \return new matrix
+ */
 Matrix* normalize_dimension(Matrix *m)
 {
     Matrix *out = InitM(28,28);
@@ -299,8 +447,16 @@ Matrix* normalize_dimension(Matrix *m)
     //FreeM(m);
     return out;
 }
-//Initiate List of struct
-//We use it to stock our list of matrix and their position
+
+/**
+ * \fn List* InitL(void *m, void *p)
+ * \brief Initiate the List structure, set next and child to NULL by default
+ *
+ * \param m : matrix
+ * \param p : position of the matrix
+ *
+ * \return pointer to the list
+ */
 List* InitL(void *m, void *p)
 {
 	List *l = malloc(sizeof(List));
@@ -315,8 +471,17 @@ List* InitL(void *m, void *p)
 	return l;
 }
 
-//Initiate Position structure
-//Position of the matrix in the original matrix
+/**
+ * \fn PosM* InitP(int mx, int my, int Mx, int My)
+ * \brief Initiate the Position of the matrix structure
+ *
+ * \param mx : lower x position
+ * \param my : lower y position
+ * \param Mx : higher x position
+ * \param My : higher y postion
+ *
+ * \return pointer to the position
+ */
 PosM* InitP(int mx, int my, int Mx, int My)
 {
 	PosM* pos = malloc(sizeof(PosM));
@@ -327,7 +492,16 @@ PosM* InitP(int mx, int my, int Mx, int My)
 	return pos;
 }
 
-//Preprend a element to our list
+/**
+ * \fn List* PrependL(List* old, void *m, void *p)
+ * \brief Add an element to the start of the List
+ *
+ * \param old : list
+ * \param m : matrix
+ * \param p : position of matrix
+ *
+ * \return pointeur to the new first element of the List
+ */
 List* PrependL(List* old, void *m, void *p)
 {
 	if(!old)
@@ -340,7 +514,16 @@ List* PrependL(List* old, void *m, void *p)
 	return l;
 }
 
-//Append to a list
+/**
+ * \fn List* AppendL(List* old, void *m, void *p)
+ * \brief Add an element to the end of the List
+ *
+ * \param old : list
+ * \param m : matrix
+ * \param p : position of the matrix
+ *
+ * \return pointeur to the first element of the List
+ */
 List* AppendL(List* old, void *m, void *p)
 {
 	if(!old)
@@ -361,7 +544,12 @@ List* AppendL(List* old, void *m, void *p)
 	return old;
 }
 
-//Free our list
+/**
+ * \fn void FreeL(List *l)
+ * \brief Free the list and all of it components
+ *
+ * \param l : the list
+ */
 void FreeL(List *l)
 {
     if(l != NULL)
@@ -374,7 +562,15 @@ void FreeL(List *l)
         free(l);
     }
 }
-//Remove first
+
+/**
+ * \fn List* RemoveFL(List *l)
+ * \brief Remove the first element of the List
+ *
+ * \param l : the list
+ *
+ * \return Pointeur to the new first element, NULL if we delete all the list
+ */
 List* RemoveFL(List *l)
 {
 	if(l == NULL)
@@ -387,7 +583,14 @@ List* RemoveFL(List *l)
 	return l;
 }
 
-//Remove last
+/**
+ * \fn List* RemoveLL(List *l)
+ * \brief Remove the last element of the List
+ *
+ * \param l : the list
+ *
+ * \return Pointer to the first element, NULL if we delete all the list
+ */
 List* RemoveLL(List *l)
 {
 	if(l == NULL)
@@ -405,7 +608,12 @@ List* RemoveLL(List *l)
 	return l;
 }
 
-//Delete all the list
+/**
+ * \fn DeleteL(List *l)
+ * \brief delete all element in the List.
+ *
+ * \param l : the list
+ */
 void DeleteL(List *l)
 {
 	while(l)
