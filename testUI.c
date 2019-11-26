@@ -47,7 +47,7 @@ int main(int argc,char **argv)
     gtk_container_add(GTK_CONTAINER(s_window),s_main_box);
 
     /* Create main box container */
-    p_main_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 0);
+    p_main_box = gtk_box_new (GTK_ORIENTATION_VERTICAL, 10);
     gtk_container_add (GTK_CONTAINER (p_window), p_main_box);
 
     
@@ -74,42 +74,58 @@ int main(int argc,char **argv)
 	gtk_container_add (GTK_CONTAINER (p_scrolled_window), p_text_view);
     }
 
+    GtkWidget *image = gtk_image_new_from_file("/home/alexandre/Aled/OCR/image_data/UI/ocr.jpg");
+    gtk_box_pack_start(GTK_BOX(s_main_box), image, FALSE,FALSE, 0);
 
     /* Create button box container */
     s_button_box = gtk_button_box_new(GTK_ORIENTATION_VERTICAL);
-    gtk_box_pack_start (GTK_BOX (s_main_box), s_button_box, FALSE, FALSE, 0);
+    gtk_button_box_set_layout (GTK_BUTTON_BOX(s_button_box),GTK_BUTTONBOX_EXPAND);
+    gtk_box_pack_start (GTK_BOX (s_main_box), s_button_box, TRUE, FALSE, 0);
     
-    /* Start window button config */
-
-    GtkWidget *image = gtk_image_new_from_file("/home/alexandre/Aled/OCR/image_data/UI/ocr.jpg");
-    gtk_box_pack_start(GTK_BOX(s_button_box), image, FALSE,FALSE, 100);
     
     /* Button ocr config */
     {
 	GtkWidget *s_button = NULL;
+	GtkWidget *image = NULL;
 
-	s_button = gtk_button_new_with_label("Launch OCR");
+	image = gtk_image_new_from_file("./image_data/UI/icon/png/ocr.png");
+	s_button = gtk_button_new_with_label("          Launch OCR          ");
+	gtk_button_set_always_show_image (GTK_BUTTON(s_button),TRUE);
+	gtk_button_set_image(GTK_BUTTON(s_button),image);
+	gtk_button_set_image_position (GTK_BUTTON(s_button),GTK_POS_TOP);
 	g_signal_connect (G_OBJECT (s_button), "clicked", G_CALLBACK (cb_ocr), p_text_view);
-	gtk_box_pack_start (GTK_BOX (s_button_box), s_button, FALSE, FALSE, 100);
+	gtk_box_pack_start (GTK_BOX (s_button_box), s_button, FALSE, FALSE, 10);
     }
 
     /* Button edit text config */
     {
 	GtkWidget *s_button = NULL;
+	GtkWidget *image = NULL;
 
-	s_button = gtk_button_new_with_label("Edit Text");
+	image = gtk_image_new_from_file("./image_data/UI/icon/png/edit.png");
+	s_button = gtk_button_new_with_label(" Edit text");
+	gtk_button_set_always_show_image (GTK_BUTTON(s_button),TRUE);
+	gtk_button_set_image(GTK_BUTTON(s_button),image);
+	gtk_button_set_image_position (GTK_BUTTON(s_button),GTK_POS_TOP);
+
 	g_signal_connect (G_OBJECT (s_button), "clicked", G_CALLBACK (cb_edit), s_window);
-	gtk_box_pack_start (GTK_BOX (s_button_box), s_button, FALSE, FALSE, 100);
+	gtk_box_pack_start (GTK_BOX (s_button_box), s_button, FALSE, FALSE, 10);
     }
 
     /* Button quit config */
  
     {
 	GtkWidget *s_button = NULL;
+	GtkWidget *image = NULL;
 
-	s_button = gtk_button_new_with_label("Quit");
+	image = gtk_image_new_from_file("./image_data/UI/icon/png/door.png");
+	s_button = gtk_button_new_with_label(" Quit");
+	gtk_button_set_always_show_image (GTK_BUTTON(s_button),TRUE);
+	gtk_button_set_image(GTK_BUTTON(s_button),image);
+	gtk_button_set_image_position (GTK_BUTTON(s_button),GTK_POS_TOP);
+
 	g_signal_connect (G_OBJECT (s_button), "clicked", G_CALLBACK (cb_quit), NULL);
-	gtk_box_pack_start (GTK_BOX (s_button_box), s_button, FALSE, FALSE, 100);
+	gtk_box_pack_start (GTK_BOX (s_button_box), s_button, FALSE, FALSE, 10);
     }
 
     /* Display window */
@@ -120,5 +136,3 @@ int main(int argc,char **argv)
     
     return EXIT_SUCCESS;
 }
-
-
