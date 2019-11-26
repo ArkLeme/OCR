@@ -23,13 +23,15 @@ Matrix* get_mat_from_png(char *path)
 {
 	SDL_Surface *input = LoadImage(path);
 	SDL_Surface *gray = GrayScale(input);
-	SDL_Surface *contrast = Contrast(gray);
+    SDL_Surface *brightness = testIm(gray);
+	SDL_Surface *contrast = Contrast(brightness);
 	SDL_Surface *bin = Otsu(contrast);
 
 	Matrix *m = GetMatFromIm(bin);
 
     SaveMatAsIm(m, "image_data/rlsa/bin.bmp");
 
+    SDL_FreeSurface(brightness);
     SDL_FreeSurface(input);
 	SDL_FreeSurface(gray);
 	SDL_FreeSurface(contrast);
@@ -250,21 +252,43 @@ List* remove_point(List *c)
     while(first != NULL)
     {
         List* next = first->next;
-        if(next != NULL && ((Matrix*) (next->mat))->size < 30)
+
+        if(next != NULL)
         {
-            first->next = next->next;
-            FreeL(next);
+            Matrix *m = ((Matrix*) (next->mat));
+            if(is_point(m))
+            {
+                first->next = next->next;
+                FreeL(next);
+            }
         }
 
         first = first->next;
     }
 
-    if(c != NULL && ((Matrix*) (c->mat))->size < 20)
+    if(c != NULL)
     {
-        return RemoveFL(c);
+        Matrix *m = ((Matrix*) (c->mat));
+        if(is_point(m))
+            return RemoveFL(c);
     }
 
     return c;
+}
+
+int is_point(Matrix *m)
+{
+    if(m->col > 4 || m->line > 4)
+        return 0;
+
+    int white = 0;
+    for(int i = 0; i<m->size; i++)
+    {
+        if((int) GetPosM(m, i) == 0)
+            white++;
+    }
+
+    return  white < m->size/2;
 }
 
 /**

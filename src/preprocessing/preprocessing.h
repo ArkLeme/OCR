@@ -37,4 +37,6 @@ SDL_Surface* Otsu(SDL_Surface* InputImage);
  * return a new surface
  */
 SDL_Surface* Binarization(SDL_Surface* InputImage, int threshold);
+
+SDL_Surface* testIm(SDL_Surface* im);
 #endif
