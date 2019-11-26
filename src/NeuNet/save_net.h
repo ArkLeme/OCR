@@ -4,5 +4,6 @@
 
 void SaveNeuNet(neuNet* n);
 neuNet* LoadNeuNet();
+char *DoubleToArray(double a);
 
 #endif

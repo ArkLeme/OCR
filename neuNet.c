@@ -91,12 +91,54 @@ int main(int argc, char** argv)
 		printf("Training completed\n");
 	}
 	else
-	{	Training(network, 2, 2.5);
-		SaveNeuNet(network);
-		neuNet *network_load;
-		network_load = LoadNeuNet();
+	{	
+			/*FILE *file;
+			file = fopen("test","wb");
+			if(file != NULL)		
+			{ short int a[2] = {1,2};
+			fwrite ( a, sizeof(short int), 2, file); }
+			else
+			{printf("file == NULL");}
+			fclose(file);
 
-		freeNeuNet(network_load);
+			FILE *file2;
+			file2 = fopen("test","rb");
+			if(file != NULL)		
+			{ int nb_val =2;
+			  int Taille_buf = 2;
+			  short int buf[2];
+				while(nb_val == Taille_buf)
+				{
+					nb_val = fread ( buf, sizeof(short int), 2, file2); 
+					for(int i =0; i<nb_val; i++) {printf("%hd \n", buf[i]);}
+					
+				}
+			fclose(file2);*/
+
+
+		Training(network, 2, 2.5);
+		SaveNeuNet(network);
+
+		FILE *file2;
+			file2 = fopen("test","rb");
+			if(file2 != NULL)		
+			{ int nb_val =4;
+			  int Taille_buf = 4;
+			  Matrix *buf = InitM(2,2);
+				while(nb_val == Taille_buf)
+				{
+					nb_val = fread ( buf, sizeof(double), 4, file2); 
+					
+					for(int i =0; i<nb_val; i++) {printf("%f ", GetM(buf,i,i));}
+					printf("je lis wola");
+					
+				}
+			fclose(file2);
+			}
+		//neuNet *network_load;
+		//network_load = LoadNeuNet();
+
+		//freeNeuNet(network_load);
 		
 	}	
 	freeNeuNet(network);

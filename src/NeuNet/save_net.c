@@ -5,46 +5,60 @@
 #include <stdlib.h>
 #include "save_net.h"
 #include "init_Network.h"
+#include <string.h>
 
 void SaveNeuNet(neuNet *n)
 {
 	
 	FILE *file;
-	file = fopen("network_save", "w");
+	file = fopen("network_save", "wb");
 
 	if(file != NULL)
 	{
-		for(int i = 0;i < n->nbLay; i++)
+		/*for(int i = 0;i < n->nbLay; i++)
 		{
 			fputc(n->layers[i]->nbNeurons,file);//ne fonctionne pas car un nombre != 
 			//un character
 			//pense à Itoa(int to string) qu'a fait william et la fonctin fprintf("%s\n", itoa); 
 			fputc(' ', file);
 		}
-		fputc('\n',file);
+		fputc('\n',file);*/
 			
-		for(int i = 0;i < n->nbLay; i++) //premier layer n'a rien a save (pas de poids biais sur le premier)
+		//for(int i = 1;i < n->nbLay; i++) //premier layer n'a rien a save (pas de poids biais sur le premier)
 		{
-			layer *cL = n->layers[i];
-			printf("%i",i);
+			layer *cL = n->layers[1];
+			printf("%i", cL->biases->size);
+			double a[2] = {1.00,2.13};
+			Matrix *test = InitM(2,2);
 			
-			printf("biases layer %i",i);
-			
-			if(cL->biases->size != fwrite(cL->biases, sizeof(double), cL->biases->size-1, file)) //Je pense pas qu'il y ai besoin du  puisque tu écris le nb d'element
-				{printf("Pas write tous les élèements !!");}
-			else
-{ 
+		
+			//fwrite ( &test, sizeof(double), test->size, file);
+			for(int l=0; l<cL->biases->size;l++)
+			{
+				for(int c= 0; c<cL->biases->col; c++)
+				{
+					double value = GetM(cL->biases,l,c);
+					char value_to_char[sizeof(value)] = {0};
+					sprintf(value_to_char,"%.21f",value);
+					fwrite ( value_to_char, sizeof(char), sizeof(value), file);
+				}
+			}		
+
+						
+
 			fputc('\n', file);
 
-			printf("weights layer %i", i);
+			
 			DisplayM(cL->weights);
-			fwrite(cL->weights, sizeof(double), cL->weights->size-1, file);//idem
-			fputc('\n', file);}
+			FreeM(test);
+			//fwrite(cL->weights, sizeof(double), cL->weights->size, file);//idem
+			//fputc('\n', file);}
 				
 			
 		
-		}
+		
 	}
+}
 	else
 	{ printf("Pas de fichier où écrire !");
 }
@@ -52,6 +66,8 @@ void SaveNeuNet(neuNet *n)
 	
 	fclose(file);
 }
+
+
 
 neuNet *LoadNeuNet()
 {
@@ -62,6 +78,7 @@ neuNet *LoadNeuNet()
 	{
 		//errx("File can't be created");
 		printf("rien à loader");
+		
 	}
 	else
 	{
@@ -92,6 +109,10 @@ neuNet *LoadNeuNet()
 			fgetc(file); // ce for c'est grave clean		
 		
 		}
+
+
+return network;
+
 	 	
 	}
 
