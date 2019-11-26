@@ -43,7 +43,7 @@ int main(int argc,char **argv)
 
     /* Create start box container */
 
-    s_main_box = gtk_box_new(GTK_ORIENTATION_VERTICAL,0);
+    s_main_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL,0);
     gtk_container_add(GTK_CONTAINER(s_window),s_main_box);
 
     /* Create main box container */

@@ -358,6 +358,7 @@ static void open_ocr(gchar *file_name, GtkTextView *p_text_view)
 
 	/* To avoid error with char encoding */
 	utf8 = g_locale_to_utf8 (contents, -1, NULL, NULL, NULL);
+	
 	//g_free (contents) , contents = NULL;
 	gtk_text_buffer_insert (p_text_buffer, &iter, utf8, -1);
 	g_free (utf8);
