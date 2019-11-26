@@ -265,7 +265,7 @@ SDL_Surface* testIm(SDL_Surface* InputImage)
 	SDL_PixelFormat* format = InputImage -> format;
 	SDL_Surface* OutputImage = CopySurface(InputImage);
 
-    int l = 22;
+    double l = 4;
 
 	int w = InputImage -> w, h = InputImage -> h;
 
@@ -277,9 +277,9 @@ SDL_Surface* testIm(SDL_Surface* InputImage)
 			pixel = GetPixel(InputImage, i, j);
 			SDL_GetRGB(pixel, format, &r, &g, &b);
 
-            r = r + l > 255 ? 255 : r + l;
-            g = g + l > 255 ? 255 : g + l;
-            b = b + l > 255 ? 255 : b + l;
+            r = r + r/l > 255 ? 255 : r + r/l;
+            g = g + g/l > 255 ? 255 : g + g/l;
+            b = b + b/l > 255 ? 255 : b + b/l;
 
 		    pixel = SDL_MapRGB(format, r, g, b);
 			PutPixel(OutputImage, i, j, pixel);

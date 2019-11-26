@@ -27,7 +27,6 @@ void testBin(char* path)
     SDL_Surface* ncon = Contrast(nb);
     SDL_Surface* nbin = Otsu(ncon);
 
-
     SaveImage(ncon, "testnc.bmp");
     SaveImage(nbin, "testnbin.bmp");
     SDL_FreeSurface(nim);
@@ -36,7 +35,6 @@ void testBin(char* path)
     SDL_Surface* b = testIm(im);
     SDL_Surface* con = Contrast(b);
     SDL_Surface* bin = Otsu(con);
-
 
     SaveImage(con, "testc.bmp");
     SaveImage(nb, "testnb.bmp");
@@ -83,15 +81,15 @@ void testBin(char* path)
                 }
 
                 lw = lw->next;
-                lw = NULL;
+                //lw = NULL;
             }
 
             ll = ll->next;
-            ll = NULL;
+            //ll = NULL;
         }
 
         lp = lp->next;
-        lp = NULL;
+        //lp = NULL;
     }
 
     //write_files("test.txt", lg);

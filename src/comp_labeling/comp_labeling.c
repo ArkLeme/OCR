@@ -74,15 +74,12 @@ Matrix* FirstPass(Matrix* m, int* maxLabel)
 				int top = i > 0 ? GetM(output, i - 1, j) : 0;
 				int left = j > 0 ? GetM(output, i, j - 1) : 0;
                 int topleft = 0;
-                int topright = 0;
 
                 if(i > 0 && j > 0)
                     topleft = GetM(output, i - 1, j - 1);
-                if(i > 0 && j < m->col - 1)
-                    topright = GetM(output, i - 1, j + 1);
 
 				//Incremete label if there is no adjacent black pixel
-				if(top == 0 && left == 0 && topleft == 0 && topright == 0)
+				if(top == 0 && left == 0 && topleft == 0)
 				{
 					*maxLabel += 1;
 					label = *maxLabel;
@@ -92,9 +89,7 @@ Matrix* FirstPass(Matrix* m, int* maxLabel)
                 else
                 {
                     int min1 = mini(top, left);
-                    int min2 = mini(topleft, topright);
-
-                    label = mini(min1, min2);
+                    label= mini(topleft, min1);
                 }
 
 				PutM(output, i, j, label);
@@ -182,15 +177,12 @@ Graph *CreateGraph(Matrix *m, int maxLabel)
 			int top = i > 0 ? GetM(m, i - 1, j) : 0;
 			int left = j > 0 ? GetM(m, i, j - 1) : 0;
             int topleft = 0;
-            int topright = 0;
 
             if(i > 0 && j > 0)
                     topleft = GetM(m, i - 1, j - 1);
-            if(i > 0 && j < m->col - 1)
-                    topright = GetM(m, i - 1, j + 1);
 
-            int buffer[] = {top, left, topleft, topright};
-            int l = 4;
+            int buffer[] = {top, left, topleft};
+            int l = 3;
 
             sort_label(buffer, l);
 
