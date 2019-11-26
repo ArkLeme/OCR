@@ -83,15 +83,15 @@ void testBin(char* path)
                 }
 
                 lw = lw->next;
-                //lw = NULL;
+                lw = NULL;
             }
 
             ll = ll->next;
-            //ll = NULL;
+            ll = NULL;
         }
 
         lp = lp->next;
-        //lp = NULL;
+        lp = NULL;
     }
 
     //write_files("test.txt", lg);
