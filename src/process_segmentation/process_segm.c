@@ -278,7 +278,7 @@ List* remove_point(List *c)
 
 int is_point(Matrix *m)
 {
-    if(m->col > 4 || m->line > 4)
+    if(m->col > 4 || m->line > 4 || m->col == m->line)
         return 0;
 
     int white = 0;
