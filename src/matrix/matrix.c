@@ -434,18 +434,14 @@ Matrix* CopyMatrix(Matrix *m, int mx, int my, int Mx, int My)
  */
 Matrix* normalize_dimension(Matrix *m)
 {
-    Matrix *out = InitM(28,28);
-
     for(int i = 0; i < m->line; i++)
     {
         for(int j = 0; j < m->col; j++)
         {
-            PutM(out, i, j, GetM(m, i, j) != 0);
+            PutM(m, i, j, GetM(m, i, j) != 0);
         }
     }
-
-    //FreeM(m);
-    return out;
+    return m;
 }
 
 /**

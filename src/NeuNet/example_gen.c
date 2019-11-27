@@ -82,7 +82,6 @@ void GenerateExamples(char* path)
 	fprintf(f, "%s\n", itoa);
 	fclose(f);
 	free(itoa);
-	printf("ok gen");
 }
 
 /*!
