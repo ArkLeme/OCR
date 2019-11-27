@@ -63,7 +63,7 @@ List* get_list_segmented(char *path)
 void SaveMat(List *l,  int i, char *n)
 {
     char *sint = Itoa(i);
-    char *p = Concatene("../../image_data/rlsa/", n);
+    char *p = Concatene("image_data/rlsa/", n);
     char *s = Concatene(p, sint);
     char *sf = Concatene(s, ".bmp");
 
