@@ -17,74 +17,60 @@
 
 void SaveNeuNet(neuNet *n)
 {
-	
+  
 	FILE *file;
-	file = fopen("network_save", "wb");
+	file = fopen("network_save", "w");
+	if(file == NULL)
+	  {
+	    printf("Erreur : SaveNeuNet : No stream opened");
+	  }
 
-	if(file != NULL)
-	{
-		/*for(int i = 0;i < n->nbLay; i++)
-		{
-			fputc(n->layers[i]->nbNeurons,file);//ne fonctionne pas car un nombre != 
-			//un character
-			//pense à Itoa(int to string) qu'a fait william et la fonctin fprintf("%s\n", itoa); 
-			fputc(' ', file);
-		}
-		fputc('\n',file);*/
-			
-		//for(int i = 1;i < n->nbLay; i++) //premier layer n'a rien a save (pas de poids biais sur le premier)
-		{
-			layer *cL = n->layers[1];
-			printf("%i", cL->biases->size);
-			double a[2] = {1.00,2.13};
-			Matrix *test = InitM(2,2);
-			
-		
-			//fwrite ( &test, sizeof(double), test->size, file);
-			for(int l=0; l<cL->biases->size;l++)
-			{
-				for(int c= 0; c<cL->biases->col; c++)
-				{
-					double value = GetM(cL->biases,l,c);
-					char value_to_char[sizeof(value)] = {0};
-					sprintf(value_to_char,"%.21f",value);
-					fwrite ( value_to_char, sizeof(char), sizeof(value), file);
-				}
-			}		
-
-						
-
-			fputc('\n', file);
-
-			
-			DisplayM(cL->weights);
-			FreeM(test);
-			//fwrite(cL->weights, sizeof(double), cL->weights->size, file);//idem
-			//fputc('\n', file);}
-				
-			
-		
-		
-	}
-}
 	else
-	{ printf("Pas de fichier où écrire !");
-}
-
+	  {
+	    fprintf(file, "%u\n{",n->nbLay);
+	    for(int i = 0; i < n->nbLay;i++)
+	      {
+		fprintf(file,"%u",n->layers[i]->nbNeurons);
+		if (i < n->nbLay-1)
+		  fprintf(file,",");
+	      }
+	    fprintf(file,",}\n");
+	    double value;
 	
-	fclose(file);
+	    for(int i = 1; i < n->nbLay; i++)
+	      {
+		layer *current_layer = n->layers[i];
+	    	    
+		for (int j = 0; j < current_layer->nbNeurons; j++)
+		  {
+		    for(int k = 0; k <current_layer->weights->col ;k++)
+		      {
+			value = GetM(current_layer->weights,j,k);
+			fprintf(file,"%f\n",value);
+		      }
+
+		    value = GetM(current_layer->biases,j,0);
+		    fprintf(file,"b\n%f\n", value);
+		  }
+	    
+		fprintf(file,"$\n");
+	      }
+	
+	    fclose(file);
+	  }
 }
 
 /*!
  * \author jeanne.morin
- * \Load the network from the save file, written in binary.
+ * \brief Load the network from the save file, written in binary.
+ * \return the network loaded.
  */
 
-neuNet *LoadNeuNet()
+/*neuNet *LoadNeuNet()
 {
 	
 	FILE *file;
-	file = fopen("network", "w");
+	file = fopen("network", "r");
 	if(file == NULL)
 	{
 		//errx("File can't be created");
@@ -129,5 +115,5 @@ return network;
 
 
 		
-}
+	}*/
 

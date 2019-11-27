@@ -105,22 +105,6 @@ int main(int argc, char** argv)
 		Training(network, 2, 2.5);
 		SaveNeuNet(network);
 
-		FILE *file2;
-			file2 = fopen("test","rb");
-			if(file2 != NULL)		
-			{ int nb_val =4;
-			  int Taille_buf = 4;
-			  Matrix *buf = InitM(2,2);
-				while(nb_val == Taille_buf)
-				{
-					nb_val = fread ( buf, sizeof(double), 4, file2); 
-					
-					for(int i =0; i<nb_val; i++) {printf("%f ", GetM(buf,i,i));}
-					printf("je lis wola");
-					
-				}
-			fclose(file2);
-			}
 		//neuNet *network_load;
 		//network_load = LoadNeuNet();
 
