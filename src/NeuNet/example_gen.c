@@ -47,6 +47,7 @@ Pool* ReadExamples(char* path)
 		fgetc(f);	
 		Matrix *m = InitMWithValues(28, 28, ch);
 		pool->examples[i] = m;
+//		DisplayM(m);
 	}
 	fclose(f);
 	printf("ok generation\n");
@@ -100,16 +101,19 @@ int GenExample(char* ImagePath, char* text, FILE*f)
 	{
 		if(text[i] == ' ') 
 			i++; //to 'remove' space in the string, à optimiser
-		fputc(text[i], f);
-		fputc('\n', f);
-		Matrix* m  = l->mat;
-		fwrite(m->matrix, sizeof(double), m->size, f);
-		fputc('\n', f);
-		//DISPLAY FOR TESTING
-		DisplayM(m);
+		if(text[i] > 'a' && text[i] < 'z') //letter 
+		{
+			fputc(text[i], f);
+			fputc('\n', f);
+			Matrix* m  = l->mat;
+			fwrite(m->matrix, sizeof(double), m->size, f);
+			fputc('\n', f);
+			//DISPLAY FOR TESTING
+//			DisplayM(m);
+			nbChar++;
+		}
 		l = l->next; //next element in l
 		i++;
-		nbChar++;
 	}
 	DeleteL(save);
 	return nbChar;

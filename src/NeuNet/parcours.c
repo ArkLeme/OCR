@@ -2,7 +2,7 @@
 #include "../process_segmentation/process_segm.h"
 #include "../segmentation/segmentation.h"
 #include <stddef.h>
-void Parcours(char* path)
+List* Parcours(char* path)
 {
     List* lg = paragraph_segm(path);
     List * lp = lg;
@@ -25,6 +25,7 @@ void Parcours(char* path)
 
                 while(lc != NULL)
                 {
+					p = AppendL(p, normalize_dimension(lc->mat), NULL);
 
                     lc = lc->next;
                     //lc = NULL;
@@ -44,6 +45,7 @@ void Parcours(char* path)
 
     //write_files("test.txt", lg);
     DeleteL(lg);
+	return p;
 }
 
 

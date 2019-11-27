@@ -68,11 +68,12 @@ void train(neuNet *Network,int steps,float learning_rate)
 
 int main(int argc, char** argv)
 {
-        int layerSizes[] = {28*28,20,26};
+    int layerSizes[] = {28*28,20,26};
 	neuNet *network = init_network(layerSizes,3); 
 	if(argc == 2 && *argv[1] == 't')
 	{
-		Training(network, 50000, 2.5);
+		printf("Beigining the training\n");
+		Training(network, 10000, 2.5);
 		printf("Training completed\n");
 	}
 	else
