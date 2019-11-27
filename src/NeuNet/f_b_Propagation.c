@@ -11,14 +11,15 @@
 ///////////////////// FORWARD PROPAGATION /////////////////////////////////////
 
 
-/*
-
 /*!
  * \author jeanne.morin
  * \brief propagate value from the first layer to the last layer of the current network, using sigmoide as activation function for every layer
  * \param network is the network structure in which the values will be propagate.
  * \param input_data is the input given to the first layer of the current layer and that will be propagate in this network.
+ *
  */
+
+/*
 //Calulate values and outputs
 void forward_prop(neuNet* network, Matrix *input_data)
 {

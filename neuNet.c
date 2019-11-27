@@ -23,22 +23,7 @@
 	}*/
 
 
-int GetOutput(neuNet *n)
-{
-	double max = -1;
-	int index = 0;
-	layer*ll = n->layers[n->nbLay-1];
-//	DisplayM(ll->outputs);
-	for(int i  = 0; i < ll->outputs->line; i++)
-	{
-		if(GetM(ll->outputs, i, 0) > max)
-		{
-			max = GetM(ll->outputs, i, 0);
-		    index = i;
-		}
-	}
-	return index;
-}
+
 	
 char Calculate(Matrix* c, neuNet * n)
 {
