@@ -208,7 +208,7 @@ void FinalUpdate_batch(neuNet *network, float learning_rate, int batchSize)
 
 
 /*!
- * \author jeanne.morin
+ * \author jeanne.morin pierre-olivier.rey
  * \brief propagate the erros back from the last layer to the first layer without updating wieghts and biases.
  * \param network is the current network where the function will bakc propagate the errors.
  * \param expOutputs is the matrix expected as output of the network for the exemple given in input to the network.

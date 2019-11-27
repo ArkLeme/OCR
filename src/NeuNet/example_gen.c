@@ -11,6 +11,12 @@
 #include "memory_handler.h"
 #include "parcours.h"
 
+/*!
+ * \author pierre-olivier.rey 
+ * \brief Get the total number of examples that will be read later. 
+ * \return The number of examples.
+ * Read the number in the first line of the file at the path "neuralNetwork_data/size.data". The file must exist. 
+ */
 size_t GetSize()
 {
 	FILE*f = fopen("neuralNetwork_data/size.data", "r");
@@ -23,13 +29,12 @@ size_t GetSize()
 }
 /*!
  * \author pierre-olivier.rey
- * \brief Read examples from specidief file
+ * \brief Read examples from specified file
  * \param path Path of the file containing examples
- * \param results Pointer to an array of char
- *
+ * \return A Pool containing all examples that have been read.
  * File is of this format:
- * c
- * Matrix of the char c
+ * c\n
+ * Matrix of the char c\n
  * ...
  */
 Pool* ReadExamples(char* path)
@@ -54,6 +59,18 @@ Pool* ReadExamples(char* path)
 	return pool;
 }
 
+/*!
+ * \author pierre-olivier.rey
+ * \brief Write all examples contained in the name file at path. 
+ * \param path Path of the name file, where data about exmaples is stored.
+ * Generate examples.data and size.data in the folder neuralNetwork_data.
+ * examples.data contains matrixes ans associated characters that will be used to train the network.
+ * size.data contains at his first line the number of example that have been written.
+ * the name file at path is a file with this following format:
+ * imagePath
+ * text contained in this image, with no point and caps.
+ * ...
+ */
 void GenerateExamples(char* path)
 {
 	FILE *f = fopen(path, "r");
@@ -87,9 +104,10 @@ void GenerateExamples(char* path)
 
 /*!
  * \author pierre-olivier.rey
- * \brief add all characters on the image situated at path to the example file
- * \param ImagePath Path of the example image, it is the string in the image.
- * \param example Path of the example file.
+ * \brief Write all characters of the image at ImagePath in the f file. 
+ * \param ImagePath Path of the example image.
+ * \param example Path of the example file : where will the examples be writter.
+ * \return the number of examples written
  */
 int GenExample(char* ImagePath, char* text, FILE*f)
 {
