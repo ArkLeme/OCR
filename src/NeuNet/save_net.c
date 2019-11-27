@@ -22,50 +22,51 @@ void SaveNeuNet(neuNet *n)
 	file = fopen("network_save", "w");
 	if(file == NULL)
 	  {
-	    printf("Erreur : SaveNeuNet : No stream opened")
+	    printf("Erreur : SaveNeuNet : No stream opened");
 	  }
 
 	else
 	  {
-	    fprintf(file, "%lu\n{",n->nbLay);
-	    for(size_t i = 0; i < mynet->size;i++)
+	    fprintf(file, "%u\n{",n->nbLay);
+	    for(int i = 0; i < n->nbLay;i++)
 	      {
-		fprintf(file,"%lu",n->layers[i]);
-		if (i < net->nbLay-1)
+		fprintf(file,"%u",n->layers[i]->nbNeurons);
+		if (i < n->nbLay-1)
 		  fprintf(file,",");
 	      }
-	    fprintf(myfile,",}\n");
+	    fprintf(file,",}\n");
 	    double value;
 	
-	    for(size_t i = 1; i < n->nbLay; i++)
+	    for(int i = 1; i < n->nbLay; i++)
 	      {
 		layer *current_layer = n->layers[i];
 	    	    
-		for (size_t j = 0; j < current_layer->nbNeurons; j++)
+		for (int j = 0; j < current_layer->nbNeurons; j++)
 		  {
-		    for(size_t k = 0; k <prec_layer->weights->col ;k++)
+		    for(int k = 0; k <current_layer->weights->col ;k++)
 		      {
-			value = GetM(curren_layer->weights,j,k);
-			fprintf(file,"%lf\n",value);
+			value = GetM(current_layer->weights,j,k);
+			fprintf(file,"%f\n",value);
 		      }
 
-		    value = GetM(curren_layer->biases,j,0);
-		    fprintf(file,"b\n%lf\n", value);
+		    value = GetM(current_layer->biases,j,0);
+		    fprintf(file,"b\n%f\n", value);
 		  }
 	    
 		fprintf(file,"$\n");
 	      }
 	
-	    fclose(myfile);
+	    fclose(file);
 	  }
 }
 
 /*!
  * \author jeanne.morin
- * \Load the network from the save file, written in binary.
+ * \brief Load the network from the save file, written in binary.
+ * \return the network loaded.
  */
 
-neuNet *LoadNeuNet()
+/*neuNet *LoadNeuNet()
 {
 	
 	FILE *file;
@@ -114,5 +115,5 @@ return network;
 
 
 		
-}
+	}*/
 
