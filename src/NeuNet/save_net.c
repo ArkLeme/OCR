@@ -19,7 +19,7 @@ void SaveNeuNet(neuNet *n)
 {
   
 	FILE *file;
-	file = fopen("network_save", "w");
+	file = fopen("src/NeuNet/save_data/network_save", "w");
 	if(file == NULL)
 	  {
 	    printf("Erreur : SaveNeuNet : No stream opened");
@@ -28,11 +28,12 @@ void SaveNeuNet(neuNet *n)
 	else
 	  {
 	    
-	    fprintf(file,"%u \n",n->nbLay);
+	    //fprintf(file,"%u \n",n->nbLay);
 	    for(int i = 0; i < n->nbLay;i++)
 	      {
 		fprintf(file,"%u \n",n->layers[i]->nbNeurons);
 	      }
+	    fprintf(file, "}\n");
 	   
 	    double value;
 	
@@ -52,8 +53,7 @@ void SaveNeuNet(neuNet *n)
 		    fprintf(file,"%f\n", value);
 		  }
 	    
-		fprintf(file,"$\n");
-	      }
+		}
 	
 	    fclose(file);
 	  }
@@ -69,7 +69,7 @@ neuNet *LoadNeuNet()
 {
 	
         FILE *file;
-	file = fopen("network", "r");
+	file = fopen("src/NeuNet/save_data/network_save", "r");
 	if (file == NULL)
 	  {
 	    printf("File does not exists");
@@ -77,70 +77,56 @@ neuNet *LoadNeuNet()
 	  }
 
 	char line[100];
-           
-	//fscanf(file,"%s",line);
-	//printf("%s",line);
+	char chaine[5] = "";
 	size_t nb_lay= 0;	
         	       
     
 	/* for(size_t i =0; i<nb_lay;i++)
 	 {
-	      scanf("%[,]",line);
+	      
 	      sizeLay[i] = atoi(line);
 	      nb_lay+=1;	      
 	    
-	      }*/
+          }*/
 
-	 fscanf(file, "%s", line);
-	 //nb_lay = (size_t)atoi(line);
-	 fscanf(file, "%s", line);
-
+	 
 	 int sizeLay[nb_lay];
 	  
-	 char chaine[5] = "";
-	 
-   
+	 //char chaine[5] = "";
+	 fscanf(file, "%s\n", chaine);
     
-    for (size_t i = 1; line[i] != '}';i++)
-    {
-        if (line[i] == ',')
-	  {
-	    sizeLay[nb_lay] = atof(chaine);
-	    nb_lay +=1;
-	    char chaine[5] = "";
-	  }
-        else
-	  {
-	    char fu[1];
-	    fu[0] = line[i];
-	    strcat(chaine,fu);
-          }
-    }
+	  while(chaine[0] != '}')
+	   {
+	         sizeLay[nb_lay] = atof(chaine);
+		 nb_lay +=1;
+		 fscanf(file, "%s\n", chaine);
+		
+	    }
        
-    double value;
-    neuNet  *net = init_network(sizeLay,nb_lay);
-    
-    //Load for each Layer except the first, the weights and biases matrices
-    for(int i=1; i<net->nbLay; i++)
-      {
-	layer *cL= net->layers[i];
-	for(int j =0; j<cL->weights->line;j++)
-	  {
-	    //Get every component of the matrix weights
-	    for(int k=0; k<cL->weights->col;k++)
-	      {
-		fscanf(file,"%s",line);
-		value = atof(line);
-		PutM(cL->weights,j,k,value);
-	      }
-	    
-	    //Get biases
-	    fscanf(file,"%s",line);
-	    value = atof(line);
-	    PutM(cL->biases,j,0,value);
-	  }
+	  double value;
+	  neuNet  *net = init_network(sizeLay,nb_lay);
+	  
+	  //Load for each Layer except the first, the weights and biases matrices
+	  for(int i=1; i<net->nbLay; i++)
+	    {
+	      layer *cL= net->layers[i];
+	      for(int j =0; j<cL->weights->line;j++)
+		{
+		  //Get every component of the matrix weights
+		  for(int k=0; k<cL->weights->col;k++)
+		    {
+		      fscanf(file,"%s",line);
+		      value = atof(line);
+		      PutM(cL->weights,j,k,value);
+		    }
+		  
+		  //Get biases
+		  fscanf(file,"%s",line);
+		  value = atof(line);
+		  PutM(cL->biases,j,0,value);
+		}
 	
-      }
+	     }
     
     fclose(file);
     return net;
