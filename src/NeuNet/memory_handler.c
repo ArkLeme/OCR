@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include "memory_handler.h"
 
+
 void ClearNeuNet(neuNet *n)
 {
 	layer* cL = n->layers[0];

@@ -87,8 +87,8 @@ void GenerateExamples(char* path)
 	while(fscanf(f, "%s\n", filename) != EOF)
 	{
 		fgets(text, 10000, f);
-		sum += GenExample(filename, text, fe);
 		printf("%s\n%s", filename, text);
+		sum += GenExample(filename, text, fe);
 	}
 	free(filename);
 	free(text);
@@ -100,6 +100,7 @@ void GenerateExamples(char* path)
 	fprintf(f, "%s\n", itoa);
 	fclose(f);
 	free(itoa);
+
 }
 
 /*!
@@ -111,7 +112,9 @@ void GenerateExamples(char* path)
  */
 int GenExample(char* ImagePath, char* text, FILE*f)
 {
+	printf("avant parcours\n");
 	List* l = Parcours(ImagePath);
+	printf("apresè parcours\n");
 	List*save  = l;
 	int nbChar = 0;
 	int i = 0;
@@ -126,8 +129,6 @@ int GenExample(char* ImagePath, char* text, FILE*f)
 			Matrix* m  = l->mat;
 			fwrite(m->matrix, sizeof(double), m->size, f);
 			fputc('\n', f);
-			//DISPLAY FOR TESTING
-//			DisplayM(m);
 			nbChar++;
 		}
 		l = l->next; //next element in l
