@@ -78,19 +78,44 @@ neuNet *LoadNeuNet()
 
 	char line[100];
            
-	fscanf(file,"%s",line);
-	printf("%s",line);
-	size_t nb_lay = atoi(line);	
-        int sizeLay[nb_lay];
-	       
+	//fscanf(file,"%s",line);
+	//printf("%s",line);
+	size_t nb_lay= 0;	
+        	       
     
-        for(size_t i =0; i<nb_lay;i++)
+	/* for(size_t i =0; i<nb_lay;i++)
 	 {
-	      fscanf(file, "%s",line);
+	      scanf("%[,]",line);
 	      sizeLay[i] = atoi(line);
 	      nb_lay+=1;	      
 	    
-         }
+	      }*/
+
+	 fscanf(file, "%s", line);
+	 //nb_lay = (size_t)atoi(line);
+	 fscanf(file, "%s", line);
+
+	 int sizeLay[nb_lay];
+	  
+	 char chaine[5] = "";
+	 
+   
+    
+    for (size_t i = 1; line[i] != '}';i++)
+    {
+        if (line[i] == ',')
+	  {
+	    sizeLay[nb_lay] = atof(chaine);
+	    nb_lay +=1;
+	    char chaine[5] = "";
+	  }
+        else
+	  {
+	    char fu[1];
+	    fu[0] = line[i];
+	    strcat(chaine,fu);
+          }
+    }
        
     double value;
     neuNet  *net = init_network(sizeLay,nb_lay);
