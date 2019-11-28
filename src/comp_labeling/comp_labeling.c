@@ -32,7 +32,17 @@ Matrix *CompLabeling(Matrix *m, int* maxLabel)
 	return sp;
 }
 
-int mini(int a, int b)
+/**
+ * \fn static int mini(int a, int b)
+ * \brief Return the minimum non-null value between a and b, one of them
+ * must be non-null.
+ *
+ * \param a : first value
+ * \param b : second value
+ *
+ * \return lower value between a and b
+ */
+static int mini(int a, int b)
 {
     if(b == 0)
         return a;
@@ -115,7 +125,7 @@ Matrix* FirstPass(Matrix* m, int* maxLabel)
 Matrix *SecondPass(Matrix *m, Graph *g)
 {
 	Matrix *output = InitM(m -> line, m -> col);
-	
+
 	for(int i = 0; i < m -> line; i++)
 	{
 		for(int j = 0; j < m -> col; j++)
@@ -128,13 +138,30 @@ Matrix *SecondPass(Matrix *m, Graph *g)
 	return output;
 }
 
-void swap(int i, int j, int *l)
+/**
+ * \fn static void swap(int i, int j, int *l)
+ * \brief Swap element i and j in a chained list.
+ *
+ * \param i : index of the first element
+ * \param j : index of the second element
+ * \param l : List
+ */
+static void swap(int i, int j, int *l)
 {
     int temp = l[i];
     l[i] = l[j];
     l[j] = temp;
 }
 
+/**
+ * \fn static void sort_label(int *list, int l)
+ * \brief This function sort the list according to the x poisiton
+ * of the element, we use this function to sort our character because they are
+ * not sorted.
+ *
+ * \param list : List
+ * \param l : size of the list
+ */
 void sort_label(int *list, int l)
 {
     for(int i = 0; i < l; i++)
@@ -147,7 +174,18 @@ void sort_label(int *list, int l)
     }
 }
 
-int next_value(int i, int *list, int l)
+/**
+ * \fn static itn enxt_value(int i, int *list, int l)
+ * \brief Get the next non-null value in the list, we use it to merge our
+ * different label correctly, since there is likely 3 or 4 label.
+ *
+ * \param i : the starting index
+ * \param list : List
+ * \param l : size of the list
+ *
+ * \return index of the next non-null value
+ */
+static int next_value(int i, int *list, int l)
 {
     while(i < l && list[i] == 0)
         i++;
