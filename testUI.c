@@ -1,3 +1,6 @@
+#include <stdio.h> 
+#include <string.h>
+#include <time.h> 
 #include <stdlib.h>
 #include <gtk/gtk.h>
 #include "src/UI/callback.h"
@@ -74,22 +77,28 @@ int main(int argc,char **argv)
 	gtk_container_add (GTK_CONTAINER (p_scrolled_window), p_text_view);
     }
 
-    GtkWidget *image = gtk_image_new_from_file("/home/alexandre/Aled/OCR/image_data/UI/ocr.jpg");
-    gtk_box_pack_start(GTK_BOX(s_main_box), image, FALSE,FALSE, 0);
 
+    GtkWidget *image = NULL;
+    srand(time(0));
+    float nb = rand()%2;
+    char image_path[25];
+    sprintf(image_path, "./image_data/UI/%i.png",(int)nb);
+    
+    image = gtk_image_new_from_file(image_path);
+    gtk_box_pack_start(GTK_BOX(s_main_box), image, FALSE,FALSE, 0);
+    
     /* Create button box container */
     s_button_box = gtk_button_box_new(GTK_ORIENTATION_VERTICAL);
     gtk_button_box_set_layout (GTK_BUTTON_BOX(s_button_box),GTK_BUTTONBOX_EXPAND);
-    gtk_box_pack_start (GTK_BOX (s_main_box), s_button_box, TRUE, FALSE, 0);
+    gtk_box_pack_start (GTK_BOX(s_main_box), s_button_box, TRUE, FALSE, 0);
     
     
     /* Button ocr config */
     {
 	GtkWidget *s_button = NULL;
 	GtkWidget *image = NULL;
-
 	image = gtk_image_new_from_file("./image_data/UI/icon/png/ocr.png");
-	s_button = gtk_button_new_with_label("          Launch OCR          ");
+	s_button = gtk_button_new_with_label("Launch OCR");
 	gtk_button_set_always_show_image (GTK_BUTTON(s_button),TRUE);
 	gtk_button_set_image(GTK_BUTTON(s_button),image);
 	gtk_button_set_image_position (GTK_BUTTON(s_button),GTK_POS_TOP);
@@ -103,7 +112,7 @@ int main(int argc,char **argv)
 	GtkWidget *image = NULL;
 
 	image = gtk_image_new_from_file("./image_data/UI/icon/png/edit.png");
-	s_button = gtk_button_new_with_label(" Edit text");
+	s_button = gtk_button_new_with_label("Edit text");
 	gtk_button_set_always_show_image (GTK_BUTTON(s_button),TRUE);
 	gtk_button_set_image(GTK_BUTTON(s_button),image);
 	gtk_button_set_image_position (GTK_BUTTON(s_button),GTK_POS_TOP);
@@ -119,7 +128,7 @@ int main(int argc,char **argv)
 	GtkWidget *image = NULL;
 
 	image = gtk_image_new_from_file("./image_data/UI/icon/png/door.png");
-	s_button = gtk_button_new_with_label(" Quit");
+	s_button = gtk_button_new_with_label("Quit");
 	gtk_button_set_always_show_image (GTK_BUTTON(s_button),TRUE);
 	gtk_button_set_image(GTK_BUTTON(s_button),image);
 	gtk_button_set_image_position (GTK_BUTTON(s_button),GTK_POS_TOP);

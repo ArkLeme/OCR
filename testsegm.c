@@ -1,3 +1,4 @@
+#include "src/UI/document.h"
 #include <err.h>
 #include "src/sdl_tools/sdl_tools.h"
 #include "src/preprocessing/preprocessing.h"
