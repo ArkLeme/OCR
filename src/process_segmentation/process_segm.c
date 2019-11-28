@@ -100,6 +100,16 @@ List* first_segmentation(char *path)
     return l;
 }
 
+
+/**
+ * \fn static int is_image(List *l)
+ * \brief Detect if the Matrix is an image
+ * according to the number of pixel in the image.
+ *
+ * \param l : List containing the Matrix
+ *
+ * \return 1 if it is an image, 0 otherwise
+ */
 static int is_image(List *l)
 {
     Matrix *m = ((Matrix*) (l->mat));
@@ -115,6 +125,14 @@ static int is_image(List *l)
     return black > m->size - m->size/3;
 }
 
+/**
+ * \fn static List* remove_image(List *p)
+ * \brief Remove every image in the list of paragraph
+ *
+ * \param p : list of paragraph
+ *
+ * \return pointer to the first element
+ */
 static List* remove_image(List *p)
 {
     List *first = p;
