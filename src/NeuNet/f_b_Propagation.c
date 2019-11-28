@@ -19,14 +19,14 @@
  *
  */
 
-/*
+
 //Calulate values and outputs
-void forward_prop(neuNet* network, Matrix *input_data)
+void forward_prop_actiTest(neuNet* network, Matrix *input_data, char fct[])
 {
         layer *current_layer;
 
 	network->layers[0]->values = input_data;
-	network->layers[0]->outputs = Sig(network->layers[0]->values);
+	network->layers[0]->outputs = Acti(network->layers[0]->values,fct);
 	
 	//Propage the input values in every layers of the network
 	for(int i = 1; i < network->nbLay; i++)
@@ -37,14 +37,14 @@ void forward_prop(neuNet* network, Matrix *input_data)
 	    	//Calculate the values and input Matrix of the current layer
 	    	Matrix *multiplication_weights = MultM(current_layer->weights,input_data);
 	    	current_layer->values = AddM(multiplication_weights,current_layer->biases);
-	    	current_layer->outputs = Sig(current_layer->values);
+	    	current_layer->outputs = Acti(current_layer->values,fct);
 
 	    	FreeM(multiplication_weights);
 	    	input_data = current_layer->outputs;
 	  		
 		   	current_layer->errors = NULL; //needed if it is only 
 	  }
-}*/
+}
 
 /*!
  * \author jeanne.morin
@@ -258,6 +258,54 @@ void backprop_batch(neuNet *network, Matrix *expOutputs)
 		Matrix *transpose = TransM(network->layers[i+1] -> weights);
 		Matrix *wXE = MultM(transpose,network->layers[i+1] -> errors);
 		Matrix *Sprime = SigPrime(cl->values);
+		cl->errors = MultValM(Sprime, wXE);
+		FreeM(transpose);
+		FreeM(wXE);
+		FreeM(Sprime);
+
+		Matrix* transpose_bis = TransM(pl->outputs);
+		Matrix *update = MultM(cl->errors,transpose_bis);
+		Add_OptiM(cl->weight_batch,update);
+		Add_OptiM(cl->biases_batch,cl->errors);
+		
+		FreeM(update);
+		FreeM(transpose_bis);
+	}
+}
+
+
+void backprop_batch_actiTest(neuNet *network, Matrix *expOutputs, char acti_fct)
+{
+	layer *ll =network->layers[network->nbLay -1]; //last layer
+	layer *pl = network->layers[network->nbLay -2]; //precedant layer
+	
+	//dError
+	Matrix *neg = MultScalM(expOutputs, -1);
+	Matrix* minus = AddM(ll->outputs, neg);
+	FreeM(neg);
+	Matrix *sPrimeValues = (actiPrime(ll->values, acti_fct));
+	//updates errors martrix
+	ll->errors = MultM(sPrimeValues,minus);
+	FreeM(sPrimeValues);
+	FreeM(minus);
+		
+	//Update Sum of Errors and Erros*Output(layer-1)
+	Matrix* transpose_out = TransM(pl->outputs);
+		
+	//DisplayM(transpose_out);
+	Matrix *update = MultM(ll->errors,transpose_out);
+	Add_OptiM(ll->weight_batch, update);
+	Add_OptiM(ll->biases_batch,ll->errors);
+	FreeM(update);
+	FreeM(transpose_out);
+	
+	for(int i = network->nbLay-2; i > 0; i--) 
+	{	
+    	layer *cl = network->layers[i];   //current layer
+		pl = network->layers[i-1];
+		Matrix *transpose = TransM(network->layers[i+1] -> weights);
+		Matrix *wXE = MultM(transpose,network->layers[i+1] -> errors);
+		Matrix *Sprime = ActiPrime(cl->values, acti_fct);
 		cl->errors = MultValM(Sprime, wXE);
 		FreeM(transpose);
 		FreeM(wXE);

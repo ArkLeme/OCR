@@ -3,6 +3,7 @@
 #include "../matrix/matrix.h"
 #include "structNet.h"
 
+void forward_prop_actiTest(neuNet* network, Matrix *input_data, char fct[]);
 Matrix* forward_prop(neuNet *network, Matrix * input_data);
 void backprop(neuNet* n, int len, Matrix *expOutputs, float learningRate);
 

@@ -8,24 +8,6 @@
 
 
 
-
-////////////////////// S I G M O I D E /////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////
-
-double sigmoid(float x)
-{	
-	return (double) 1.0/(1.0 + exp(-x));
-//	return log(1 + exp(x)); // relu soft plus
-	//return (exp(2*x) - 1)/(exp(2*x) + 1);
-}
-
-double sigPrime(float x)
-{
-	return sigmoid(x)*(1-sigmoid(x));
-	//return 1/(1+exp(-x)); //relu prime
-	//return 1- ( sigmoid( x)* sigmoid( x));
-}
-
 Matrix* Acti(Matrix *m, char fct)
 {
 	Matrix* m2 = InitM(m->line, m->col);
@@ -56,8 +38,24 @@ Matrix* Acti(Matrix *m, char fct)
 
 	return m2;
 }
-	    
 
+
+////////////////////// S I G M O I D E /////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////
+
+double sigmoid(float x)
+{	
+	return (double) 1.0/(1.0 + exp(-x));
+//	return log(1 + exp(x)); // relu soft plus
+	//return (exp(2*x) - 1)/(exp(2*x) + 1);
+}
+
+double sigPrime(float x)
+{
+	return sigmoid(x)*(1-sigmoid(x));
+	//return 1/(1+exp(-x)); //relu prime
+	//return 1- ( sigmoid( x)* sigmoid( x));
+}
 
 
 Matrix* Sig(Matrix *m)
