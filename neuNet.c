@@ -78,38 +78,23 @@ int main(int argc, char** argv)
 	}
 	else
 	{	
-			/*FILE *file;
-			file = fopen("test","wb");
-			if(file != NULL)		
-			{ short int a[2] = {1,2};
-			fwrite ( a, sizeof(short int), 2, file); }
-			else
-			{printf("file == NULL");}
-			fclose(file);
-
-			FILE *file2;
-			file2 = fopen("test","rb");
-			if(file != NULL)		
-			{ int nb_val =2;
-			  int Taille_buf = 2;
-			  short int buf[2];
-				while(nb_val == Taille_buf)
-				{
-					nb_val = fread ( buf, sizeof(short int), 2, file2); 
-					for(int i =0; i<nb_val; i++) {printf("%hd \n", buf[i]);}
-					
-				}
-			fclose(file2);*/
-
-
+			
 		Training(network, 2, 2.5);
 		SaveNeuNet(network);
+		
 
 		neuNet *network_load;
 		network_load = LoadNeuNet();
+		for(int i=0; i<network_load->nbLay; i++)
+		{
+			printf("Layer %i", i);
+			DisplayM_double(network_load->layers[i]->weights);
+			DisplayM_double(network_load->layers[i]->biases);
+		}
 
-		//freeNeuNet(network_load);
 		
+		freeNeuNet(network_load);
+		printf("end of transmission");
 	}	
 	freeNeuNet(network);
 	

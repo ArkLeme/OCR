@@ -125,7 +125,7 @@ double GetPosM(Matrix* m, int pos)
 
 /**
  * \fn void DisplayM(Matrix* m)
- * \brief Display the matrix in the console
+ * \brief Display the matrix in the console, display its components as double
  *
  * \param m : Matrix
  */
@@ -137,6 +137,26 @@ void DisplayM(Matrix* m)
 		for(int j = 0; j < m -> col; j++)
 		{
 			printf("%i ",(int) GetM(m, i, j));
+		}
+		printf("]\n");
+	}
+	printf("\n");
+}
+
+/**
+ * \fn void DisplayM_double(Matrix* m)
+ * \brief Display the matrix in the console, display its components as double
+ *
+ * \param m : Matrix
+ */
+void DisplayM_double(Matrix* m)
+{
+	for(int i = 0; i < m -> line; i++)
+	{
+		printf("[ ");
+		for(int j = 0; j < m -> col; j++)
+		{
+			printf("%f ",GetM(m, i, j));
 		}
 		printf("]\n");
 	}

@@ -160,6 +160,12 @@ double GetPosM(Matrix *m, int pos);
 void DisplayM(Matrix* m);
 
 /*
+ * Display a matrix and its components as double
+ * m is the matrix
+ */
+void DisplayM_double(Matrix* m);
+
+/*
  * Free the matrix structure
  * m is the matrix
  */
