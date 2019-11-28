@@ -105,8 +105,8 @@ int main(int argc, char** argv)
 		Training(network, 2, 2.5);
 		SaveNeuNet(network);
 
-		//neuNet *network_load;
-		//network_load = LoadNeuNet();
+		neuNet *network_load;
+		network_load = LoadNeuNet();
 
 		//freeNeuNet(network_load);
 		

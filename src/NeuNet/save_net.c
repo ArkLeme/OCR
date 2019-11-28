@@ -27,14 +27,13 @@ void SaveNeuNet(neuNet *n)
 
 	else
 	  {
-	    fprintf(file, "%u\n{",n->nbLay);
+	    
+	    fprintf(file,"%u \n",n->nbLay);
 	    for(int i = 0; i < n->nbLay;i++)
 	      {
-		fprintf(file,"%u",n->layers[i]->nbNeurons);
-		if (i < n->nbLay-1)
-		  fprintf(file,",");
+		fprintf(file,"%u \n",n->layers[i]->nbNeurons);
 	      }
-	    fprintf(file,",}\n");
+	   
 	    double value;
 	
 	    for(int i = 1; i < n->nbLay; i++)
@@ -50,7 +49,7 @@ void SaveNeuNet(neuNet *n)
 		      }
 
 		    value = GetM(current_layer->biases,j,0);
-		    fprintf(file,"b\n%f\n", value);
+		    fprintf(file,"%f\n", value);
 		  }
 	    
 		fprintf(file,"$\n");
@@ -66,54 +65,87 @@ void SaveNeuNet(neuNet *n)
  * \return the network loaded.
  */
 
-/*neuNet *LoadNeuNet()
+neuNet *LoadNeuNet()
 {
 	
-	FILE *file;
+        FILE *file;
 	file = fopen("network", "r");
-	if(file == NULL)
-	{
-		//errx("File can't be created");
-		printf("rien à loader");
-		
-	}
-	else
-	{
-		int layers_nbNeurons[3];
-		int NbLay =0;
-		int r = fgetc(file);
-		
-		
+	if (file == NULL)
+	  {
+	    printf("File does not exists");
+	    return NULL;
+	  }
 
-		while(r)		
-		{
-			layers_nbNeurons[NbLay] = r; //a changer avec double while ou autre fonction de lecture genre fgets
-			fgetc(file);
-			r = fgetc(file);
-			NbLay+=1;
-		}
+	char line[100];
+           
+	//fscanf(file,"%s",line);
+	//printf("%s",line);
+	size_t nb_lay= 0;	
+        	       
+    
+	/* for(size_t i =0; i<nb_lay;i++)
+	 {
+	      scanf("%[,]",line);
+	      sizeLay[i] = atoi(line);
+	      nb_lay+=1;	      
+	    
+	      }*/
+
+	 fscanf(file, "%s", line);
+	 //nb_lay = (size_t)atoi(line);
+	 fscanf(file, "%s", line);
+
+	 int sizeLay[nb_lay];
+	  
+	 char chaine[5] = "";
+	 
+   
+    
+    for (size_t i = 1; line[i] != '}';i++)
+    {
+        if (line[i] == ',')
+	  {
+	    sizeLay[nb_lay] = atof(chaine);
+	    nb_lay +=1;
+	    char chaine[5] = "";
+	  }
+        else
+	  {
+	    char fu[1];
+	    fu[0] = line[i];
+	    strcat(chaine,fu);
+          }
+    }
+       
+    double value;
+    neuNet  *net = init_network(sizeLay,nb_lay);
+    
+    //Load for each Layer except the first, the weights and biases matrices
+    for(int i=1; i<net->nbLay; i++)
+      {
+	layer *cL= net->layers[i];
+	for(int j =0; j<cL->weights->line;j++)
+	  {
+	    //Get every component of the matrix weights
+	    for(int k=0; k<cL->weights->col;k++)
+	      {
+		fscanf(file,"%s",line);
+		value = atof(line);
+		PutM(cL->weights,j,k,value);
+	      }
+	    
+	    //Get biases
+	    fscanf(file,"%s",line);
+	    value = atof(line);
+	    PutM(cL->biases,j,0,value);
+	  }
+	
+      }
+    
+    fclose(file);
+    return net;
+
+
 		
-		neuNet *network = init_network(layers_nbNeurons, NbLay);
-		
-		
-		for(int i = 0;i < network->nbLay; i++) //du coup peut etre commencer à  si tu save pas le 1er layer
-		{
-			layer *cL = network->layers[i];
-
-			fread(cL->biases, sizeof(double), cL->biases->size, file);
-			fgetc(file);
-			fread(cL->weights, sizeof(double), cL->weights->size, file);
-			fgetc(file); // ce for c'est grave clean		
-		
-		}
-
-
-return network;
-
-	 	
-	}
-
-
-		
-	}*/
+}
 
