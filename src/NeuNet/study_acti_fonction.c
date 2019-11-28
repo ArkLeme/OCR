@@ -2,7 +2,7 @@
 #include "structNet.h"
 #include "memory_handler.h"
 #include "acti_fonction.h"
-#include "traning.h"
+#include "training.h"
 #include <err.h>
 #include <stdio.h>
 #include <math.h>
@@ -11,16 +11,19 @@
 #include "f_b_Propagation.h"
 #include "../../neuNet.h"
 #include <stdlib.h>
+#include "save_net.h"
+#include "study_acti_fonction.h"
+#include <string.h>
 
 
 
-
-void Write_Accuracy(int epoch, char acti_fct)
+/*
+void Write_convergence(int epoch, char acti_fct)
 {
 	int layerSizes[] = {28*28,20,26};
 	neuNet *network = init_network(layerSizes,3); 
 
-	Training_Write(network, 200, 2.5, acti_fct[]);
+	Training_Write(network, epoch, 2.5, acti_fct);
 	SaveNeuNet(network);		
 
 }
@@ -29,7 +32,7 @@ void Write_Accuracy(int epoch, char acti_fct)
 void Training_Write(neuNet *n, int epoch, double learning_rate, char acti_fct)
 {
 	FILE* file;
-	char path[] = strcat("src/network_save/",acti_fct);
+	char path = strcat("src/network_save/",acti_fct);
 	file = fopen(path, "w");
 
 	int batchSize = 10; //Arbritrary value, needs of tests
@@ -64,7 +67,7 @@ void Training_Write(neuNet *n, int epoch, double learning_rate, char acti_fct)
 			FreePoolP(*(batches+i));
 		free(batches);
 		printf("epoch %i : %i/%li\n", i, success, p->size);
-		fprintf(file,
+		fprintf(file, "%i/%li\n", success,p->size);
 		
 	}
 	FreePool(p);
@@ -82,13 +85,14 @@ void Write_Accuracy(char acti_fct)
 void Predict(neuNet *n, char acti_fct)
 {
 	FILE* file;
-	char path[] = strcat("src/network_save/",acti_fct);
+	char path = strcat("src/network_save/",acti_fct);
 	file = fopen(path, "w");
 
 	GenerateExamples("neuralNetwork_data/names.data");
 	Pool* p = ReadExamples("neuralNetwork_data/examples.data"); 
 	int met[26] = {0};
-	
+	int success =0;
+
 	for(size_t b = 0; b < p->size; b++)
 	{
 		if(met[p->results[b] - 'a'] == 0)
@@ -97,7 +101,7 @@ void Predict(neuNet *n, char acti_fct)
 			mat->col = 1;
 			mat->line = 784; //resizing matrix according to expected format
 						// for neuNet input matrix
-			Matrix* expected_out = CreateExpected(p->results[b]);
+			
 			forward_prop_actiTest(n, mat, acti_fct);				
 			if(GetOutput(n) == p->results[b] - 'a')
 			{
@@ -109,14 +113,16 @@ void Predict(neuNet *n, char acti_fct)
 				printf("recognized : %c [K.O.]", p->results[b]);
 			}
 		 	met[p->results[b] - 'a'] = 1;	
+
+			
 		}
 			
    			//ClearNeuNet(n);
-			FreeM(expected_out);
+			
 		
 			
 	}
 		
 	FreePool(p);
 	fclose(file);
-}
+}*/

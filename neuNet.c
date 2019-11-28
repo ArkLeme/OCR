@@ -13,7 +13,7 @@
 #include "src/NeuNet/training.h"
 
 #include "src/NeuNet/parcours.h"
-#include "src/NeuNet/cross_entropy.h"
+
 //predict answer with a network trained
 /*int calculate (neuNet* Network,Matrix *input_data)
 {

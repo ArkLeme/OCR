@@ -11,7 +11,7 @@
 Matrix* Acti(Matrix *m, char fct)
 {
 	Matrix* m2 = InitM(m->line, m->col);
-	if(fct == "s")
+	if(fct == 's')
 	  {
 	    for(int i = 0; i < m->line; i++)
 	      {
@@ -19,7 +19,7 @@ Matrix* Acti(Matrix *m, char fct)
 		  {PutM(m2, i, j, sigmoid(GetM(m,i, j)));}
 	      }
 	  }
-	else if(fct == "t")
+	else if(fct == 't')
 	  {
 	    for(int i = 0; i < m->line; i++)
 	      {
@@ -27,12 +27,43 @@ Matrix* Acti(Matrix *m, char fct)
 		  {PutM(m2, i, j, tan(GetM(m,i, j)));}
 	      }
 	  }
-	else if(fct == "r")
+	else if(fct == 'r')
 	  {
 	    for(int i = 0; i < m->line; i++)
 	      {
 		for( int j = 0; j < m->col; j++)
-		  {PutM(m2, i, j, reLU(GetM(m,i, j)));}
+		  {PutM(m2, i, j, ReLU(GetM(m,i, j)));}
+	      }
+	  }
+
+	return m2;
+}
+
+Matrix* ActiPrime(Matrix *m, char fct)
+{
+	Matrix* m2 = InitM(m->line, m->col);
+	if(fct == 's')
+	  {
+	    for(int i = 0; i < m->line; i++)
+	      {
+		for( int j = 0; j < m->col; j++)
+		  {PutM(m2, i, j, sigPrime(GetM(m,i, j)));}
+	      }
+	  }
+	else if(fct == 't')
+	  {
+	    for(int i = 0; i < m->line; i++)
+	      {
+		for( int j = 0; j < m->col; j++)
+		  {PutM(m2, i, j, tanPrime(GetM(m,i, j)));}
+	      }
+	  }
+	else if(fct == 'r')
+	  {
+	    for(int i = 0; i < m->line; i++)
+	      {
+		for( int j = 0; j < m->col; j++)
+		  {PutM(m2, i, j, ReLU_prime(GetM(m,i, j)));}
 	      }
 	  }
 

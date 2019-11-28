@@ -4,6 +4,7 @@
 #include "../matrix/matrix.h"
 
 
+Matrix* ActiPrime(Matrix *m, char fct);
 Matrix* Acti(Matrix *m, char fct);
 Matrix *Sig(Matrix *m);
 Matrix *SigPrime(Matrix *m);

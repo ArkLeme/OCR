@@ -5,7 +5,7 @@
 #include <err.h>
 #include <stdio.h>
 #include <math.h>
-#include "cross_entropy.h"
+
 
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////// FORWARD PROPAGATION /////////////////////////////////////
@@ -21,7 +21,7 @@
 
 
 //Calulate values and outputs
-void forward_prop_actiTest(neuNet* network, Matrix *input_data, char fct[])
+void forward_prop_actiTest(neuNet* network, Matrix *input_data, char fct)
 {
         layer *current_layer;
 
@@ -283,7 +283,7 @@ void backprop_batch_actiTest(neuNet *network, Matrix *expOutputs, char acti_fct)
 	Matrix *neg = MultScalM(expOutputs, -1);
 	Matrix* minus = AddM(ll->outputs, neg);
 	FreeM(neg);
-	Matrix *sPrimeValues = (actiPrime(ll->values, acti_fct));
+	Matrix *sPrimeValues = (ActiPrime(ll->values, acti_fct));
 	//updates errors martrix
 	ll->errors = MultM(sPrimeValues,minus);
 	FreeM(sPrimeValues);
