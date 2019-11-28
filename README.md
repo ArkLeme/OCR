@@ -9,8 +9,7 @@
 
 ## Usage:
 
-Generate the main executable
-
+- Generate the main executable
     - `make main`
 
 ## Documentation:
