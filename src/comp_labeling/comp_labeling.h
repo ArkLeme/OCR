@@ -74,5 +74,4 @@ void ReduceLabel(Matrix *m, int ml);
  * len the length of the list
  * return the index of the element (It must exist)
  */
-int BinSearch(int* list, int x, int len);
 #endif

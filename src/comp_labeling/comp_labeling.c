@@ -175,7 +175,7 @@ void sort_label(int *list, int l)
 }
 
 /**
- * \fn static itn enxt_value(int i, int *list, int l)
+ * \fn static int enxt_value(int i, int *list, int l)
  * \brief Get the next non-null value in the list, we use it to merge our
  * different label correctly, since there is likely 3 or 4 label.
  *
