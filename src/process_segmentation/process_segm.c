@@ -100,6 +100,66 @@ List* first_segmentation(char *path)
     return l;
 }
 
+
+/**
+ * \fn static int is_image(List *l)
+ * \brief Detect if the Matrix is an image
+ * according to the number of pixel in the image.
+ *
+ * \param l : List containing the Matrix
+ *
+ * \return 1 if it is an image, 0 otherwise
+ */
+static int is_image(List *l)
+{
+    Matrix *m = ((Matrix*) (l->mat));
+
+    int black = 0;
+
+    for(int i = 0; i < m->size; i++)
+    {
+        if(GetPosM(m, i))
+            black++;
+    }
+
+    return black > m->size - m->size/3;
+}
+
+/**
+ * \fn static List* remove_image(List *p)
+ * \brief Remove every image in the list of paragraph
+ *
+ * \param p : list of paragraph
+ *
+ * \return pointer to the first element
+ */
+static List* remove_image(List *p)
+{
+    List *first = p;
+    if(first != NULL)
+    {
+        List *next = first->next;
+
+        while(first->next != NULL)
+        {
+            next = first->next;
+
+            if(is_image(first->next))
+            {
+                first->next = next->next;
+                FreeL(next);
+            }
+
+            first = first->next;
+        }
+    }
+
+    if(is_image(p))
+        return RemoveFL(p);
+
+    return p;
+}
+
  /**
  * \fn List* paragraph_segm(char *path)
  * \brief Apply the first segmentation, it take the path of the file
@@ -121,6 +181,9 @@ List* paragraph_segm(char *path)
 
     PosM **pos = FindPosMat(twopass, nbl);
     List *l = ListOfMat(m, pos, nbl);
+
+    l = remove_image(l);
+
     //RemoveFL(l); //Remove bloc with white pixel
 
     SaveMatAsIm(twopass, "image_data/rlsa/rlsa.bmp");
