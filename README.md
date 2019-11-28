@@ -11,9 +11,7 @@
 
 Generate the main executable
 
-```makefile
-make main
-```
+    - `make main`
 
 ## Documentation:
 
