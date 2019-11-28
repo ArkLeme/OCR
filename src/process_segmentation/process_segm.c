@@ -253,42 +253,59 @@ List* remove_point(List *c)
     {
         List* next = first->next;
 
-        if(next != NULL)
+        int cas = is_point(next);
+
+        if(cas == 1)
         {
-            Matrix *m = ((Matrix*) (next->mat));
-            if(is_point(m))
-            {
-                first->next = next->next;
-                FreeL(next);
-            }
+            first->next = next->next;
+            FreeL(next);
+        }
+        else if(cas == 2)
+        {
+            List *point = next->next;
+            next->next = point->next;
+            FreeL(point);
         }
 
         first = first->next;
     }
 
-    if(c != NULL)
+    int cas = is_point(c);
+
+    if(cas == 1)
+        return RemoveFL(c);
+
+    if(cas == 2)
     {
-        Matrix *m = ((Matrix*) (c->mat));
-        if(is_point(m))
-            return RemoveFL(c);
+        c->next = RemoveFL(c->next);
+        return c;
     }
 
     return c;
 }
 
-int is_point(Matrix *m)
+int is_point(List *l)
 {
-    if(m->col > 4 || m->line > 4)
-        return 0;
-
-    int white = 0;
-    for(int i = 0; i<m->size; i++)
+    if(l != NULL && l->next != NULL)
     {
-        if((int) GetPosM(m, i) == 0)
-            white++;
+        int m1x = l->pos->mx;
+        int M1x = l->pos->Mx;
+
+        int m2x = l->next->pos->mx;
+        int M2x = l->next->pos->Mx;
+
+        int m1y = l->pos->My;
+        int m2y = l->next->pos->My;
+
+
+        if(m1x >= m2x - 1 && M1x <= M2x + 1)
+            return 1;
+
+        if(m1y > m2y && m1x <= m2x + 1 && M1x >= M2x - 1)
+            return 2;
     }
 
-    return  white < m->size/2;
+    return 0;
 }
 
 /**
