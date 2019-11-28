@@ -29,4 +29,4 @@ Install [doxygen](http://www.doxygen.nl/manual/install.html) to generate the doc
 - William Grolleau
 - Jeanne Morin
 - Pierre-Olivier Ray
-- Alexandre Lemonier
+- Alexandre Lemonnier
