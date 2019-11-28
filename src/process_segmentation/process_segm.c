@@ -10,7 +10,6 @@
  * \author William.G
  */
 
-
 /**
  * \fn Matrix* get_mat_from_png(char *path)
  * \brief Aplpy all prepocessing to an image and return the binary Matrix.
@@ -23,7 +22,7 @@ Matrix* get_mat_from_png(char *path)
 {
 	SDL_Surface *input = LoadImage(path);
 	SDL_Surface *gray = GrayScale(input);
-    SDL_Surface *brightness = testIm(gray);
+    SDL_Surface *brightness = brightness_filter(gray);
 	SDL_Surface *contrast = Contrast(brightness);
 	SDL_Surface *bin = Otsu(contrast);
 
@@ -41,7 +40,6 @@ Matrix* get_mat_from_png(char *path)
 
 	return m;
 }
-
 
 /**
  * \fn Matrix* apply_rlsa(Matrix *m, int vr, int cr)
@@ -205,39 +203,43 @@ List* word_segm(List* p)
     return p;
 }
 
- /**
- * \fn List* char_segm(List* p)
- * \brief Apply the fourth segmentation, it take a word
- * and it set child of p as List of char.
+/**
+ * \fn static int is_point(List *l)
+ * \brief detect if the matrix is a point of an i or and j
+ * if the first matrix is not a point reurn 0
+ * if the first matrix is a point return 1
+ * if the second matrix is a point return 2
  *
- * \param p : One word
+ * \param m : List
  *
- * \return List of paragraph
+ * \return different case
  */
-List* char_segm(List* w)
+static int is_point(List *l)
 {
-    int ml = 0;
-    Matrix *word = w->mat;
-    Matrix *twopass = CompLabeling(word, &ml);
-    int nbl = NumberLabel(twopass, ml);
-    ReduceLabel(twopass, ml);
+    if(l != NULL && l->next != NULL)
+    {
+        int m1x = l->pos->mx;
+        int M1x = l->pos->Mx;
 
-    PosM **pos = FindPosMat(twopass, nbl);
-    List *l = ListOfMat(word, pos, nbl);
+        int m2x = l->next->pos->mx;
+        int M2x = l->next->pos->Mx;
 
-    List* sorted_char = sort_list(l);
-    List* word_no_point = remove_point(sorted_char);
+        int m1y = l->pos->My;
+        int m2y = l->next->pos->My;
 
-    w->child = word_no_point;
 
-    FreeM(twopass);
+        if(m1x >= m2x - 1 && M1x <= M2x + 1)
+            return 1;
 
-    return w;
+        if(m1y > m2y && m1x <= m2x + 1 && M1x >= M2x - 1)
+            return 2;
+    }
+
+    return 0;
 }
 
-
 /**
- * \fn List* remove_point(List *c)
+ * \fn static List* remove_point(List *c)
  * \brief Delete little matrix which are not char, such as point or some
  * unwanted noise in the image.
  *
@@ -245,7 +247,7 @@ List* char_segm(List* w)
 
  \return the list
  */
-List* remove_point(List *c)
+static List* remove_point(List *c)
 {
     List *first = c;
 
@@ -284,32 +286,28 @@ List* remove_point(List *c)
     return c;
 }
 
-int is_point(List *l)
+/**
+ * \fn static void swap_list(List *c1, List *c2)
+ * \brief swap 2 element in the list
+ *
+ * \param c1 : first list
+ * \param c2 : second list
+ */
+
+static void swap_list(List *c1, List *c2)
 {
-    if(l != NULL && l->next != NULL)
-    {
-        int m1x = l->pos->mx;
-        int M1x = l->pos->Mx;
+    PosM *p = c1->pos;
+    Matrix *m = c1->mat;
 
-        int m2x = l->next->pos->mx;
-        int M2x = l->next->pos->Mx;
+    c1->pos = c2->pos;
+    c1->mat = c2->mat;
 
-        int m1y = l->pos->My;
-        int m2y = l->next->pos->My;
-
-
-        if(m1x >= m2x - 1 && M1x <= M2x + 1)
-            return 1;
-
-        if(m1y > m2y && m1x <= m2x + 1 && M1x >= M2x - 1)
-            return 2;
-    }
-
-    return 0;
+    c2->pos = p;
+    c2->mat = m;
 }
 
 /**
- * \fn List* sort_list(List *c)
+ * \fn static List* sort_list(List *c)
  * \brief Sort a list of char, the component labeling do not sort the char in
  * the correct order so we must sort them.
  *
@@ -317,7 +315,7 @@ int is_point(List *l)
  *
  * \return List of char
  */
-List* sort_list(List *c)
+static List* sort_list(List *c)
 {
     List* first = c;
     while(first != NULL)
@@ -338,22 +336,32 @@ List* sort_list(List *c)
 
     return c;
 }
-
 /**
- * \fn void swap_list(List *c1, List *c2)
- * \brief swap 2 element in the list
+ * \fn List* char_segm(List* p)
+ * \brief Apply the fourth segmentation, it take a word
+ * and it set child of p as List of char.
  *
- * \param c1 : first list
- * \param c2 : second list
+ * \param p : One word
+ *
+ * \return List of paragraph
  */
-void swap_list(List *c1, List *c2)
+List* char_segm(List* w)
 {
-    PosM *p = c1->pos;
-    Matrix *m = c1->mat;
+    int ml = 0;
+    Matrix *word = w->mat;
+    Matrix *twopass = CompLabeling(word, &ml);
+    int nbl = NumberLabel(twopass, ml);
+    ReduceLabel(twopass, ml);
 
-    c1->pos = c2->pos;
-    c1->mat = c2->mat;
+    PosM **pos = FindPosMat(twopass, nbl);
+    List *l = ListOfMat(word, pos, nbl);
 
-    c2->pos = p;
-    c2->mat = m;
+    List* sorted_char = sort_list(l);
+    List* word_no_point = remove_point(sorted_char);
+
+    w->child = word_no_point;
+
+    FreeM(twopass);
+
+    return w;
 }

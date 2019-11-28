@@ -14,7 +14,7 @@
  */
 
 /**
- * \fn static inline Uint8* PixelRef(SDL_Surface* InputImage, int xn int y)
+ * \fn static inline Uint8* PixelRef(SDL_Surface* InputImage, int x, int y)
  * \brief Get the reference of a pixel in an Surface
  *
  * \param InputImage : The surface
@@ -23,7 +23,7 @@
  *
  * \return reference to the pixel
  */
-static inline Uint8* PixelRef(SDL_Surface * InputImage, int x, int y)
+static inline Uint8* PixelRef(SDL_Surface* InputImage, int x, int y)
 {
 	int bpp = InputImage->format->BytesPerPixel;
         return (Uint8*)InputImage->pixels + y * InputImage->pitch + x * bpp;

@@ -21,11 +21,4 @@ List* word_segm(List* p);
 
 List* char_segm(List *p);
 
-List* remove_point(List *w);
-
-int is_point(List *l);
-
-List* sort_list(List *c);
-
-void swap_list(List *c1, List *c2);
 #endif
