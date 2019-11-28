@@ -26,7 +26,7 @@ Install [doxygen](http://www.doxygen.nl/manual/install.html) to generate the doc
 
 ## Team:
 
-- William Grolleau
-- Jeanne Morin
-- Pierre-Olivier Ray
-- Alexandre Lemonnier
+- William GROLLEAU
+- Jeanne MORIN
+- Pierre-Olivier RAY
+- Alexandre LEMONNIER
