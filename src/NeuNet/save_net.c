@@ -19,7 +19,7 @@ void SaveNeuNet(neuNet *n)
 {
   
 	FILE *file;
-	file = fopen("network_save", "w");
+	file = fopen("src/NeuNet/save_data/network_save", "w");
 	if(file == NULL)
 	  {
 	    printf("Erreur : SaveNeuNet : No stream opened");
@@ -69,7 +69,7 @@ neuNet *LoadNeuNet()
 {
 	
         FILE *file;
-	file = fopen("network_save", "r");
+	file = fopen("src/NeuNet/save_data/network_save", "r");
 	if (file == NULL)
 	  {
 	    printf("File does not exists");
@@ -97,7 +97,6 @@ neuNet *LoadNeuNet()
     
 	  while(chaine[0] != '}')
 	   {
-	         printf("%s\n", chaine);
 	         sizeLay[nb_lay] = atof(chaine);
 		 nb_lay +=1;
 		 fscanf(file, "%s\n", chaine);
@@ -117,9 +116,7 @@ neuNet *LoadNeuNet()
 		  for(int k=0; k<cL->weights->col;k++)
 		    {
 		      fscanf(file,"%s",line);
-		      printf("%s  ->",line);
 		      value = atof(line);
-		      printf("%f\n",value);
 		      PutM(cL->weights,j,k,value);
 		    }
 		  

@@ -82,19 +82,7 @@ int main(int argc, char** argv)
 		Training(network, 2, 2.5);
 		SaveNeuNet(network);
 		
-
-		neuNet *network_load;
-		network_load = LoadNeuNet();
-		for(int i=0; i<network_load->nbLay; i++)
-		{
-			printf("Layer %i", i);
-			DisplayM_double(network_load->layers[i]->weights);
-			DisplayM_double(network_load->layers[i]->biases);
-		}
-
 		
-		freeNeuNet(network_load);
-		printf("end of transmission");
 	}	
 	freeNeuNet(network);
 	
