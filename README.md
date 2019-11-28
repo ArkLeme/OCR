@@ -7,7 +7,7 @@
 - Pierre-Olivier Ray
 - Alexandre Lemonier
 
-##Usage:
+## Usage:
 
 Generate the main executable
 
@@ -15,7 +15,7 @@ Generate the main executable
 make main
 ```
 
-##Documentation:
+## Documentation:
 
 Install [doxygen](http://www.doxygen.nl/manual/install.html) if you want to
 generate the documentation.
@@ -25,7 +25,7 @@ generate the documentation.
     To generate the documentation and open the html in your default browser:
     -`make doc`
 
-##Cleaner:
+## Cleaner:
 
     To clean every object and dependency:
     -`make clean`
