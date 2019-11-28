@@ -10,7 +10,6 @@
  * \author William.G
  */
 
-
 /**
  * \fn Matrix* get_mat_from_png(char *path)
  * \brief Aplpy all prepocessing to an image and return the binary Matrix.
@@ -41,7 +40,6 @@ Matrix* get_mat_from_png(char *path)
 
 	return m;
 }
-
 
 /**
  * \fn Matrix* apply_rlsa(Matrix *m, int vr, int cr)
@@ -205,9 +203,18 @@ List* word_segm(List* p)
     return p;
 }
 
-static List* sort_list(List *c);
-
-int is_point(List *l)
+/**
+ * \fn static int is_point(List *l)
+ * \brief detect if the matrix is a point of an i or and j
+ * if the first matrix is not a point reurn 0
+ * if the first matrix is a point return 1
+ * if the second matrix is a point return 2
+ *
+ * \param m : List
+ *
+ * \return different case
+ */
+static int is_point(List *l)
 {
     if(l != NULL && l->next != NULL)
     {

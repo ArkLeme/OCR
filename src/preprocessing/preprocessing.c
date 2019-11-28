@@ -257,7 +257,7 @@ SDL_Surface* Binarization(SDL_Surface* InputImage, int threshold)
 }
 
 /**
- * \fn SDL_Surface* brighntess_filter(SDL_Surface *InputImage)
+ * \fn SDL_Surface* brightness_filter(SDL_Surface *InputImage)
  * \brief Apply a brightness filter of the Surface, it create more luminosity
  * in the image so the binarization will be better.
  *

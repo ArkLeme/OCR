@@ -140,7 +140,7 @@ Matrix *SecondPass(Matrix *m, Graph *g)
 
 /**
  * \fn static void swap(int i, int j, int *l)
- * \brief Swap element i and j in a chained list.
+ * \brief Swap element i and j in a chained List.
  *
  * \param i : index of the first element
  * \param j : index of the second element
@@ -175,7 +175,7 @@ void sort_label(int *list, int l)
 }
 
 /**
- * \fn static int enxt_value(int i, int *list, int l)
+ * \fn static int next_value(int i, int *list, int l)
  * \brief Get the next non-null value in the list, we use it to merge our
  * different label correctly, since there is likely 3 or 4 label.
  *
