@@ -17,7 +17,7 @@ List* get_list_segmented(char *path)
 
     while(lp != NULL)
     {
-        line_segm(lp);
+        lines_segmentation(lp);
         List *ll = lp->child;
         SaveMat(lp, p, "para");
         p++;
