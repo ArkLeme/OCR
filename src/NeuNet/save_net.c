@@ -27,14 +27,13 @@ void SaveNeuNet(neuNet *n)
 
 	else
 	  {
-	    fprintf(file, "%u\n{",n->nbLay);
+	    
+	    fprintf(file,"%u \n",n->nbLay);
 	    for(int i = 0; i < n->nbLay;i++)
 	      {
-		fprintf(file,"%u",n->layers[i]->nbNeurons);
-		if (i < n->nbLay-1)
-		  fprintf(file,",");
+		fprintf(file,"%u \n",n->layers[i]->nbNeurons);
 	      }
-	    fprintf(file,",}\n");
+	   
 	    double value;
 	
 	    for(int i = 1; i < n->nbLay; i++)
@@ -50,7 +49,7 @@ void SaveNeuNet(neuNet *n)
 		      }
 
 		    value = GetM(current_layer->biases,j,0);
-		    fprintf(file,"b\n%f\n", value);
+		    fprintf(file,"%f\n", value);
 		  }
 	    
 		fprintf(file,"$\n");
