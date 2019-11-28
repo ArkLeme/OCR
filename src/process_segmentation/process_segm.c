@@ -23,7 +23,7 @@ Matrix* get_mat_from_png(char *path)
 {
 	SDL_Surface *input = LoadImage(path);
 	SDL_Surface *gray = GrayScale(input);
-    SDL_Surface *brightness = testIm(gray);
+    SDL_Surface *brightness = brightness_filter(gray);
 	SDL_Surface *contrast = Contrast(brightness);
 	SDL_Surface *bin = Otsu(contrast);
 
