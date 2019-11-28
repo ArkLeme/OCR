@@ -53,12 +53,13 @@ doc: doxygen	## Generate html documentation and open it in your default browser.
 	@$(call open_doc)
 
 main: main.c $(OBJ) ## Generate the executable, use ./main path_of_the_image to generate the text.
+	@mv $(OBJ) object/
+	@mv $(DEP) dependence/
 
-testsegm: testsegm.c $(OBJ)
 
 segmA: segmA.c $(OBJ)
 
-neuNet: neuNet.c $(OBJ) ##t option to test in/out functions for example
+neuNet: neuNet.c $(OBJ) ## t option to test in/out functions for example
 
 # Help function to use the makefile
 # It "just" detect every rules in this makefile and the print it
@@ -72,7 +73,7 @@ help:
 # Clean
 
 clean:	## Clean every .o and .d.
-	@$(RM) $(OBJ) $(DEP) *.o *.d
+	@$(RM) object/* dependence/* $(OBJ) $(DEP) *.o *.d
 
 mrproper: clean 	## Clean every .o and .d as well as all generated files.
 	@$(RM) $(EXEC) $(BMP) $(SHORTCUT) 
