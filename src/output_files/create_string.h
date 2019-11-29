@@ -18,11 +18,12 @@ char* line_string(List *line);
 
 char* para_string(List *para);
 
-
 char* text_string(List *text);
 
 char* text_string(List *text);
 
 void write_files(char* path, List *l);
+
+char* generate_string(List *l);
 
 #endif

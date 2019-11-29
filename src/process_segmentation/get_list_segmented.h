@@ -11,4 +11,6 @@
 
 List* get_list_segmented(char *path);
 
+char *get_string(char *path);
+
 #endif

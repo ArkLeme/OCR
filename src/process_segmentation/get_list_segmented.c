@@ -1,6 +1,7 @@
 #include "get_list_segmented.h"
 #include "../string/string_operation.h"
 #include "../segmentation/segmentation.h"
+#include "../output_files/create_string.h"
 
 /**
  * \file get_list_segmented.c
@@ -49,36 +50,38 @@ List* get_list_segmented(char *path)
     List *lg = paragraph_segm(path);
     List *lp = lg;
 
+    /*
     int p = 0;
     int l = 0;
     int w = 0;
     int c = 0;
+    */
 
     while(lp != NULL)
     {
         lines_segmentation(lp);
         List *ll = lp->child;
-        SaveMat(lp, p, "para");
-        p++;
+        //SaveMat(lp, p, "para");
+        //p++;
 
         while(ll != NULL)
         {
             words_segmentation(ll);
             List *lw = ll->child;
-            SaveMat(ll, l, "line");
-            l++;
+            //SaveMat(ll, l, "line");
+            //l++;
 
             while(lw != NULL)
             {
                 char_segm(lw);
                 List *lc = lw->child;
-                SaveMat(lw, w, "word");
-                w++;
+                //SaveMat(lw, w, "word");
+                //w++;
 
                 while(lc != NULL)
                 {
-                    SaveMat(lc, c, "char");
-                    c++;
+                    //SaveMat(lc, c, "char");
+                    //c++;
 
                     lc = lc->next;
                     //lc = NULL;
@@ -97,4 +100,15 @@ List* get_list_segmented(char *path)
     }
 
     return lg;
+}
+
+char *get_string(char *path)
+{
+    List *l = get_list_segmented(path);
+
+    char *c = generate_string(l);
+
+    DeleteL(l);
+
+    return c;
 }
