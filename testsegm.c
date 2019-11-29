@@ -2,6 +2,7 @@
 #include "src/UI/document.h"
 #include "src/output_files/create_string.h"
 #include "src/NeuNet/init_Network.h"
+#include "src/NeuNet/memory_handler.h"
 
 void Test(char *path);
 
@@ -16,15 +17,18 @@ void Test(char *path)
     int layersize[] = {28*28,20,16};
     //neuNet *network = init_network(layersize, 3);
 
-    List *l = get_list_segmented(path);
+    //List *l = get_list_segmented(path);
 
-    //char *c = get_string(path, network);
+    char *c = get_string(path, network);
 
     //write_files("output.txt", l);
 
-    //printf("%s", c);
+    printf("%s", c);
 
-    //free(c);
+    free(c);
 
-    DeleteL(l);
+    //DeleteL(l);
+
+    free(c);
+	freeNeuNet(network);
 }
