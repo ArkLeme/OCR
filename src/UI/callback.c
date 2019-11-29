@@ -1,6 +1,7 @@
 #include "callback.h"
 #include "error.h"
 #include "document.h"
+#include "../process_segmentation/get_list_segmented.h"
 
 /**
  * \file callback.c
@@ -12,8 +13,6 @@
 static void open_file (gchar *, GtkTextView *);
 
 static void open_ocr(gchar *, GtkTextView *);
-
-static gchar* ocr(gchar *);
 
 /**
  * \fn void cb_ocr(GtkWidget *s_widget, gpointer user_data)
@@ -517,7 +516,7 @@ static void open_ocr(gchar *file_name, GtkTextView *p_text_view)
 {
 	g_return_if_fail (file_name && p_text_view);
 	{
-		gchar *contents = ocr(file_name);
+        gchar *contents = get_string(file_name);
 
 		docs.active = g_malloc (sizeof (*docs.active));
 		docs.active->path = g_strdup ("temp.txt");
@@ -525,7 +524,6 @@ static void open_ocr(gchar *file_name, GtkTextView *p_text_view)
 		docs.active->p_text_view = p_text_view;
 
 		/* Copie of contents in GtkTextView */
-		gchar *utf8 = NULL;
 		GtkTextIter iter;
 		GtkTextBuffer *p_text_buffer = NULL;
 
@@ -537,40 +535,9 @@ static void open_ocr(gchar *file_name, GtkTextView *p_text_view)
 		gtk_text_buffer_get_iter_at_line (p_text_buffer, &iter, 0);
 
 		/* To avoid error with char encoding */
-		utf8 = g_locale_to_utf8 (contents, -1, NULL, NULL, NULL);
-		//g_free (contents) , contents = NULL;
-		gtk_text_buffer_insert (p_text_buffer, &iter, utf8, -1);
-		g_free (utf8);
-		utf8 = NULL;
+        //g_free (contents) , contents = NULL;
 		gtk_text_buffer_insert (p_text_buffer, &iter, contents, -1);
-	
+
 		docs.active->save = FALSE;
     }
 }
-
-static gchar* ocr(gchar *file_name)
-{
-    /*GtkWidget *p_dialog;
-    GtkWidget *p_progressbar;
-    gdouble dFraction;
-
-    p_dialog =	gtk_dialog_new_with_buttons("Progressing...",GTK_WINDOW(docs.p_main_window),
-	    GTK_DIALOG_DESTROY_WITH_PARENT,"Loading...",GTK_RESPONSE_NONE,NULL);
-    
-    p_progressbar = gtk_progress_bar_new();
-
-    gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area (GTK_DIALOG(p_dialog))), p_progressbar,
-	    TRUE, FALSE, 0);
-
-    dFraction = gtk_progress_bar_get_fraction(GTK_PROGRESS_BAR(p_progressbar));
-    dFraction = 0.0;
-    gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(p_progressbar),dFraction);
-
-    gtk_window_set_transient_for(GTK_WINDOW(p_dialog),GTK_WINDOW(docs.p_main_window));
-    gtk_widget_show_all(docs.p_main_window);
-    gtk_widget_show_all(p_dialog);*/
-
-    gchar *texte = file_name;
-    return texte;
-}
-

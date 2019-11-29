@@ -12,15 +12,15 @@
  */
 
 char *test = "Lorem ipsum dolor sit met\n"\
-              "consectetur adipiscing elit\n"\
+              "consectetur adipiscing elit.\n"\
               "Morbi rhoncus libero et\n"\
               "\n"\
-              "Finibus hendrerit Nunc\n"\
-              "bibendum dignissim justo id\n"\
-              "sodales magna eleifend quis\n"\
+              "Finibus hendrerit. Nunc\n"\
+              "bibendum dignissim justo, id\n"\
+              "sodales magna eleifend quis.\n"\
               "\n"\
-              "Curabitur vel dui molestie\n"\
-              "pulvinar nisi ut tempor magna\n"\
+              "Curabitur vel dui molestie,\n"\
+              "pulvinar nisi ut, tempor magna.\n"\
               "Phasellus ut felis id augue\n"\
               "elementum varius condimentum\n"\
               "\n"\
@@ -223,4 +223,16 @@ void write_files(char* path, List *l)
     free(string);
 
     fclose(fp);
+}
+
+char* generate_string(List *l)
+{
+    start = test;
+
+    end = test + LengthStr(test) - 1;
+
+    char *s = text_string(l);
+
+    return s;
+
 }
