@@ -18,13 +18,13 @@
 
 
 
-/*
+
 void Write_convergence(int epoch, char acti_fct,char path[] )
 {
 	int layerSizes[] = {28*28,20,26};
 	neuNet *network = init_network(layerSizes,3);
 
-	Training_Write(network, epoch, 2.5, acti_fct,path[]);
+	Training_Write(network, epoch, 2.5, acti_fct,path);
 	SaveNeuNet(network);
 }
 
@@ -51,9 +51,9 @@ void Training_Write(neuNet *n, int epoch, double learning_rate, char acti_fct, c
 				mat->col = 1;
 				mat->line = 784; //resizing matrix according to expected format
 								// for neuNet input matrix
-				forward_prop(n, mat);
+				forward_prop_actiTest(n, mat,acti_fct);
 				Matrix* expected_out = CreateExpected(batches[b]->results[m]);
-				backprop_batch(n, expected_out);
+				backprop_batch_actiTest(n, expected_out, acti_fct);
 				if(GetOutput(n) == batches[b]->results[m] - 'a')
 					success++;
 				ClearNeuNet(n);
@@ -116,4 +116,4 @@ void Predict(neuNet *n, char acti_fct, char path[])
 
 	FreePool(p);
 	fclose(file);
-        }*/
+        }

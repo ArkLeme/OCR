@@ -13,6 +13,9 @@
 #include "src/NeuNet/training.h"
 
 #include "src/NeuNet/parcours.h"
+#include "src/NeuNet/study_acti_fonction.h"
+#include "src/NeuNet/propa_test.h"
+
 
 //predict answer with a network trained
 /*int calculate (neuNet* Network,Matrix *input_data)
@@ -68,23 +71,28 @@ void train(neuNet *Network,int steps,float learning_rate)
 
 int main(int argc, char** argv)
 {
-    int layerSizes[] = {28*28,20,26};
-	neuNet *network = init_network(layerSizes,3); 
+    
 	if(argc == 2 && *argv[1] == 't')
 	{
+            int layerSizes[] = {28*28,20,26};
+            neuNet *network = init_network(layerSizes,3);
 		printf("Beigining the training\n");
 		Training(network, 10000, 2.5);
 		printf("Training completed\n");
+
+                freeNeuNet(network);
 	}
 	else
 	{	
 			
-		Training(network, 2, 2.5);
-		SaveNeuNet(network);
-		
-		
+            Write_convergence(1000, 's', "neuralNetwork_data/sigmo_convergence");
+            //neuNet *sig_net;
+            //sig_net = LoadNeuNet;
+            
+
+            
+            
 	}	
-	freeNeuNet(network);
 	
 	return 0;
 }

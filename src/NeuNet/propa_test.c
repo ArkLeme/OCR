@@ -65,7 +65,7 @@ void backprop_batch_actiTest(neuNet *network, Matrix *expOutputs, char acti_fct)
 	FreeM(neg);
 	Matrix *sPrimeValues = (ActiPrime(ll->values, acti_fct));
 	//updates errors martrix
-	ll->errors = MultM(sPrimeValues,minus);
+	ll->errors = MultValM(sPrimeValues,minus);
 	FreeM(sPrimeValues);
 	FreeM(minus);
 
@@ -73,7 +73,7 @@ void backprop_batch_actiTest(neuNet *network, Matrix *expOutputs, char acti_fct)
 	Matrix* transpose_out = TransM(pl->outputs);
 
 	//DisplayM(transpose_out);
-	Matrix *update = MultM(ll->errors,transpose_out);
+	Matrix *update = MultValM(ll->errors,transpose_out);
 	Add_OptiM(ll->weight_batch, update);
 	Add_OptiM(ll->biases_batch,ll->errors);
 	FreeM(update);
