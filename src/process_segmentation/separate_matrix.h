@@ -3,6 +3,12 @@
 
 #include "../matrix/matrix.h"
 
+/**
+ * \file separate_matrix.h
+ * \brief header of separate_matrix.c
+ * \author Wiliam.G
+ */
+
 /*
  * Find the position of all matrix and return a pointeur to the list of pos
  * m is the initial matrix

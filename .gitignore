@@ -57,8 +57,12 @@ doc
 # Ignore doxygen documentation generation
 doxygen/*
 *.html
+*.bmp
 
 # Avoid conflict
 main.c
 main
 *.swp
+
+# Ignore .txt
+*.txt

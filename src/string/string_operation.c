@@ -1,7 +1,22 @@
 #include <stdlib.h>
 #include "string_operation.h"
 
-//Find the length of a string
+/**
+ * \file string_operation.c
+ * \brief This file contains all the function related to string.
+ * I did not use string.h because... I thought it was not allowed, so i just
+ * recode some function.
+ * \author William.G
+ */
+
+/**
+ * \fn int LengthStr(char* s)
+ * \brief Compute the length of a string, the string msut end with null char.
+ *
+ * \param s : the string
+ *
+ * \return the length of the string
+ */
 int LengthStr(char* s)
 {
 	int i = 0;
@@ -13,7 +28,15 @@ int LengthStr(char* s)
 	return i;
 }
 
-//Concatene two string and return the new one
+/**
+ * \fn char* Concatene(char *s1, char* s2)
+ * \brief Concatene 2 string, it return a new one.
+ *
+ * \param s1 : first string
+ * \param s2 : second string
+ *
+ * \return pointer to the new string
+ */
 char* Concatene(char *s1, char* s2)
 {
 	int l1 = LengthStr(s1);
@@ -31,7 +54,14 @@ char* Concatene(char *s1, char* s2)
 	return result;
 }
 
-//Find the length of an int
+/**
+ * \fn int LengthInt(int i)
+ * \brief Compute the number of decimal in a number.
+ *
+ * \param i : number
+ *
+ * \return number of decimal
+ */
 int LengthInt(int i)
 {
 	int n = 0;
@@ -48,7 +78,14 @@ int LengthInt(int i)
 	return n;
 }
 
-//Reverse a string
+/**
+ * \fn char* Reverse(char *s)
+ * \brief Reverse a string.
+ *
+ * \param s : the string
+ *
+ * \return the same string
+ */
 char* Reverse(char *s)
 {
 	int length = LengthStr(s);
@@ -63,7 +100,14 @@ char* Reverse(char *s)
 	return s;
 }
 
-//Conversion int to string
+/**
+ * \fn char* Itoa(int n)
+ * \brief Convert an int to a string
+ *
+ * \param n : the number
+ *
+ * \return the string
+ */
 char* Itoa(int n)
 {
 	int length = LengthInt(n);
@@ -77,4 +121,17 @@ char* Itoa(int n)
 	s[length] = '\0';
 
 	return Reverse(s);
+}
+
+/**
+ * \fn char* empty_string()
+ * \brief Return an empty string
+ *
+ * \return empty string
+ */
+char* empty_string()
+{
+    char *c = malloc(sizeof(char) * 1);
+    *c = 0;
+    return c;
 }

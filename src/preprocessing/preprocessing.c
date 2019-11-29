@@ -110,7 +110,8 @@ SDL_Surface* Contrast(SDL_Surface* InputImage)
 		{
 			pixel = GetPixel(InputImage, i, j);
 			SDL_GetRGB(pixel, InputImage -> format, &r, &g, &b);
-			r = r < 232 ? newValue[r] : 255;
+			//r = r < 232 ? newValue[r] : 255;
+			r = newValue[r];
 			pixel = SDL_MapRGB(OutputImage -> format, r, r, r);
 			PutPixel(OutputImage, i, j, pixel);
 		}
@@ -122,7 +123,7 @@ SDL_Surface* Contrast(SDL_Surface* InputImage)
 /**
  * \fn SDL_Surface* Otsu(SDL_Surface* InputImage)
  * \brief The function of binarization, we use the Otsu's method which is a global
- * binarization. 
+ * binarization.
  *
  * The goal of the function is to find a threshold to delimit the
  * which pixel will become black and which pixel will become white.
@@ -253,4 +254,46 @@ SDL_Surface* Binarization(SDL_Surface* InputImage, int threshold)
 	}
 
 	return OutputImage;
+}
+
+/**
+ * \fn SDL_Surface* brightness_filter(SDL_Surface *InputImage)
+ * \brief Apply a brightness filter of the Surface, it create more luminosity
+ * in the image so the binarization will be better.
+ *
+ * \param InputImage : Surface to which we apply the filter
+ *
+ * \return new Surface
+ */
+SDL_Surface* brightness_filter(SDL_Surface *InputImage)
+{
+	Uint32 pixel;
+	Uint8 r, g, b;
+
+	//Save format and copy Surface
+	SDL_PixelFormat* format = InputImage -> format;
+	SDL_Surface* OutputImage = CopySurface(InputImage);
+
+    double l = 50;
+
+	int w = InputImage -> w, h = InputImage -> h;
+
+	//Create the new image
+	for(int i = 0; i < w; i++)
+	{
+		for(int j = 0; j < h; j++)
+		{
+			pixel = GetPixel(InputImage, i, j);
+			SDL_GetRGB(pixel, format, &r, &g, &b);
+
+            r = r + l > 255 ? 255 : r + l;
+            g = g + l > 255 ? 255 : g + l;
+            b = b + l > 255 ? 255 : b + l;
+
+		    pixel = SDL_MapRGB(format, r, g, b);
+			PutPixel(OutputImage, i, j, pixel);
+		}
+	}
+
+    return OutputImage;
 }

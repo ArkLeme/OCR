@@ -2,7 +2,22 @@
 #include "separate_matrix.h"
 #include <err.h>
 
-//Find all the position of all component of our matrix
+/**
+ * \file separate_matrix.c
+ * \brief This files contains all function to separate one matrix into a List
+ * of matrix.
+ * \author William.G
+ */
+
+/**
+ * \fn PosM** FindPosMat(Matrix *m, int maxLabel)
+ * \brief Find the 4 coordinates of every component in a matrix
+ *
+ * \param m : Matrix
+ * \param maxLabel : number of label in the matrix
+ *
+ * \return List of pointer of the PosM structure
+ */
 PosM** FindPosMat(Matrix *m, int maxLabel)
 {
 	//Create a pointeur to our list of pos
@@ -47,12 +62,22 @@ PosM** FindPosMat(Matrix *m, int maxLabel)
 	return posM;
 }
 
-//Create a list of our matrix and their position
+/**
+ * \fn List* ListOfMat(Matrix *m, PosM **p, int maxLabel)
+ * \brief Create a List of Matrix from a single labeled Matrix
+ *
+ * \param m : Matrix
+ * \param p : List of pointer of position structure
+ * \param maxLabel : number of label in the matrix
+ *
+ * \return List of Matrix and their position
+ */
 List* ListOfMat(Matrix *m, PosM **p, int maxLabel)
 {
 
 	//Create the list so we can return it
 	List *l = NULL;
+    List **first = &l;
 
 	for(int i = 0; i < maxLabel; i++)
 	{
@@ -66,7 +91,7 @@ List* ListOfMat(Matrix *m, PosM **p, int maxLabel)
 
 			//Create the matrix and prepend it to the list
 			Matrix *mat = CopyMatrix(m, mx, my, Mx, My);
-			l = PrependL(l, mat, p[i]);
+			l = AppendL(l, mat, p[i]);
 		}
 		else
 		{
@@ -76,5 +101,5 @@ List* ListOfMat(Matrix *m, PosM **p, int maxLabel)
 
     free(p);
 
-	return l;
+	return RemoveFL(*first);
 }

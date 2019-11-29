@@ -9,5 +9,16 @@
  * \author William.G
  */
 
+Matrix* get_mat_from_png(char *path);
+
 List* first_segmentation(char *path);
+
+List* paragraph_segm(char *path);
+
+List* line_segm(List* p);
+
+List* word_segm(List* p);
+
+List* char_segm(List *p);
+
 #endif

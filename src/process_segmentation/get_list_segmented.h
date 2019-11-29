@@ -1,0 +1,14 @@
+#ifndef GET_LIST_SEGMENTED_H
+#define GET_LIST_SEGMENTED_H
+
+#include "process_segm.h"
+
+/**
+ * \file get_list_segmented.h
+ * \brief header of get_list_segmented.c
+ * \author William.G
+ */
+
+List* get_list_segmented(char *path);
+
+#endif

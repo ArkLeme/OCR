@@ -33,6 +33,30 @@ Matrix *CompLabeling(Matrix *m, int* maxLabel)
 }
 
 /**
+ * \fn static int mini(int a, int b)
+ * \brief Return the minimum non-null value between a and b, one of them
+ * must be non-null.
+ *
+ * \param a : first value
+ * \param b : second value
+ *
+ * \return lower value between a and b
+ */
+static int mini(int a, int b)
+{
+    if(b == 0)
+        return a;
+
+    if(a == 0)
+        return b;
+
+    if(b > a)
+        return a;
+
+    return b;
+}
+
+/**
  * \fn Matrix *FirstPass(Matrix *m, int *maxLabel)
  * \brief First pass in the Matrix, the purpose is to set a temporary label to
  * each pixel in the Matrix, we also create a tree where each label directly
@@ -59,20 +83,24 @@ Matrix* FirstPass(Matrix* m, int* maxLabel)
 				//Get top and left pixel
 				int top = i > 0 ? GetM(output, i - 1, j) : 0;
 				int left = j > 0 ? GetM(output, i, j - 1) : 0;
+                int topleft = 0;
+
+                if(i > 0 && j > 0)
+                    topleft = GetM(output, i - 1, j - 1);
 
 				//Incremete label if there is no adjacent black pixel
-				if(top == 0 && left == 0)
+				if(top == 0 && left == 0 && topleft == 0)
 				{
 					*maxLabel += 1;
 					label = *maxLabel;
 				}
 				//Place the minimal label to our pixel
-				else if(top == 0)
-					label = left;
-				else if(left == 0)
-					label = top;
-				else
-					label = top < left ? top : left;
+
+                else
+                {
+                    int min1 = mini(top, left);
+                    label= mini(topleft, min1);
+                }
 
 				PutM(output, i, j, label);
 			}
@@ -97,7 +125,7 @@ Matrix* FirstPass(Matrix* m, int* maxLabel)
 Matrix *SecondPass(Matrix *m, Graph *g)
 {
 	Matrix *output = InitM(m -> line, m -> col);
-	
+
 	for(int i = 0; i < m -> line; i++)
 	{
 		for(int j = 0; j < m -> col; j++)
@@ -108,6 +136,61 @@ Matrix *SecondPass(Matrix *m, Graph *g)
 	}
 
 	return output;
+}
+
+/**
+ * \fn static void swap(int i, int j, int *l)
+ * \brief Swap element i and j in a chained List.
+ *
+ * \param i : index of the first element
+ * \param j : index of the second element
+ * \param l : List
+ */
+static void swap(int i, int j, int *l)
+{
+    int temp = l[i];
+    l[i] = l[j];
+    l[j] = temp;
+}
+
+/**
+ * \fn static void sort_label(int *list, int l)
+ * \brief This function sort the list according to the x poisiton
+ * of the element, we use this function to sort our character because they are
+ * not sorted.
+ *
+ * \param list : List
+ * \param l : size of the list
+ */
+void sort_label(int *list, int l)
+{
+    for(int i = 0; i < l; i++)
+    {
+        for(int j = 0; j < l - i - 1; j++)
+        {
+            if(list[j] > list[j + 1])
+                swap(j, j + 1, list);
+        }
+    }
+}
+
+/**
+ * \fn static int next_value(int i, int *list, int l)
+ * \brief Get the next non-null value in the list, we use it to merge our
+ * different label correctly, since there is likely 3 or 4 label.
+ *
+ * \param i : the starting index
+ * \param list : List
+ * \param l : size of the list
+ *
+ * \return index of the next non-null value
+ */
+static int next_value(int i, int *list, int l)
+{
+    while(i < l && list[i] == 0)
+        i++;
+
+    return i;
 }
 
 /**
@@ -131,14 +214,25 @@ Graph *CreateGraph(Matrix *m, int maxLabel)
 		{
 			int top = i > 0 ? GetM(m, i - 1, j) : 0;
 			int left = j > 0 ? GetM(m, i, j - 1) : 0;
+            int topleft = 0;
 
-			if(top != 0 && left != 0 && top != left)
-			{
-				if(top > left)
-					Union(g -> subsets, top, left);
-				else
-					Union(g -> subsets, left, top);
-			}
+            if(i > 0 && j > 0)
+                    topleft = GetM(m, i - 1, j - 1);
+
+            int buffer[] = {top, left, topleft};
+            int l = 3;
+
+            sort_label(buffer, l);
+
+            int i = next_value(0, buffer, l);
+
+            while(i < l)
+            {
+                int j = next_value(i + 1, buffer, l);
+                if(j < l)
+                    Union(g->subsets, buffer[i], buffer[j]);
+                i = j;
+            }
 		}
 	}
 

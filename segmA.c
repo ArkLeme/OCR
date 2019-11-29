@@ -19,27 +19,43 @@ int main(int argc, char** argv)
 	//Segmentation on image
 	image_lines_segmentation(Bin_for_img);
 
-	Matrix *m = InitM(0,0);
+	// Init list of lines
+	Matrix *line = InitM(0,0);
 	PosM* p1 = InitP(0,0,0,0);
-	List *listofchar = InitL(m,p1);
+	List *listoflines = InitL(line,p1);
+	
+	// Init list of words
+	Matrix *word = InitM(0,0);
+	PosM* p2 = InitP(0,0,0,0);
+	List *listofwords = InitL(word,p2);
 
 	Matrix *img_m = GetMatFromIm(Bin_for_mat);
 	    
-	//Segmentation put in list of matrix
-	lines_segmentation(img_m,listofchar);
+	//Segmentation of each lines of IMAGE put in a list of Matrix
+	lines_segmentation(img_m,listoflines);
+	// Remove the "null" matrix
+	listoflines = RemoveFL(listoflines);
 
-	listofchar = RemoveFL(listofchar);
+	List *next = listoflines;
+	//Fill the list of words from each lines of the Paragraph
+	while(next != NULL)
+	{
+	    words_segmentation(next->mat,listofwords);
+	    next = next -> next;
+	}
+	//Remove the "null" matrix
+	listofwords = RemoveFL(listofwords);
 
 	//First char of the list and the image
-	Matrix* first = listofchar ->  mat;
+	Matrix* firstline = listoflines ->  mat;
 	//Second char of the list and the image
-	Matrix* second = listofchar -> next -> mat;
+	Matrix* firstword = listofwords -> mat;
 
-	char path[] = "image_data/char_1.bmp";
-	char path1[] = "image_data/char_2.bmp";
-	
-	SaveMatAsIm( first,path);
-	SaveMatAsIm(second,path1);
+	char path[] = "image_data/first_line.bmp";
+	char path1[] = "image_data/first_word.bmp";
+
+	SaveMatAsIm(firstline,path);
+	SaveMatAsIm(firstword,path1);
 	
 	SaveImage(Bin_for_img,"image_data/segm.bmp");
 
@@ -47,7 +63,8 @@ int main(int argc, char** argv)
 	SDL_FreeSurface(InputImage);
 	SDL_FreeSurface(Bin_for_mat);
 	FreeM(img_m);
-	DeleteL(listofchar);
+	DeleteL(listoflines);
+	DeleteL(listofwords);
 
 	return 0;
 }

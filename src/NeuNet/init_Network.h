@@ -7,5 +7,6 @@ layer *init_layer(int nbNeurones,int nbNeurones_prec);
 void InitBW(Matrix *m1);
 int random_int(int max_value);
 void Init_biases_weigths(layer *Layer, layer *prec_layer);
+void InitNeuNetForBatch(neuNet*n);
 
 #endif

@@ -3,52 +3,103 @@
 /**
  * \file matrix.h
  * \brief header of matrix.c
+ * It also defied the Matrix, PosM and List structure.
  * \author William.G
  */
 
 /**
  * \struct Matrix
- * \brief matrix structure
- * \param line is the height of the matrix.
- * \param col is the width of the matrix.
- * \param size is col * line
- * \return new matrix structure
+ * \brief Matrix structure. The Matrix is represented as a single array
+ * instead of a two-dimensional. We can get the data faster
  *
- * The structure is use for both neural network and segmentation.
- * The structure allow operation on matrix like add, mult or logical operation.
- * */
+ * \return new Matrix structure.
+ */
 typedef struct Matrix
 {
+    /**
+     * Number of line in the Matrix.
+     */
 	int line;
+
+    /**
+     * Number of column in the Matrix.
+     */
 	int col;
+
+    /**
+     * Size of the matrix, it is line * col.
+     */
 	int size;
+
+    /**
+     * array of all element in the matrix.
+     * It is represented as a single vector
+     * instead of two-dimensional array.
+     */
 	double* matrix;
 }Matrix;
 
-/*
- * Structure of the position of the matrix
- * mx and my are the top left pos
- * Mx and My are the bottm right pos
+/**
+ * \struct PosM
+ * \brief Contain the position of the 4 corner in a part of the matrix.
+ *
+ * A part of the matrix can represent :
+ * A paragraph if the matrix was the text.
+ * A line if the matrix was a paragrah.
+ * A word if the matrix was a line.
+ * A character if th Matrix was a word.
+ *
+ * We use mx, my, Mx and My to only copy a part of the matrix.
  */
 typedef struct PosM
 {
+    /**
+     * mx and my are the lower x and y position of a part of the matrix.
+     * Mx and My are the higher x and y position of a part of the matrix.
+     */
 	int mx, my, Mx, My;
 }PosM;
 
-/*
- * Structure of list, we use it to stock our list and the position of them
- * Posm* is a pointeur to the structure PosM, which is the pos of the matrix
- * void* is a pointeur to the structure we want to stock, it can be a matrix
- * or a list of matrix.
- * List* is a pointeur to the next element of our list, NULL if none
+/**
+ * \struct List
+ * \brief Linked list, we use it to get a list of all element in the text,
+ * each element has for child is successor :
+ *
+ * The List of paragraph has the list of line for child.
+ * The List of line has the list of word for child.
+ * The List of word ahs the list of char for child.
+ * The list of char has no child.
+ *
+ * This structure allow an easy iteration over every child, it will help the
+ * reconstruction of the docuement afterward.
+ *
+ * Each List contain a matrix which reprensent itself (para, line, word, char)
+ * and the PosM structure which is the position of the matrix in its parent.
  */
 typedef struct  List List;
 struct List
 {
+    /**
+     * PosM structure, the ith element reprensent the position
+     * of the ith Matrix in the parent Matrix.
+     */
 	PosM* pos;
+
+    /**
+     * Void pointer, we can stock every data we want, it is mostly used for
+     * Matrix but I have implemented this methid to try using void pointer.
+     */
 	void* mat;
 
+    /**
+     * Next element in our List, NULL pointeur if it is the last element.
+     */
 	List* next;
+
+    /**
+     * Child of the actual element, NULL in case of character.
+     */
+    List* child;
 };
 
 /*
@@ -75,7 +126,7 @@ Matrix* InitStringM(int line, int col, char* string);
  * j the col
  * e the value
  */
-void PutM(Matrix *m, int i, int j, double e);
+void PutM(Matrix* m, int i, int j, double e);
 
 /*
  * Put a value in the matrix
@@ -83,7 +134,7 @@ void PutM(Matrix *m, int i, int j, double e);
  * pos the position (m + pos)
  * e is the value
  */
-void PutPosM(Matrix *m, int pos, double e);
+void PutPosM(Matrix* m, int pos, double e);
 
 /*
  * Get a value in a matrix
@@ -106,7 +157,7 @@ double GetPosM(Matrix *m, int pos);
  * Display a matrix
  * m is the matrix
  */
-void DisplayM(Matrix *m);
+void DisplayM(Matrix* m);
 
 /*
  * Free the matrix structure
@@ -114,12 +165,32 @@ void DisplayM(Matrix *m);
  */
 void FreeM(Matrix *m);
 
+
+/*
+ * Fill up the Matrix with 0
+ * m is the matrix
+ */
+
+void FillupM(Matrix *m);
+
+/* DEPRECATED DESCRIPTION
+ * Add two matrix and return the first one
+ * m1 is the first matrix
+ * m3 the second
+ * return m1
+ */
+
+void Add_OptiM(Matrix *m1, Matrix *m2);
+
+
+
 /*
  * Add two matrix and return a new one
  * m1 is the first matrix
  * m3 the second
  * return a new matrix
  */
+
 Matrix *AddM(Matrix *m1, Matrix *m2);
 
 /*
@@ -168,6 +239,7 @@ Matrix *MultValM(Matrix *m1, Matrix *m2);
  * return a new matrix
  */
 Matrix *MultScalM(Matrix *m1, double v);
+void MultScalMP(Matrix *m, double v);
 
 /*
  * Copy a part of a matrix
@@ -247,4 +319,5 @@ List * RemoveLL(List* l);
  */
 void DeleteL(List* l);
 
+Matrix* InitMWithValues(int c, int l, double*m);
 #endif

@@ -2,7 +2,21 @@
 #include "matrix_image.h"
 #include "../string/string_operation.h"
 
-//Save Matrix as and image
+/**
+ * \file matrix_image.c
+ * \brief This files contains all the function to convert matrix to bmp.
+ * It also contains function to convert png to matrix.
+ * It is use to verify the result after the application of the segmentation.
+ * \author William.G
+ */
+
+/**
+ * \fn void SaveMatAsIm(Matrix *m, char* path)
+ * \brief Save matrix as an bmp image
+ *
+ * \param m : matrix
+ * \param path : path to save the image
+ */
 void SaveMatAsIm(Matrix *m, char* path)
 {
 	SDL_Surface* temp = CreateSurface(m -> col, m -> line);
@@ -16,7 +30,7 @@ void SaveMatAsIm(Matrix *m, char* path)
 			int v = GetM(m, i, j);
 			if(v == 0) r = 255;
 			else if(v == 2) r = 127;
-			else r = 0;
+			else r = 50;
 			pixel = SDL_MapRGB(temp -> format, r, r, r); 
 			PutPixel(temp, j, i, pixel);
 		}
@@ -25,7 +39,14 @@ void SaveMatAsIm(Matrix *m, char* path)
 	SaveImage(temp, path);
 }
 
-//Create a matrix from an image
+/**
+ * \fn Matrix *GetMatFromIm(SDL_Surface* InputImage)
+ * \brief Get the matrix from a png
+ *
+ * \param InputImage : SDL image
+ *
+ * \return matrix
+ */
 Matrix *GetMatFromIm(SDL_Surface* InputImage)
 {
 	Matrix *temp = InitM(InputImage -> h, InputImage -> w);
@@ -45,7 +66,14 @@ Matrix *GetMatFromIm(SDL_Surface* InputImage)
 	return temp;
 }
 
-//Save matrix as image with random color depending on the data in the matrix
+/**
+ * \fn void SaveMatAsImRand(Matrix *m, char* path, int label)
+ * \brief Save matrix as Image with random color depending of the value in the matrix.
+ *
+ * \param m : matrix
+ * \param path : path to save the image
+ * \param label : number of diffent label in the matrix
+ */
 void SaveMatAsImRand(Matrix *m, char* path, int label)
 {
 	//Create a list of pixel color for each label
@@ -58,7 +86,9 @@ void SaveMatAsImRand(Matrix *m, char* path, int label)
 	for(int i = 1; i < label + 1; i++)
 	{
 		labelColor[i] = SDL_MapRGB(temp -> format,
-						rand() % 255, rand() % 255, rand() % 255);
+						rand() % 128,
+                        rand() % 128,
+                        rand() % 128);
 	}
 
 	for(int i = 0; i < m -> line; i++)
@@ -83,7 +113,14 @@ void SaveMatAsImRand(Matrix *m, char* path, int label)
 	SaveImage(temp, path);
 }
 
-//Save a list of matrix
+/**
+ * \fn void SaveMatsAsIm(List *l, int stop, char* path)
+ * \brief Save every matrix of a list of matrix.
+ *
+ * \param l : list
+ * \param stop : number of image to save
+ * \param path : path to save the image
+ */
 void SaveMatsAsIm(List *l, int stop, char* path)
 {
 	List* actual = l;
@@ -109,7 +146,12 @@ void SaveMatsAsIm(List *l, int stop, char* path)
 	}
 }
 
-//Swap pixel color
+/**
+ * \fn void SwapColor(Matrix *m)
+ * \brief swap black and white pixel if there is more black than white pixel.
+ *
+ * \param m : matrix
+ */
 void SwapColor(Matrix *m)
 {
 	int black = 0;

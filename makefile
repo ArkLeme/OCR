@@ -16,7 +16,7 @@ DEP = $(SRC:.c=.d)
 BMP = $(shell find ./image_data -type f -name "*.bmp") 
 
 # All exec we want to clean
-EXEC = main testsegm segmA testUI
+EXEC = main testsegm segmA testUI neuNet
 
 # Shortcut name
 SHORTCUT = doc.html
@@ -60,6 +60,8 @@ segmA: segmA.c $(OBJ)
 
 testUI: testUI.c $(OBJ)
 
+neuNet: neuNet.c $(OBJ) ##t option to test in/out functions for example
+
 # Help function to use the makefile
 # It "just" detect every rules in this makefile and the print it
 
@@ -71,9 +73,10 @@ help:
 
 # Clean
 
-clean:	## Clean every .o and .d
+clean:	## Clean every .o and .d.
 	@$(RM) $(OBJ) $(DEP) *.o *.d
 
 mrproper: clean 	## Clean every .o and .d as well as all generated files.
 	@$(RM) $(EXEC) $(BMP) $(SHORTCUT) 
 	@$(RM) -rf $(DOXYGEN_DIR)/html
+	@$(RM) *.txt
