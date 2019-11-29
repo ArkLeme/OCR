@@ -3,6 +3,6 @@
 
 #include "src/NeuNet/structNet.h"
 
-int GetOutput(neuNet*n);
+char Calculate(Matrix* c, neuNet* n);
 
 #endif
