@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include "../matrix/matrix_image.h"
 #include "../NeuNet/structNet.h"
+#include "../NeuNet/neuNet.h"
 
 /**
  * \file create_string.c
@@ -55,7 +56,12 @@ char *char_string(List *single_chr, neuNet *network)
 {
     char *c = malloc(sizeof(char) * 2);
 
-    *c = *start;
+    Matrix *m = ((Matrix*) (single_chr->mat));
+    Matrix *norm = normalize_dimension(m);
+
+    char n = Calculate(norm ,network);
+
+    *c = n;
     *(c+1) = 0;
 
     if(start < end) start++;
