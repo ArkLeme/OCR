@@ -122,7 +122,7 @@ void lines_segmentation(List *listofparagraph)
         }
         if((!black && line) || (line && y == ( m->line -1) )) // if previous line had black pixels but this one is white
         {
-            line = 0; // make back line = false
+            line = 0; // line = false
             end = y; // conserve the index of the end
 
             posX2 = m -> col;

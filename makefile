@@ -1,10 +1,10 @@
 #Makefile
 
 CC = gcc
-CPPFLAGS= `pkg-config --cflags sdl` -MMD
-CFLAGS = -g -Wall -Wextra -std=c99
+CPPFLAGS= `pkg-config --cflags sdl` `pkg-config --cflags gtk+-3.0` -MMD
+CFLAGS = -fsanitize=address -g -Wall -Wextra -std=c99
 LDFLAGS = -fsanitize=address
-LDLIBS = -lSDL -lSDL_image -lm `pkg-config --libs sdl`
+LDLIBS = -lSDL -lSDL_image -lm `pkg-config --libs sdl` `pkg-config --libs gtk+-3.0`
 
 # SRC contain all the file we must build
 SRC = $(shell find ./src -type f -name "*.c")
@@ -16,7 +16,7 @@ DEP = $(SRC:.c=.d)
 BMP = $(shell find ./image_data -type f -name "*.bmp") 
 
 # All exec we want to clean
-EXEC = main testsegm segmA neuNet
+EXEC = main testsegm segmA testUI neuNet
 
 # Shortcut name
 SHORTCUT = doc.html
@@ -57,6 +57,8 @@ main: main.c $(OBJ) ## Generate the executable, use ./main path_of_the_image to 
 testsegm: testsegm.c $(OBJ)
 
 segmA: segmA.c $(OBJ)
+
+testUI: testUI.c $(OBJ)
 
 neuNet: neuNet.c $(OBJ) ##t option to test in/out functions for example
 
