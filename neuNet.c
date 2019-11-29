@@ -90,15 +90,14 @@ int main(int argc, char** argv)
           
 
 
-            Write_convergence(1000, 't', "neuralNetwork_data/tanh_convergence");
-            Write_Accuracy('t', "neuralNetwork_data/tanh_accuracy");
+            //Write_convergence(1000, 't', "neuralNetwork_data/tanh_convergence");
+            //Write_Accuracy('t', "neuralNetwork_data/tanh_accuracy");
             
             
-            /*Write_convergence(1000, 'r', "neuralNetwork_data/relu_convergence");
-            neuNet *relu_net;
-            relu_net = LoadNeuNet;
-            write_accuracy('r', "neuralNetwork_data/relu_accuracy");
-            freeNeuNet(relu_net);*/
+            Write_convergence(1000, 'r', "neuralNetwork_data/relu_convergence");
+            
+            Write_Accuracy('r', "neuralNetwork_data/relu_accuracy");
+           
 
             //Matrix* m = InitM(4,2);
             //Matrix* tan =Acti(m, 't');
@@ -106,19 +105,19 @@ int main(int argc, char** argv)
             //FreeM(m);
             //FreeM(tan);
             
-            /*for(int i = 0; i<4; i++)
+            /* for(int i = 0; i<4; i++)
             {
                 for(int j = 0; j<2; j++)
                 {     //printf("tan(%f) = %f\n", i, tan(i));
-                    PutM(m,i,j,(double)((i*j)+1)/10);
+                    PutM(m,i,j,(double)((i*j)+1)/(-10));
                 }
             }
 
             DisplayM_double(m);
-            Matrix* tan = ActiPrime(m, 't');
-            DisplayM_double(tan);
+            Matrix* relu = Acti(m, 'r');
+            DisplayM_double(relu);
             FreeM(m);
-            FreeM(tan);*/
+            FreeM(relu);*/
             
 	}	
 	
