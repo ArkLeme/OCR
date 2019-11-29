@@ -14,41 +14,40 @@
 #include "save_net.h"
 #include "study_acti_fonction.h"
 #include <string.h>
+#include "propa_test.h"
 
 
 
 /*
-void Write_convergence(int epoch, char acti_fct)
+void Write_convergence(int epoch, char acti_fct,char path[] )
 {
 	int layerSizes[] = {28*28,20,26};
-	neuNet *network = init_network(layerSizes,3); 
+	neuNet *network = init_network(layerSizes,3);
 
-	Training_Write(network, epoch, 2.5, acti_fct);
-	SaveNeuNet(network);		
-
+	Training_Write(network, epoch, 2.5, acti_fct,path[]);
+	SaveNeuNet(network);
 }
 
 
-void Training_Write(neuNet *n, int epoch, double learning_rate, char acti_fct)
+void Training_Write(neuNet *n, int epoch, double learning_rate, char acti_fct, char path[])
 {
 	FILE* file;
-	char path = strcat("src/network_save/",acti_fct);
 	file = fopen(path, "w");
 
 	int batchSize = 10; //Arbritrary value, needs of tests
 	GenerateExamples("neuralNetwork_data/names.data");
 	Pool* p = ReadExamples("neuralNetwork_data/examples.data");
-	
+
 	for(int i = 0; i < epoch; i++)
 	{
-		int success = 0;	
+		int success = 0;
 		Pool** batches = CreateBatches(p, batchSize);
 		for(size_t b = 0; b < p->size/batchSize +1; b++)
 		{
 			InitNeuNetForBatch(n);
 			for(size_t m  = 0; m < batches[b]->size; m++)
-			{	
-				Matrix* mat = batches[b]->examples[m];
+			{
+                               Matrix* mat = batches[b]->examples[m];
 				mat->col = 1;
 				mat->line = 784; //resizing matrix according to expected format
 								// for neuNet input matrix
@@ -68,28 +67,25 @@ void Training_Write(neuNet *n, int epoch, double learning_rate, char acti_fct)
 		free(batches);
 		printf("epoch %i : %i/%li\n", i, success, p->size);
 		fprintf(file, "%i/%li\n", success,p->size);
-		
 	}
 	FreePool(p);
 	fclose(file);
 }
 
-void Write_Accuracy(char acti_fct)
+void Write_Accuracy(char acti_fct, char path[])
 {
-	neuNet *network = LoadNeuNet(); 
-	Predict(network, acti_fct);			
-
+	neuNet *network = LoadNeuNet();
+	Predict(network, acti_fct, path);
 }
 
 
-void Predict(neuNet *n, char acti_fct)
+void Predict(neuNet *n, char acti_fct, char path[])
 {
 	FILE* file;
-	char path = strcat("src/network_save/",acti_fct);
 	file = fopen(path, "w");
 
 	GenerateExamples("neuralNetwork_data/names.data");
-	Pool* p = ReadExamples("neuralNetwork_data/examples.data"); 
+	Pool* p = ReadExamples("neuralNetwork_data/examples.data");
 	int met[26] = {0};
 	int success =0;
 
@@ -101,8 +97,8 @@ void Predict(neuNet *n, char acti_fct)
 			mat->col = 1;
 			mat->line = 784; //resizing matrix according to expected format
 						// for neuNet input matrix
-			
-			forward_prop_actiTest(n, mat, acti_fct);				
+
+			forward_prop_actiTest(n, mat, acti_fct);
 			if(GetOutput(n) == p->results[b] - 'a')
 			{
 				success++;
@@ -112,17 +108,12 @@ void Predict(neuNet *n, char acti_fct)
 			{
 				printf("recognized : %c [K.O.]", p->results[b]);
 			}
-		 	met[p->results[b] - 'a'] = 1;	
+		 	met[p->results[b] - 'a'] = 1;
 
-			
 		}
-			
-   			//ClearNeuNet(n);
-			
-		
-			
-	}
-		
+                //ClearNeuNet(n);
+        }
+
 	FreePool(p);
 	fclose(file);
-}*/
+        }*/
