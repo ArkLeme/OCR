@@ -1,30 +1,20 @@
-#include "src/NeuNet/f_b_Propagation.h"
+#include "f_b_Propagation.h"
 #include <stdio.h>
 #include <stddef.h>
 #include <stdlib.h>
-#include "src/NeuNet/structNet.h"
+#include "structNet.h"
 #include <time.h>
-#include "src/NeuNet/init_Network.h"
-#include "src/NeuNet/memory_handler.h"
-#include "src/NeuNet/acti_fonction.h"
-#include "src/NeuNet/save_net.h"
-#include "src/NeuNet/example_gen.h"
-#include "src/matrix/matrix.h"
-#include "src/NeuNet/training.h"
+#include "init_Network.h"
+#include "memory_handler.h"
+#include "acti_fonction.h"
+#include "save_net.h"
+#include "example_gen.h"
+#include "../matrix/matrix.h"
+#include "training.h"
 
-#include "src/NeuNet/parcours.h"
-#include "src/NeuNet/study_acti_fonction.h"
-#include "src/NeuNet/propa_test.h"
-
-
-//predict answer with a network trained
-/*int calculate (neuNet* Network,Matrix *input_data)
-{
-	//TODO only works with XOR NN
-	forward_prop(Network, input_data);
-	return GetM(Network->layers[2]->outputs,0,0);	
-	}*/
-
+#include "parcours.h"
+#include "study_acti_fonction.h"
+#include "propa_test.h"
 
 
 	
@@ -68,7 +58,7 @@ void train(neuNet *Network,int steps,float learning_rate)
 
 	
 }
-
+/*
 int main(int argc, char** argv)
 {
     
@@ -90,15 +80,14 @@ int main(int argc, char** argv)
           
 
 
-            Write_convergence(1000, 't', "neuralNetwork_data/tanh_convergence");
-            Write_Accuracy('t', "neuralNetwork_data/tanh_accuracy");
+            //Write_convergence(1000, 't', "neuralNetwork_data/tanh_convergence");
+            //Write_Accuracy('t', "neuralNetwork_data/tanh_accuracy");
             
             
-            /*Write_convergence(1000, 'r', "neuralNetwork_data/relu_convergence");
-            neuNet *relu_net;
-            relu_net = LoadNeuNet;
-            write_accuracy('r', "neuralNetwork_data/relu_accuracy");
-            freeNeuNet(relu_net);*/
+            Write_convergence(1000, 'r', "neuralNetwork_data/relu_convergence");
+            
+            Write_Accuracy('r', "neuralNetwork_data/relu_accuracy");
+           
 
             //Matrix* m = InitM(4,2);
             //Matrix* tan =Acti(m, 't');
@@ -106,22 +95,22 @@ int main(int argc, char** argv)
             //FreeM(m);
             //FreeM(tan);
             
-            /*for(int i = 0; i<4; i++)
+             for(int i = 0; i<4; i++)
             {
                 for(int j = 0; j<2; j++)
                 {     //printf("tan(%f) = %f\n", i, tan(i));
-                    PutM(m,i,j,(double)((i*j)+1)/10);
+                    PutM(m,i,j,(double)((i*j)+1)/(-10));
                 }
             }
 
             DisplayM_double(m);
-            Matrix* tan = ActiPrime(m, 't');
-            DisplayM_double(tan);
+            Matrix* relu = Acti(m, 'r');
+            DisplayM_double(relu);
             FreeM(m);
-            FreeM(tan);*/
+            FreeM(relu);
             
 	}	
 	
 	return 0;
 }
-
+*/
