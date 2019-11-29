@@ -21,8 +21,9 @@ void ClearNeuNet(neuNet *n)
 		layer* cL = n->layers[i];
   		FreeM(cL->values);
   		FreeM(cL->outputs);
-		if(cL->errors)
-  		FreeM(cL->errors);
+//		DisplayM(cL->errors);
+//		if(cL->errors)
+ // 			FreeM(cL->errors);
 	}
 }
 

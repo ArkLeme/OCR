@@ -2,6 +2,7 @@
 #include "src/UI/document.h"
 #include "src/output_files/create_string.h"
 #include "src/NeuNet/init_Network.h"
+#include "src/NeuNet/memory_handler.h"
 
 void Test(char *path);
 
@@ -23,5 +24,5 @@ void Test(char *path)
     printf("%s", c);
 
     free(c);
-
+	freeNeuNet(network);
 }
