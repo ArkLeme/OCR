@@ -16,7 +16,7 @@ Matrix* Acti(Matrix *m, char fct)
 	    for(int i = 0; i < m->line; i++)
 	      {
 		for( int j = 0; j < m->col; j++)
-		  {PutM(m2, i, j, sigmoid(GetM(m,i, j)));}
+                {PutM(m2, i, j, sigmoid((double)GetM(m,i, j)));}
 	      }
 	  }
 	else if(fct == 't')
@@ -24,7 +24,7 @@ Matrix* Acti(Matrix *m, char fct)
 	    for(int i = 0; i < m->line; i++)
 	      {
 		for( int j = 0; j < m->col; j++)
-		  {PutM(m2, i, j, tan(GetM(m,i, j)));}
+                {PutM(m2, i, j, tan((double)GetM(m,i, j)));}
 	      }
 	  }
 	else if(fct == 'r')
@@ -32,7 +32,7 @@ Matrix* Acti(Matrix *m, char fct)
 	    for(int i = 0; i < m->line; i++)
 	      {
 		for( int j = 0; j < m->col; j++)
-		  {PutM(m2, i, j, ReLU(GetM(m,i, j)));}
+                {PutM(m2, i, j, ReLU((double)GetM(m,i, j)));}
 	      }
 	  }
 
@@ -257,14 +257,14 @@ double Soft_prime(double sum, double z, int delta, double shift)
 
 double tan(double x)
 {	
-        return (double) sinh(x)/cosh(x);
+        return sinh(x)/cosh(x);
         //return log(1 + exp(x)); // relu soft plus
 	//return (exp(2*x) - 1)/(exp(2*x) + 1);
 }
 
 double tanPrime(double x)
 {
-        return 1/cosh(x)*cosh(x);
+    return 1/(cosh(x)*cosh(x));
 	//return 1/(1+exp(-x)); //relu prime
 	//return 1- ( sigmoid( x)* sigmoid( x));
 }
