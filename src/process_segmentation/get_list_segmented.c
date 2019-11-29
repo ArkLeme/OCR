@@ -21,7 +21,7 @@
  * \param n : type of the Matrix we are saving (para, line, word or char)
  */
 
-/*
+
 static void SaveMat(List *l,  int i, char *n)
 {
     char *sint = Itoa(i);
@@ -36,7 +36,7 @@ static void SaveMat(List *l,  int i, char *n)
     free(sf);
     free(p);
 }
-*/
+
 
 /**
  * \fn List* get_list_segmented(char *path)
@@ -53,38 +53,37 @@ List* get_list_segmented(char *path)
     List *lg = paragraph_segm(path);
     List *lp = lg;
 
-    /*
     int p = 0;
     int l = 0;
     int w = 0;
     int c = 0;
-    */
+
 
     while(lp != NULL)
     {
         lines_segmentation(lp);
         List *ll = lp->child;
-        //SaveMat(lp, p, "para");
-        //p++;
+        SaveMat(lp, p, "para");
+        p++;
 
         while(ll != NULL)
         {
             words_segmentation(ll);
             List *lw = ll->child;
-            //SaveMat(ll, l, "line");
-            //l++;
+            SaveMat(ll, l, "line");
+            l++;
 
             while(lw != NULL)
             {
                 char_segm(lw);
                 List *lc = lw->child;
-                //SaveMat(lw, w, "word");
-                //w++;
+                SaveMat(lw, w, "word");
+                w++;
 
                 while(lc != NULL)
                 {
-                    //SaveMat(lc, c, "char");
-                    //c++;
+                    SaveMat(lc, c, "char");
+                    c++;
 
                     lc = lc->next;
                     //lc = NULL;

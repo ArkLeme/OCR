@@ -24,7 +24,7 @@ char Calculate(Matrix* c, neuNet * n)
 	c->line = 784;
 	forward_prop(n, c);
 	int result = GetOutput(n);
-	ClearNeuNet(n);
+	//ClearNeuNet(n);
 	return (char) ('a' + result);
 }
 

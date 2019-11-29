@@ -14,14 +14,17 @@ int main(int argc, char **argv)
 void Test(char *path)
 {
     int layersize[] = {28*28,20,16};
-    neuNet *network = init_network(layersize, 3);
+    //neuNet *network = init_network(layersize, 3);
 
-    char *c = get_string(path, network);
+    List *l = get_list_segmented(path);
+
+    //char *c = get_string(path, network);
 
     //write_files("output.txt", l);
 
-    printf("%s", c);
+    //printf("%s", c);
 
-    free(c);
+    //free(c);
 
+    DeleteL(l);
 }

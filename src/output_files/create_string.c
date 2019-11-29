@@ -59,7 +59,7 @@ char *char_string(List *single_chr, neuNet *network)
     Matrix *m = ((Matrix*) (single_chr->mat));
     Matrix *norm = normalize_dimension(m);
 
-    char n = Calculate(norm ,network);
+    char n = Calculate(norm, network);
 
     *c = n;
     *(c+1) = 0;
