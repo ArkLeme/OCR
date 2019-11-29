@@ -58,8 +58,6 @@ testsegm: testsegm.c $(OBJ)
 
 segmA: segmA.c $(OBJ)
 
-testUI: testUI.c $(OBJ)
-
 neuNet: neuNet.c $(OBJ) ##t option to test in/out functions for example
 
 OCR: OCR.c $(OBJ)
