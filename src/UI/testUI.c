@@ -3,15 +3,15 @@
 #include <time.h> 
 #include <stdlib.h>
 #include <gtk/gtk.h>
-#include "src/UI/callback.h"
-#include "src/UI/document.h"
-#include "src/UI/menu.h"
-#include "src/UI/toolbar.h"
-
+#include "callback.h"
+#include "document.h"
+#include "menu.h"
+#include "toolbar.h"
+#include "../NeuNet/structNet.h"
 
 Docs docs = {NULL, NULL, NULL};
 
-int main(int argc,char **argv)
+int exec_UI(neuNet *network,int argc, char** argv)
 {
 	GtkWidget *s_window = NULL;
 	GtkWidget *s_main_box = NULL;
@@ -78,6 +78,7 @@ int main(int argc,char **argv)
 		gtk_container_add (GTK_CONTAINER (p_scrolled_window), p_text_view);
 	}
 
+	cb_new(s_window,p_text_view);
 
 	GtkWidget *image = NULL;
 	
@@ -104,7 +105,7 @@ int main(int argc,char **argv)
 		gtk_button_set_always_show_image (GTK_BUTTON(s_button),TRUE);
 		gtk_button_set_image(GTK_BUTTON(s_button),image);
 		gtk_button_set_image_position (GTK_BUTTON(s_button),GTK_POS_TOP);
-		g_signal_connect (G_OBJECT (s_button), "clicked", G_CALLBACK (cb_ocr), p_text_view);
+		g_signal_connect (G_OBJECT (s_button), "clicked", G_CALLBACK (cb_ocr), network);
 		gtk_box_pack_start (GTK_BOX (s_button_box), s_button, FALSE, FALSE, 10);
 	}
 

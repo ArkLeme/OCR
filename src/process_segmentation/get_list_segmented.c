@@ -20,6 +20,8 @@
  * \param i : index to create multiple image with different name
  * \param n : type of the Matrix we are saving (para, line, word or char)
  */
+
+/*
 static void SaveMat(List *l,  int i, char *n)
 {
     char *sint = Itoa(i);
@@ -34,6 +36,7 @@ static void SaveMat(List *l,  int i, char *n)
     free(sf);
     free(p);
 }
+*/
 
 /**
  * \fn List* get_list_segmented(char *path)
@@ -102,11 +105,11 @@ List* get_list_segmented(char *path)
     return lg;
 }
 
-char *get_string(char *path)
+char *get_string(char *path, neuNet *network)
 {
     List *l = get_list_segmented(path);
 
-    char *c = generate_string(l);
+    char *c = generate_string(l, network);
 
     DeleteL(l);
 

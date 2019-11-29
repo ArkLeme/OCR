@@ -2,6 +2,7 @@
 #include "error.h"
 #include "document.h"
 #include "../process_segmentation/get_list_segmented.h"
+#include "../NeuNet/structNet.h"
 
 /**
  * \file callback.c
@@ -12,7 +13,7 @@
 
 static void open_file (gchar *, GtkTextView *);
 
-static void open_ocr(gchar *, GtkTextView *);
+static void open_ocr(gchar *, neuNet *network);
 
 /**
  * \fn void cb_ocr(GtkWidget *s_widget, gpointer user_data)
@@ -442,8 +443,8 @@ void cb_about (GtkWidget *p_widget, gpointer user_data)
 
 void cb_doc(GtkWidget *p_widget,gpointer user_data)
 {
-	const char* command = "make doc";
-	system(command);
+	//const char* command = "make doc";
+	system("gnome-terminal -x bash -c \"make doc; exec bash\"");
 
 	/* Unused parameter */
 	(void) p_widget;
@@ -512,11 +513,13 @@ static void open_file (gchar *file_name, GtkTextView *p_text_view)
  * \return void
  */
 
-static void open_ocr(gchar *file_name, GtkTextView *p_text_view)
+static void open_ocr(gchar *file_name, neuNet *network)
 {
+	GtkTextView *p_text_view = NULL;
+	p_text_view = GTK_TEXT_VIEW(docs.active->p_text_view);
 	g_return_if_fail (file_name && p_text_view);
 	{
-        gchar *contents = get_string(file_name);
+        gchar *contents = get_string(file_name, network);
 
 		docs.active = g_malloc (sizeof (*docs.active));
 		docs.active->path = g_strdup ("temp.txt");
