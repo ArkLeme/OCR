@@ -3,24 +3,63 @@
 
 #include <gtk/gtk.h>
 
-// Struct of document
-typedef struct
-{
-  gchar *chemin;
-  gboolean sauve;
-  GtkTextView *p_text_view;
-} document_t;
+/**
+ * \file document.h
+ * \brief Define document and docs structure.
+ * \author Alexandre.L
+ */
 
-// Chain list of document_t
+/**
+ * \struct Document
+ * \brief Document structure.
+ * \return new Document structure.
+ */
+
 typedef struct
 {
-  GList *tous;
-  document_t *actif;
-  GtkWidget *p_main_window;
-  GtkWidget *s_start_window;
-} docs_t;
+	/**
+	 * Path of the document.
+	 */
+	gchar *path;
+
+	/**
+	 * Bool of save state.
+	 */
+	gboolean save;
+
+	/**
+	 * Text view widget used by the document.
+	 */
+	GtkTextView *p_text_view;
+
+} Document;
+
+
+/**
+ * \struc Docs
+ * \brief Docs strucure, chain list of docs.
+ * \return new Docs structure.
+ */
+
+typedef struct
+{
+	/**
+	 * Pointer on Document active.
+	 */
+	Document *active;
+
+	/**
+	 * Pointer on Main window widget.
+	 */
+	GtkWidget *p_main_window;
+
+	/**
+	 * Pointer on Start window widget.
+	 */
+	GtkWidget *s_start_window;
+} Docs;
 
 /* Global variable */
-extern docs_t docs;
+extern Docs docs;
 
 #endif
