@@ -42,10 +42,10 @@ Matrix* InitM(int l, int c)
  */
 void PutM(Matrix* m, int i, int j, double e)
 {
-/*	if(i < 0 || i >= m -> line || j < 0 || j > m -> col)
+	if(i < 0 || i >= m -> line || j < 0 || j > m -> col)
 		errx(1, "Put Index outside of matrix i=%i, j=%i, h=%i, w=%i\n",
 						i, j, m -> line, m -> col);
-*/	*((m -> matrix) + (m -> col) * i + j) = e;
+	*((m -> matrix) + (m -> col) * i + j) = e;
 }
 
 /**
@@ -125,7 +125,7 @@ double GetPosM(Matrix* m, int pos)
 
 /**
  * \fn void DisplayM(Matrix* m)
- * \brief Display the matrix in the console
+ * \brief Display the matrix in the console, display its components as double
  *
  * \param m : Matrix
  */
@@ -137,6 +137,26 @@ void DisplayM(Matrix* m)
 		for(int j = 0; j < m -> col; j++)
 		{
 			printf("%i ",(int) GetM(m, i, j));
+		}
+		printf("]\n");
+	}
+	printf("\n");
+}
+
+/**
+ * \fn void DisplayM_double(Matrix* m)
+ * \brief Display the matrix in the console, display its components as double
+ *
+ * \param m : Matrix
+ */
+void DisplayM_double(Matrix* m)
+{
+	for(int i = 0; i < m -> line; i++)
+	{
+		printf("[ ");
+		for(int j = 0; j < m -> col; j++)
+		{
+			printf("%f ",GetM(m, i, j));
 		}
 		printf("]\n");
 	}
@@ -434,18 +454,16 @@ Matrix* CopyMatrix(Matrix *m, int mx, int my, int Mx, int My)
  */
 Matrix* normalize_dimension(Matrix *m)
 {
-    Matrix *out = InitM(28,28);
-
+	Matrix* m1 = InitM(28,28);
     for(int i = 0; i < m->line; i++)
     {
         for(int j = 0; j < m->col; j++)
         {
-            PutM(out, i, j, GetM(m, i, j) != 0);
+            PutM(m1, i, j, GetM(m, i, j) != 0);
         }
     }
-
-    //FreeM(m);
-    return out;
+	//FreeM(m);
+    return m1;
 }
 
 /**

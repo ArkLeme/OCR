@@ -47,7 +47,7 @@ Matrix* CreateExpected(char c)
 
 Pool** CreateBatches(Pool* p, size_t batchSize)
 {
-//	ShufflePool(p);
+	//ShufflePool(p);
 	size_t batchNb = p->size/batchSize +1;
 	Pool** batches = malloc(sizeof(Pool*) * batchNb); 
 	size_t i = 0;
@@ -69,6 +69,7 @@ Pool** CreateBatches(Pool* p, size_t batchSize)
 		*(lastBatch->examples +j) = *(p->examples +i +j);
 		lastBatch->results[j] = p->results[i+j];
 	}
+	
 	*(batches + batchNb-1) = lastBatch;
 	return batches; 
 }
@@ -77,12 +78,13 @@ void Training(neuNet *n, int epoch, double learning_rate)
 {
 	int batchSize = 10; //Arbritrary value, needs of tests
 	GenerateExamples("neuralNetwork_data/names.data");
-	Pool* pool = ReadExamples("neuralNetwork_data/examples.data");
+	Pool* p = ReadExamples("neuralNetwork_data/examples.data");
+	
 	for(int i = 0; i < epoch; i++)
 	{
 		int success = 0;	
-		Pool** batches = CreateBatches(pool, batchSize);
-		for(size_t b = 0; b < pool->size/batchSize +1; b++)
+		Pool** batches = CreateBatches(p, batchSize);
+		for(size_t b = 0; b < p->size/batchSize +1; b++)
 		{
 			InitNeuNetForBatch(n);
 			for(size_t m  = 0; m < batches[b]->size; m++)
@@ -102,11 +104,11 @@ void Training(neuNet *n, int epoch, double learning_rate)
 			FinalUpdate_batch(n,learning_rate, batchSize);
 			FreeBatchMatrix(n);
 		}
-		for(size_t i = 0; i < pool->size/batchSize+1; i++)
+		for(size_t i = 0; i < p->size/batchSize+1; i++)
 			FreePoolP(*(batches+i));
 		free(batches);
-		printf("epoch %i : %i/%li\n", i, success, pool->size);
+		printf("epoch %i : %i/%li\n", i, success, p->size);
 	}
-	FreePool(pool);
+	FreePool(p);
 }
 

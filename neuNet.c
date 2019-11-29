@@ -13,7 +13,10 @@
 #include "src/NeuNet/training.h"
 
 #include "src/NeuNet/parcours.h"
-#include "src/NeuNet/cross_entropy.h"
+#include "src/NeuNet/study_acti_fonction.h"
+#include "src/NeuNet/propa_test.h"
+
+
 //predict answer with a network trained
 /*int calculate (neuNet* Network,Matrix *input_data)
 {
@@ -68,65 +71,56 @@ void train(neuNet *Network,int steps,float learning_rate)
 
 int main(int argc, char** argv)
 {
-        int layerSizes[] = {28*28,20,26};
-	neuNet *network = init_network(layerSizes,3); 
+    
 	if(argc == 2 && *argv[1] == 't')
 	{
-		Training(network, 50000, 2.5);
+            int layerSizes[] = {28*28,20,26};
+            neuNet *network = init_network(layerSizes,3);
+		printf("Beigining the training\n");
+		Training(network, 10000, 2.5);
 		printf("Training completed\n");
+
+                freeNeuNet(network);
 	}
 	else
 	{	
-			/*FILE *file;
-			file = fopen("test","wb");
-			if(file != NULL)		
-			{ short int a[2] = {1,2};
-			fwrite ( a, sizeof(short int), 2, file); }
-			else
-			{printf("file == NULL");}
-			fclose(file);
-
-			FILE *file2;
-			file2 = fopen("test","rb");
-			if(file != NULL)		
-			{ int nb_val =2;
-			  int Taille_buf = 2;
-			  short int buf[2];
-				while(nb_val == Taille_buf)
-				{
-					nb_val = fread ( buf, sizeof(short int), 2, file2); 
-					for(int i =0; i<nb_val; i++) {printf("%hd \n", buf[i]);}
-					
-				}
-			fclose(file2);*/
+			
+            //Write_convergence(1000, 's', "neuralNetwork_data/sigmo_convergence");
+            // Write_Accuracy('s', "neuralNetwork_data/sigmo_accuracy");
+          
 
 
-		Training(network, 2, 2.5);
-		SaveNeuNet(network);
+            Write_convergence(1000, 't', "neuralNetwork_data/tanh_convergence");
+            Write_Accuracy('t', "neuralNetwork_data/tanh_accuracy");
+            
+            
+            /*Write_convergence(1000, 'r', "neuralNetwork_data/relu_convergence");
+            neuNet *relu_net;
+            relu_net = LoadNeuNet;
+            write_accuracy('r', "neuralNetwork_data/relu_accuracy");
+            freeNeuNet(relu_net);*/
 
-		FILE *file2;
-			file2 = fopen("test","rb");
-			if(file2 != NULL)		
-			{ int nb_val =4;
-			  int Taille_buf = 4;
-			  Matrix *buf = InitM(2,2);
-				while(nb_val == Taille_buf)
-				{
-					nb_val = fread ( buf, sizeof(double), 4, file2); 
-					
-					for(int i =0; i<nb_val; i++) {printf("%f ", GetM(buf,i,i));}
-					printf("je lis wola");
-					
-				}
-			fclose(file2);
-			}
-		//neuNet *network_load;
-		//network_load = LoadNeuNet();
+            //Matrix* m = InitM(4,2);
+            //Matrix* tan =Acti(m, 't');
+            //DisplayM_double(m);
+            //FreeM(m);
+            //FreeM(tan);
+            
+            /*for(int i = 0; i<4; i++)
+            {
+                for(int j = 0; j<2; j++)
+                {     //printf("tan(%f) = %f\n", i, tan(i));
+                    PutM(m,i,j,(double)((i*j)+1)/10);
+                }
+            }
 
-		//freeNeuNet(network_load);
-		
+            DisplayM_double(m);
+            Matrix* tan = ActiPrime(m, 't');
+            DisplayM_double(tan);
+            FreeM(m);
+            FreeM(tan);*/
+            
 	}	
-	freeNeuNet(network);
 	
 	return 0;
 }
