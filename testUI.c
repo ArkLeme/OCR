@@ -27,7 +27,9 @@ int main(int argc,char **argv)
 	/* Create start window */
 	s_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_title(GTK_WINDOW(s_window), "OCR");
+	gtk_widget_set_size_request(s_window,300,300);
 	gtk_window_resize (GTK_WINDOW(s_window),300,300);
+	gtk_window_set_resizable(GTK_WINDOW(s_window),0);
 
 	/* Create main window */
 	p_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
@@ -80,7 +82,7 @@ int main(int argc,char **argv)
 	GtkWidget *image = NULL;
 	
 	srand(time(0));
-	float nb = rand()%2;
+	float nb = rand()%3;
 	char image_path[25];
 	sprintf(image_path, "./image_data/UI/%i.png",(int)nb);
     
@@ -98,7 +100,7 @@ int main(int argc,char **argv)
 		GtkWidget *s_button = NULL;
 		GtkWidget *image = NULL;
 		image = gtk_image_new_from_file("./image_data/UI/icon/png/ocr.png");
-		s_button = gtk_button_new_with_label("Launch OCR");
+		s_button = gtk_button_new_with_label("		Launch OCR		");
 		gtk_button_set_always_show_image (GTK_BUTTON(s_button),TRUE);
 		gtk_button_set_image(GTK_BUTTON(s_button),image);
 		gtk_button_set_image_position (GTK_BUTTON(s_button),GTK_POS_TOP);
@@ -144,3 +146,5 @@ int main(int argc,char **argv)
 
 	return EXIT_SUCCESS;
 }
+
+

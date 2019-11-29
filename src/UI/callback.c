@@ -80,7 +80,6 @@ void cb_ocr(GtkWidget* s_widget,gpointer user_data)
 		gtk_widget_hide(docs.s_start_window);
 
 		open_ocr (file_name,user_data);
-		print_info("OCR Complete");
 
 		g_free (file_name);
 		file_name = NULL;
@@ -405,7 +404,7 @@ void cb_about (GtkWidget *p_widget, gpointer user_data)
 	GtkWidget *p_about_dialog = NULL;
 
 	p_about_dialog = gtk_about_dialog_new ();
-	gtk_about_dialog_set_version (GTK_ABOUT_DIALOG (p_about_dialog), "1.0");
+	gtk_about_dialog_set_version (GTK_ABOUT_DIALOG (p_about_dialog), "4.42.42.0");
 	gtk_about_dialog_set_program_name (GTK_ABOUT_DIALOG (p_about_dialog), 
 								"Optical Character Recognition");
 
@@ -419,6 +418,7 @@ void cb_about (GtkWidget *p_widget, gpointer user_data)
 
 	p_logo = gdk_pixbuf_new_from_file ("./image_data/UI/logo_epita.jpg", NULL);
 	gtk_about_dialog_set_logo (GTK_ABOUT_DIALOG (p_about_dialog), p_logo);
+
 	switch(gtk_dialog_run (GTK_DIALOG (p_about_dialog)))
 	{
 		case GTK_RESPONSE_DELETE_EVENT:
@@ -430,6 +430,25 @@ void cb_about (GtkWidget *p_widget, gpointer user_data)
   /* Unused Parameter */
   (void)p_widget;
   (void)user_data;
+}
+
+/**
+ * \fn cb_doc(GtkWidget *p_widget, gpointer user_data)
+ * \brief Callback function called when pressing Doc button.
+ * Call system command "make doc".
+ * \param *p_widget : Widget from the callback signal. (Unused parameter)
+ * \param user_data : Text view widget. (Unused parameter)
+ * \return void
+ */
+
+void cb_doc(GtkWidget *p_widget,gpointer user_data)
+{
+	const char* command = "make doc";
+	system(command);
+
+	/* Unused parameter */
+	(void) p_widget;
+	(void) user_data;
 }
 
 /**

@@ -25,10 +25,12 @@ GtkMenuBar *menu_new (gpointer user_data)
 
 	{
 		GtkWidget *p_menu = NULL;
-		GtkWidget *p_menu_item = NULL;
-
+		GtkWidget *p_help = NULL;
+		GtkWidget *p_menu_item_1 = NULL;
+		GtkWidget *p_menu_item_2 = NULL;
+		
 		p_menu = gtk_menu_new ();
-		p_menu_item = gtk_menu_item_new_with_mnemonic ("_Menu");
+		p_menu_item_1 = gtk_menu_item_new_with_mnemonic ("_Menu");
 		menu_item_new (GTK_MENU (p_menu), "_OCR", G_CALLBACK (cb_ocr), user_data);
 		menu_item_new (GTK_MENU (p_menu), "_New", G_CALLBACK (cb_new), user_data);
 		menu_item_new (GTK_MENU (p_menu), "_Open", G_CALLBACK (cb_open), user_data);
@@ -36,8 +38,16 @@ GtkMenuBar *menu_new (gpointer user_data)
 		menu_item_new (GTK_MENU (p_menu), "Save _as", G_CALLBACK (cb_saveas), user_data);
 		menu_item_new (GTK_MENU (p_menu), "_Close", G_CALLBACK (cb_close), user_data);
 		menu_item_new (GTK_MENU (p_menu), "_Quit", G_CALLBACK (cb_quit), user_data);
-		gtk_menu_item_set_submenu (GTK_MENU_ITEM (p_menu_item), p_menu);
-		gtk_menu_shell_append (GTK_MENU_SHELL (p_menu_bar), p_menu_item);
+		gtk_menu_item_set_submenu (GTK_MENU_ITEM (p_menu_item_1), p_menu);
+		gtk_menu_shell_append (GTK_MENU_SHELL (p_menu_bar), p_menu_item_1);
+	
+		p_help = gtk_menu_new ();
+		p_menu_item_2 = gtk_menu_item_new_with_mnemonic("_Help");
+		menu_item_new (GTK_MENU(p_help), "_Readme",G_CALLBACK(cb_about),user_data);
+		menu_item_new (GTK_MENU(p_help), "_Doc", G_CALLBACK(cb_doc),user_data);
+		menu_item_new (GTK_MENU(p_help), "_About us", G_CALLBACK(cb_about),user_data);
+		gtk_menu_item_set_submenu(GTK_MENU_ITEM(p_menu_item_2),p_help);
+		gtk_menu_shell_append(GTK_MENU_SHELL (p_menu_bar), p_menu_item_2);
 	}
 	return GTK_MENU_BAR (p_menu_bar);
 }
