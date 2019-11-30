@@ -17,16 +17,16 @@ void Test(char *path)
     int layersize[] = {28*28,20,16};
     neuNet *network = init_network(layersize, 3);
 
-    //List *l = get_list_segmented(path);
+    List *l = get_list_segmented(path);
 
-    char *c = get_string(path, network);
+    //char *c = get_string(path, network);
 
     //write_files("output.txt", l);
 
-    printf("%s", c);
+    //printf("%s", c);
 
-    //DeleteL(l);
+    DeleteL(l);
 
-    free(c);
+    //free(c);
 	freeNeuNet(network);
 }
