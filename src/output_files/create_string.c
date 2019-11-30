@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../matrix/matrix_image.h"
+#include "../NeuNet/structNet.h"
 
 /**
  * \file create_string.c
@@ -50,11 +51,12 @@ char *end;
  *
  * \return pointer to the char
  */
-char *char_string(List *single_chr)
+char *char_string(List *single_chr, neuNet *network)
 {
     char *c = malloc(sizeof(char) * 2);
+
     *c = *start;
-    *(c + 1) = 0;
+    *(c+1) = 0;
 
     if(start < end) start++;
 
@@ -70,7 +72,7 @@ char *char_string(List *single_chr)
  *
  * \return pointer to the word
  */
-char* word_string(List *single_word)
+char* word_string(List *single_word, neuNet *network)
 {
     List *first_char = single_word->child;
 
@@ -78,7 +80,7 @@ char* word_string(List *single_word)
 
     while(first_char != NULL)
     {
-        char *chr = char_string(first_char);
+        char *chr = char_string(first_char, network);
 
         char *w = Concatene(word, chr);
 
@@ -102,7 +104,7 @@ char* word_string(List *single_word)
  *
  * \return pointer to the line
  */
-char* line_string(List *single_line)
+char* line_string(List *single_line, neuNet *network)
 {
     List *first_word = single_line->child;
 
@@ -110,7 +112,7 @@ char* line_string(List *single_line)
 
     while(first_word->next != NULL)
     {
-        char *word = word_string(first_word);
+        char *word = word_string(first_word, network);
         char *l = Concatene(line, word);
         char *l_space = Concatene(l, " ");
 
@@ -124,7 +126,7 @@ char* line_string(List *single_line)
         first_word = first_word->next;
     }
 
-    char *last_word = word_string(first_word);
+    char *last_word = word_string(first_word, network);
     char *no_space = Concatene(line, last_word);
 
     free(last_word);
@@ -142,7 +144,7 @@ char* line_string(List *single_line)
  *
  * \return pointer to the paragraph
  */
-char* para_string(List* single_para)
+char* para_string(List* single_para, neuNet *network)
 {
     List *first_line = single_para->child;
 
@@ -150,7 +152,7 @@ char* para_string(List* single_para)
 
     while(first_line != NULL)
     {
-        char *line = line_string(first_line);
+        char *line = line_string(first_line, network);
         char *p = Concatene(para, line);
         char *l_n = Concatene(p, "\n");
 
@@ -176,7 +178,7 @@ char* para_string(List* single_para)
  *
  * \return pointer to the text
  */
-char* text_string(List* list_para)
+char* text_string(List* list_para, neuNet *network)
 {
     List *first_para = list_para;
 
@@ -184,7 +186,7 @@ char* text_string(List* list_para)
 
     while(first_para != NULL)
     {
-        char *para = para_string(first_para);
+        char *para = para_string(first_para, network);
         char *t = Concatene(text, para);
         char *t_n = Concatene(t, "\n");
 
@@ -216,7 +218,7 @@ void write_files(char* path, List *l)
 
     fp = fopen(path, "w");
 
-    char *string = text_string(l);
+    char *string = text_string(l, NULL);
 
     fprintf(fp, "%s", string);
 
@@ -225,13 +227,13 @@ void write_files(char* path, List *l)
     fclose(fp);
 }
 
-char* generate_string(List *l)
+char* generate_string(List *l, neuNet *network)
 {
     start = test;
 
     end = test + LengthStr(test) - 1;
 
-    char *s = text_string(l);
+    char *s = text_string(l, network);
 
     return s;
 
