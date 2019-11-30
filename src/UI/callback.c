@@ -55,10 +55,11 @@ void cb_ocr(GtkWidget* s_widget,gpointer user_data)
 			gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(
 							GTK_DIALOG(test_dialog))),
 							test_label, TRUE, TRUE, 5);
-			test_image = gtk_image_new_from_file(file_name); 
+			test_image = gtk_image_new_from_file(file_name);
 			gtk_box_pack_start (GTK_BOX(gtk_dialog_get_content_area(
 						GTK_DIALOG(test_dialog))),test_image, TRUE, TRUE, 0);
 
+			
 			gtk_widget_show_all (test_dialog);
 			switch (gtk_dialog_run (GTK_DIALOG (test_dialog)))
 			{
@@ -496,7 +497,6 @@ static void open_file (gchar *file_name, GtkTextView *p_text_view)
 			utf8 = NULL;
 			gtk_text_buffer_insert (p_text_buffer, &iter, contents, -1);
 			docs.active ->save = TRUE;
-			g_object_unref(p_text_buffer);
 		}
 		else
 		{
@@ -530,7 +530,7 @@ static void open_ocr(gchar *file_name, neuNet *network)
 		GtkTextIter iter;
 		GtkTextBuffer *p_text_buffer = NULL;
 
-		cb_new(NULL, p_text_view);
+		//cb_new(NULL, p_text_view);
 		gtk_widget_set_sensitive (GTK_WIDGET (docs.active -> p_text_view), TRUE);
 
 		/* Get buffer of GtkTextView to change text */

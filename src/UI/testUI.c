@@ -30,10 +30,13 @@ int exec_UI(neuNet *network,int argc, char** argv)
 	gtk_widget_set_size_request(s_window,300,300);
 	gtk_window_resize (GTK_WINDOW(s_window),300,300);
 	gtk_window_set_resizable(GTK_WINDOW(s_window),0);
+	//gtk_window_set_icon_from_file(GTK_WINDOW(s_window),"../../image_data/UI/ocr.jpg",NULL);
 
 	/* Create main window */
 	p_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_title(GTK_WINDOW(p_window), "OCR");
+	gtk_window_set_default_size (GTK_WINDOW(p_window),1300,800);
+	gtk_window_set_resizable(GTK_WINDOW(p_window),0);
 	gtk_window_maximize (GTK_WINDOW(p_window));
 
 	docs.p_main_window = p_window;

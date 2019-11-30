@@ -2,8 +2,8 @@
 
 CC = gcc
 CPPFLAGS= `pkg-config --cflags sdl` `pkg-config --cflags gtk+-3.0` -MMD
-CFLAGS = -fsanitize=address -g -Wall -Wextra -std=c99
-LDFLAGS = -fsanitize=address
+CFLAGS =  -Wall -Wextra -std=c99
+LDFLAGS = 
 LDLIBS = -lSDL -lSDL_image -lm `pkg-config --libs sdl` `pkg-config --libs gtk+-3.0`
 
 # SRC contain all the file we must build
