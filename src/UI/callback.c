@@ -519,7 +519,7 @@ static void open_ocr(gchar *file_name, neuNet *network)
 	p_text_view = GTK_TEXT_VIEW(docs.active->p_text_view);
 	g_return_if_fail (file_name && p_text_view);
 	{
-        gchar *contents = get_string(file_name, network);
+        gchar *contents = get_string(file_name,network);
 
 		docs.active = g_malloc (sizeof (*docs.active));
 		docs.active->path = g_strdup ("temp.txt");
