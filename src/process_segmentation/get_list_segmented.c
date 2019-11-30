@@ -108,9 +108,9 @@ char *get_string(char *path, neuNet *network)
 {
     List *l = get_list_segmented(path);
 
-    //char *c = generate_string(l, network);
+    char *c = generate_string(l, network);
 
     DeleteL(l);
 
-    return "1";
+    return c;
 }

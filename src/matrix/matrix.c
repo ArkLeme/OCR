@@ -451,10 +451,14 @@ Matrix* CopyMatrix(Matrix *m, int mx, int my, int Mx, int My)
  */
 Matrix* normalize_dimension(Matrix *m)
 {
-	Matrix* m1 = InitM(28,28);
-    for(int i = 0; i < 28; i++)
+
+    int wl = m->line > 28 ? 28 : m->line;
+    int wc = m->col > 28 ? 28 : m->col;
+
+    Matrix* m1 = InitM(28,28);
+    for(int i = 0; i < wl; i++)
     {
-        for(int j = 0; j < 28; j++)
+        for(int j = 0; j < wc; j++)
         {
             PutM(m1, i, j, GetM(m, i, j) != 0);
         }

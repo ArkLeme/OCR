@@ -122,7 +122,7 @@ static int is_image(List *l)
             black++;
     }
 
-    return black > m->size - m->size/3;
+    return black > m->size/2;
 }
 
 /**
@@ -144,13 +144,15 @@ static List* remove_image(List *p)
         {
             next = first->next;
 
-            if(is_image(first->next))
+            if(is_image(next))
             {
                 first->next = next->next;
                 FreeL(next);
             }
-
-            first = first->next;
+            else
+            {
+                first = first->next;
+            }
         }
     }
 
