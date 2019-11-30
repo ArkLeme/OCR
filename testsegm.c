@@ -1,8 +1,8 @@
 #include "src/process_segmentation/get_list_segmented.h"
 #include "src/UI/document.h"
 #include "src/output_files/create_string.h"
-
-Docs docs = {NULL, NULL, NULL};
+#include "src/NeuNet/init_Network.h"
+#include "src/NeuNet/memory_handler.h"
 
 void Test(char *path);
 
@@ -14,13 +14,19 @@ int main(int argc, char **argv)
 
 void Test(char *path)
 {
+    int layersize[] = {28*28,20,16};
+    neuNet *network = init_network(layersize, 3);
 
-    char *c = generate_string(l);
+    //List *l = get_list_segmented(path);
+
+    char *c = get_string(path, network);
 
     //write_files("output.txt", l);
 
-    printf(c);
+    printf("%s", c);
+
+    //DeleteL(l);
 
     free(c);
-
+	freeNeuNet(network);
 }

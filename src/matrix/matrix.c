@@ -100,9 +100,6 @@ void PutPosM(Matrix* m, int pos, double e)
  */
 double GetM(Matrix* m, int i, int j)
 {
-	if(i < 0 || i >= m -> line || j < 0 || j > m -> col)
-		errx(1, "Get Index outside of matrix i=%i, j=%i, h=%i, w=%i\n",
-						i, j, m -> line, m -> col);
 	return *(m -> matrix + m -> col * i + j);
 }
 
@@ -454,10 +451,14 @@ Matrix* CopyMatrix(Matrix *m, int mx, int my, int Mx, int My)
  */
 Matrix* normalize_dimension(Matrix *m)
 {
-	Matrix* m1 = InitM(28,28);
-    for(int i = 0; i < m->line; i++)
+
+    int wl = m->line > 28 ? 28 : m->line;
+    int wc = m->col > 28 ? 28 : m->col;
+
+    Matrix* m1 = InitM(28,28);
+    for(int i = 0; i < wl; i++)
     {
-        for(int j = 0; j < m->col; j++)
+        for(int j = 0; j < wc; j++)
         {
             PutM(m1, i, j, GetM(m, i, j) != 0);
         }

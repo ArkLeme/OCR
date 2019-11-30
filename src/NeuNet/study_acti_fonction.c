@@ -9,7 +9,7 @@
 #include "init_Network.h"
 #include "example_gen.h"
 #include "f_b_Propagation.h"
-#include "../../neuNet.h"
+#include "neuNet.h"
 #include <stdlib.h>
 #include "save_net.h"
 #include "study_acti_fonction.h"
