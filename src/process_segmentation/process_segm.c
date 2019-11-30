@@ -28,13 +28,11 @@ Matrix* get_mat_from_png(char *path)
 
 	Matrix *m = GetMatFromIm(bin);
 
-    SaveMatAsIm(m, "image_data/rlsa/bin.bmp");
-
-    SDL_FreeSurface(brightness);
-    SDL_FreeSurface(input);
-	SDL_FreeSurface(gray);
-	SDL_FreeSurface(contrast);
-	SDL_FreeSurface(bin);
+    SaveImage(input, "image_data/rlsa/input.bmp");
+    SaveImage(gray, "image_data/rlsa/gray.bmp");
+    SaveImage(brightness, "image_data/rlsa/brightness.bmp");
+    SaveImage(contrast, "image_data/rlsa/contrast.bmp");
+    SaveImage(bin, "image_data/rlsa/bin.bmp");
 
     SwapColor(m);
 
@@ -293,7 +291,7 @@ static int is_point(List *l)
         int m2y = l->next->pos->My;
 
 
-        if(m1x >= m2x - 1 && M1x <= M2x + 1)
+        if(m1y < m2y && m1x >= m2x - 1 && M1x <= M2x + 1)
             return 1;
 
         if(m1y > m2y && m1x <= m2x + 1 && M1x >= M2x - 1)
@@ -333,8 +331,10 @@ static List* remove_point(List *c)
             next->next = point->next;
             FreeL(point);
         }
-
-        first = first->next;
+        else
+        {
+            first = first->next;
+        }
     }
 
     int cas = is_point(c);

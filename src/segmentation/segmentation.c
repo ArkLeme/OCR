@@ -219,7 +219,7 @@ void words_segmentation(List *listoflines)
 
             if(pixel == 0 && c && white && y == end - 1)
             {
-		if(white_count > limits +1)
+		if(white_count > limits)
 		{
 		    c = 0; // the end of word is here
 		    end_draw = 1; // must trace the last line
