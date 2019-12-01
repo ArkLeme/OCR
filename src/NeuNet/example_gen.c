@@ -52,7 +52,8 @@ Pool* ReadExamples(char* path)
 		fgetc(f);	
 		Matrix *m = InitMWithValues(28, 28, ch);
 		pool->examples[i] = m;
-//		DisplayM(m);
+		printf("%c\n", pool->results[i]);
+		DisplayM(m);
 	}
 	fclose(f);
 	printf("ok generation\n");

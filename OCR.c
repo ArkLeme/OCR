@@ -5,6 +5,7 @@
 #include "src/NeuNet/save_net.h"
 #include "src/NeuNet/init_Network.h"
 #include "src/UI/testUI.h"
+#include "src/NeuNet/neuNet.h"
 
 int main(int argc, char** argv)
 {
@@ -12,8 +13,10 @@ int main(int argc, char** argv)
 	neuNet *network = init_network(layersize,3);
 	
 	//neuNet *network = LoadNeuNet();
-
-	exec_UI(network, argc, argv);
+	if(argc > 1)
+		testTrain();
+	else
+		exec_UI(network, argc, argv);
 
 	freeNeuNet(network);
 

@@ -10,7 +10,7 @@ List* Parcours(char* path)
 
     while(lp != NULL)
     {
-        line_segm(lp);
+        lines_segmentation(lp);
         List *ll = lp->child;
 
         while(ll != NULL)
