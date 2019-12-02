@@ -40,6 +40,12 @@ define open_doc
 	@xdg-open $(SHORTCUT)
 endef
 
+# Move dependence and object
+define move
+	@mv $(OBJ) object/
+	@mv $(DEP) dependence/
+endef
+
 # doxygen documentation and shortcut
 .PHONY: doxygen
 doxygen:	## Generate html documentation and shortcut doc.html.
@@ -51,9 +57,10 @@ doxygen:	## Generate html documentation and shortcut doc.html.
 doc: doxygen	## Generate html documentation and open it in your default browser.
 	@$(call open_doc)
 
-OCR: OCR.c $(OBJ) ## Generate the executable and launch the interface.
-	@mv $(OBJ) object/
-	@mv $(DEP) dependence/
+OCR: $(EXEC).c $(OBJ) ## Generate the executable and launch the interface.
+
+move:
+	@$(call move)
 
 # Help function to use the makefile
 # It "just" detect every rules in this makefile and the print it

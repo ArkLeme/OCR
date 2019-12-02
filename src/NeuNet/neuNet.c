@@ -25,7 +25,6 @@ char Calculate(Matrix* c, neuNet * n)
 	//DisplayM(c);
 	forward_prop(n, c);
 	int result = GetOutput(n);
-	printf("%i\n", result);
 	ClearNeuNet(n);
 	return (char) ('a' + result);
 }
