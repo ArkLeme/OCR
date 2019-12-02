@@ -15,7 +15,7 @@
  * it at 0 by default because in the pretraitement it represenent black pixel.
  *
  * \param l : height of the Matrix : number of line.
- * \paral c : width of the Matrix : number of column.
+ * \param c : width of the Matrix : number of column.
  *
  * \return pointer to the structure
  */
@@ -76,6 +76,7 @@ Matrix *InitStringM(int l, int c, char* str)
  * \brief Since our Matrix are represented as a single array, we can insert an
  * element with only on index.
  *
+ * \param m : Matrix
  * \param pos : index in the Matrix, pos = i * col + j
  * \param e : element inserted
  */

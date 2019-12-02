@@ -12,12 +12,13 @@
  */
 
 /**
- * \fn Matrix *CompLabeling(Matrix *m, int *maxlabel)
+ * \fn Matrix *CompLabeling(Matrix *m, int *maxLabel)
  * \brief Apply the two pass algorithm, every 1 in the Matrix are considered
  * full and every 0 empty, so we label every 1 in the Matrix
  *
  * \param m : Matrix we want to label
  * \param maxLabel : number of different label in the Matrix (modif by ref)
+ *
  * \return Matrix where each bloc have a label
  */
 Matrix *CompLabeling(Matrix *m, int* maxLabel)
@@ -284,7 +285,6 @@ int NumberLabel(Matrix *m, int ml)
  * allocated memory correctly.
  *
  * \param m : Matrix we want to reduce label value
- * \param nbl : number of usefull label
  * \param ml : number of the maximum label
  *
  * \return List of int where the new value of the label is 
