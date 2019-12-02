@@ -22,8 +22,10 @@ char Calculate(Matrix* c, neuNet * n)
 {
 	c->col = 1;
 	c->line = 784;
+	//DisplayM(c);
 	forward_prop(n, c);
 	int result = GetOutput(n);
+	printf("%i\n", result);
 	ClearNeuNet(n);
 	return (char) ('a' + result);
 }

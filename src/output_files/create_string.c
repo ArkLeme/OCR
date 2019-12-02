@@ -58,7 +58,8 @@ char *char_string(List *single_chr, neuNet *network)
 
     Matrix *m = ((Matrix*) (single_chr->mat));
     Matrix *norm = normalize_dimension(m);
-
+	
+    DisplayM(norm);
     char n = Calculate(norm, network);
 
     *c = n;
