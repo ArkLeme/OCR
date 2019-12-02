@@ -15,7 +15,7 @@ If you type `make` you will get the same result as `make help`
 - Generate the executable
     - `make OCR`
 
-After launcing the OCR executable, you will find three options :
+After launcing the OCR's executable, you will find three options :
 
 - Launch OCR :
     - Launch the OCR on the selected picture and put its text on the Edit text's window. Please wait during few seconds or minutes while OCR's algorithm is applied on your picture
