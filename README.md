@@ -14,6 +14,7 @@ If you type `make` you will get the same result as `make help`
 
 - Generate the executable
     - `make OCR`
+
 In the main menu, you have three options :
 
 - Launch OCR :
