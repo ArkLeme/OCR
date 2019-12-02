@@ -5,8 +5,11 @@
 - Display makefile help
     - `make help`
 
+`make help` is also the default rule of the makefile.
+If you type `make` you will get the same result as `make help`
+
 - Generate the executable
-    - `make main`
+    - `make OCR`
 
 ## Documentation:
 
