@@ -2,8 +2,7 @@
 
 CC = gcc
 CPPFLAGS= `pkg-config --cflags sdl` `pkg-config --cflags gtk+-3.0` -MMD
-CFLAGS = -fsanitize=address -g -Wall -Wextra -std=c99
-LDFLAGS = -fsanitize=address
+CFLAGS = -Wall -Wextra -std=c99
 LDLIBS = -lSDL -lSDL_image -lm `pkg-config --libs sdl` `pkg-config --libs gtk+-3.0`
 
 # SRC contain all the file we must build
@@ -16,7 +15,7 @@ DEP = $(SRC:.c=.d)
 BMP = $(shell find ./image_data -type f -name "*.bmp") 
 
 # All exec we want to clean
-EXEC = main testsegm segmA testUI neuNet OCR
+EXEC = OCR
 
 # Shortcut name
 SHORTCUT = doc.html
@@ -52,16 +51,9 @@ doxygen:	## Generate html documentation and shortcut doc.html.
 doc: doxygen	## Generate html documentation and open it in your default browser.
 	@$(call open_doc)
 
-main: main.c $(OBJ) ## Generate the executable, use ./main path_of_the_image to generate the text.
+OCR: OCR.c $(OBJ) ## Generate the executable and launch the interface.
 	@mv $(OBJ) object/
 	@mv $(DEP) dependence/
-
-
-segmA: segmA.c $(OBJ)
-
-neuNet: neuNet.c $(OBJ) ## t option to test in/out functions for example
-
-OCR: OCR.c $(OBJ)
 
 # Help function to use the makefile
 # It "just" detect every rules in this makefile and the print it
