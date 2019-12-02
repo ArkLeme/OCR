@@ -54,10 +54,25 @@ typedef struct Matrix
 typedef struct PosM
 {
     /**
-     * mx and my are the lower x and y position of a part of the matrix.
-     * Mx and My are the higher x and y position of a part of the matrix.
+     * mx is the lower x y position of a part of the matrix.
      */
-	int mx, my, Mx, My;
+	int mx;
+
+    /**
+     * my is the lower y position of a part of the matrix.
+     */
+    int my;
+
+    /**
+     * mX is the higher x position of a part of the matrix.
+     */
+    int Mx;
+
+    /**
+     * My is the higher y position of a part of the matrix.
+     */
+    int My;
+
 }PosM;
 
 /**
@@ -158,6 +173,12 @@ double GetPosM(Matrix *m, int pos);
  * m is the matrix
  */
 void DisplayM(Matrix* m);
+
+/*
+ * Display a matrix and its components as double
+ * m is the matrix
+ */
+void DisplayM_double(Matrix* m);
 
 /*
  * Free the matrix structure

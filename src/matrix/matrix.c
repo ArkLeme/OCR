@@ -15,7 +15,7 @@
  * it at 0 by default because in the pretraitement it represenent black pixel.
  *
  * \param l : height of the Matrix : number of line.
- * \paral c : width of the Matrix : number of column.
+ * \param c : width of the Matrix : number of column.
  *
  * \return pointer to the structure
  */
@@ -42,10 +42,10 @@ Matrix* InitM(int l, int c)
  */
 void PutM(Matrix* m, int i, int j, double e)
 {
-/*	if(i < 0 || i >= m -> line || j < 0 || j > m -> col)
+	if(i < 0 || i >= m -> line || j < 0 || j > m -> col)
 		errx(1, "Put Index outside of matrix i=%i, j=%i, h=%i, w=%i\n",
 						i, j, m -> line, m -> col);
-*/	*((m -> matrix) + (m -> col) * i + j) = e;
+	*((m -> matrix) + (m -> col) * i + j) = e;
 }
 
 /**
@@ -76,6 +76,7 @@ Matrix *InitStringM(int l, int c, char* str)
  * \brief Since our Matrix are represented as a single array, we can insert an
  * element with only on index.
  *
+ * \param m : Matrix
  * \param pos : index in the Matrix, pos = i * col + j
  * \param e : element inserted
  */
@@ -100,9 +101,6 @@ void PutPosM(Matrix* m, int pos, double e)
  */
 double GetM(Matrix* m, int i, int j)
 {
-	if(i < 0 || i >= m -> line || j < 0 || j > m -> col)
-		errx(1, "Get Index outside of matrix i=%i, j=%i, h=%i, w=%i\n",
-						i, j, m -> line, m -> col);
 	return *(m -> matrix + m -> col * i + j);
 }
 
@@ -125,7 +123,7 @@ double GetPosM(Matrix* m, int pos)
 
 /**
  * \fn void DisplayM(Matrix* m)
- * \brief Display the matrix in the console
+ * \brief Display the matrix in the console, display its components as double
  *
  * \param m : Matrix
  */
@@ -137,6 +135,26 @@ void DisplayM(Matrix* m)
 		for(int j = 0; j < m -> col; j++)
 		{
 			printf("%i ",(int) GetM(m, i, j));
+		}
+		printf("]\n");
+	}
+	printf("\n");
+}
+
+/**
+ * \fn void DisplayM_double(Matrix* m)
+ * \brief Display the matrix in the console, display its components as double
+ *
+ * \param m : Matrix
+ */
+void DisplayM_double(Matrix* m)
+{
+	for(int i = 0; i < m -> line; i++)
+	{
+		printf("[ ");
+		for(int j = 0; j < m -> col; j++)
+		{
+			printf("%f ",GetM(m, i, j));
 		}
 		printf("]\n");
 	}
@@ -434,18 +452,20 @@ Matrix* CopyMatrix(Matrix *m, int mx, int my, int Mx, int My)
  */
 Matrix* normalize_dimension(Matrix *m)
 {
-    Matrix *out = InitM(28,28);
 
-    for(int i = 0; i < m->line; i++)
+    int wl = m->line > 28 ? 28 : m->line;
+    int wc = m->col > 28 ? 28 : m->col;
+
+    Matrix* m1 = InitM(28,28);
+    for(int i = 0; i < wl; i++)
     {
-        for(int j = 0; j < m->col; j++)
+        for(int j = 0; j < wc; j++)
         {
-            PutM(out, i, j, GetM(m, i, j) != 0);
+            PutM(m1, i, j, GetM(m, i, j) != 0);
         }
     }
-
-    //FreeM(m);
-    return out;
+	//FreeM(m);
+    return m1;
 }
 
 /**

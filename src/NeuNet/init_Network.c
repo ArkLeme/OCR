@@ -84,7 +84,7 @@ layer *init_layer(int nbNeurons, int nbNeurons_prec)
      			// Layer->errors = InitM(nbNeurons,1);
       			
 		}
-
+	Layer->errors = NULL;
 		Layer->nbNeurons = nbNeurons;
 	}
     
@@ -100,7 +100,6 @@ layer *init_layer(int nbNeurons, int nbNeurons_prec)
  * \param nbLayers is the number of layers the network initialized will have.
  * \return the network initialized.
  */
-//take the nbLayer wanted and the size of each layer_size
 neuNet* init_network(int layer_size[], size_t nbLayers)
 {
 
@@ -129,7 +128,11 @@ neuNet* init_network(int layer_size[], size_t nbLayers)
 	return network;
 	  
 }		     
-
+/*!
+ * \author pierre-olivier.rey 
+ * \brief Initialize layers's matrix used for batch propagation 
+ * \param n the neural network 
+ */
 void InitNeuNetForBatch(neuNet*n)
 {
 	for(int i = 1; i < n->nbLay; i++)

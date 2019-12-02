@@ -28,5 +28,5 @@ Install [doxygen](http://www.doxygen.nl/manual/install.html) to generate the doc
 
 - William GROLLEAU
 - Jeanne MORIN
-- Pierre-Olivier RAY
+- Pierre-Olivier REY
 - Alexandre LEMONNIER

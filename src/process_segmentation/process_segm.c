@@ -28,13 +28,11 @@ Matrix* get_mat_from_png(char *path)
 
 	Matrix *m = GetMatFromIm(bin);
 
-    SaveMatAsIm(m, "image_data/rlsa/bin.bmp");
-
-    SDL_FreeSurface(brightness);
-    SDL_FreeSurface(input);
-	SDL_FreeSurface(gray);
-	SDL_FreeSurface(contrast);
-	SDL_FreeSurface(bin);
+    SaveImage(input, "image_data/rlsa/input.bmp");
+    SaveImage(gray, "image_data/rlsa/gray.bmp");
+    SaveImage(brightness, "image_data/rlsa/brightness.bmp");
+    SaveImage(contrast, "image_data/rlsa/contrast.bmp");
+    SaveImage(bin, "image_data/rlsa/bin.bmp");
 
     SwapColor(m);
 
@@ -122,7 +120,7 @@ static int is_image(List *l)
             black++;
     }
 
-    return black > m->size - m->size/3;
+    return black > m->size/2;
 }
 
 /**
@@ -144,13 +142,15 @@ static List* remove_image(List *p)
         {
             next = first->next;
 
-            if(is_image(first->next))
+            if(is_image(next))
             {
                 first->next = next->next;
                 FreeL(next);
             }
-
-            first = first->next;
+            else
+            {
+                first = first->next;
+            }
         }
     }
 
@@ -273,7 +273,7 @@ List* word_segm(List* p)
  * if the first matrix is a point return 1
  * if the second matrix is a point return 2
  *
- * \param m : List
+ * \param l : List
  *
  * \return different case
  */
@@ -291,7 +291,7 @@ static int is_point(List *l)
         int m2y = l->next->pos->My;
 
 
-        if(m1x >= m2x - 1 && M1x <= M2x + 1)
+        if(m1y < m2y && m1x >= m2x - 1 && M1x <= M2x + 1)
             return 1;
 
         if(m1y > m2y && m1x <= m2x + 1 && M1x >= M2x - 1)
@@ -331,8 +331,10 @@ static List* remove_point(List *c)
             next->next = point->next;
             FreeL(point);
         }
-
-        first = first->next;
+        else
+        {
+            first = first->next;
+        }
     }
 
     int cas = is_point(c);
@@ -400,15 +402,15 @@ static List* sort_list(List *c)
     return c;
 }
 /**
- * \fn List* char_segm(List* p)
+ * \fn List* char_segm(List *w)
  * \brief Apply the fourth segmentation, it take a word
  * and it set child of p as List of char.
  *
- * \param p : One word
+ * \param w : One word
  *
  * \return List of paragraph
  */
-List* char_segm(List* w)
+List* char_segm(List *w)
 {
     int ml = 0;
     Matrix *word = w->mat;

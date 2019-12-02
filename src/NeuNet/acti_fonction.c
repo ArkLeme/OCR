@@ -8,6 +8,68 @@
 
 
 
+Matrix* Acti(Matrix *m, char fct)
+{
+	Matrix* m2 = InitM(m->line, m->col);
+	if(fct == 's')
+	  {
+	    for(int i = 0; i < m->line; i++)
+	      {
+		for( int j = 0; j < m->col; j++)
+                {PutM(m2, i, j, sigmoid((double)GetM(m,i, j)));}
+	      }
+	  }
+	else if(fct == 't')
+	  {
+	    for(int i = 0; i < m->line; i++)
+	      {
+		for( int j = 0; j < m->col; j++)
+                {PutM(m2, i, j, tan((double)GetM(m,i, j)));}
+	      }
+	  }
+	else if(fct == 'r')
+	  {
+	    for(int i = 0; i < m->line; i++)
+	      {
+		for( int j = 0; j < m->col; j++)
+                {PutM(m2, i, j, ReLU((double)GetM(m,i, j)));}
+	      }
+	  }
+
+	return m2;
+}
+
+Matrix* ActiPrime(Matrix *m, char fct)
+{
+	Matrix* m2 = InitM(m->line, m->col);
+	if(fct == 's')
+	  {
+	    for(int i = 0; i < m->line; i++)
+	      {
+		for( int j = 0; j < m->col; j++)
+		  {PutM(m2, i, j, sigPrime(GetM(m,i, j)));}
+	      }
+	  }
+	else if(fct == 't')
+	  {
+	    for(int i = 0; i < m->line; i++)
+	      {
+		for( int j = 0; j < m->col; j++)
+		  {PutM(m2, i, j, tanPrime(GetM(m,i, j)));}
+	      }
+	  }
+	else if(fct == 'r')
+	  {
+	    for(int i = 0; i < m->line; i++)
+	      {
+		for( int j = 0; j < m->col; j++)
+		  {PutM(m2, i, j, ReLU_prime(GetM(m,i, j)));}
+	      }
+	  }
+
+	return m2;
+}
+
 
 ////////////////////// S I G M O I D E /////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
@@ -26,6 +88,7 @@ double sigPrime(float x)
 	//return 1- ( sigmoid( x)* sigmoid( x));
 }
 
+
 Matrix* Sig(Matrix *m)
 {
 	Matrix* m2 = InitM(m->line, m->col);
@@ -36,6 +99,7 @@ Matrix* Sig(Matrix *m)
 	}
 	return m2;
 }
+
 
 Matrix* SigPrime(Matrix *m)
 {
@@ -185,3 +249,47 @@ double Soft_prime(double sum, double z, int delta, double shift)
 
 	return Soft(sum, z,shift)*(delta-Soft(sum,z,shift));
 }
+
+
+//////////////////////////////////////////////////// T A N G E A N T E  E X P O N E N T I E L L E //////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+double tan(double x)
+{	
+        return sinh(x)/cosh(x);
+        //return log(1 + exp(x)); // relu soft plus
+	//return (exp(2*x) - 1)/(exp(2*x) + 1);
+}
+
+double tanPrime(double x)
+{
+    return 1/(cosh(x)*cosh(x));
+	//return 1/(1+exp(-x)); //relu prime
+	//return 1- ( sigmoid( x)* sigmoid( x));
+}
+
+////////////////////////////////////////////////////////////// R E L U ////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+double ReLU(double x)
+{
+        if(x<0)
+	  {
+	    x =0;
+	  }	
+    
+        return (double) x;
+        
+}
+
+double ReLU_prime(double x)
+{
+	if(x<0)
+	  return 0;
+
+	return 1;
+}
+
+
+
+ 
