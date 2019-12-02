@@ -447,9 +447,35 @@ void cb_about (GtkWidget *p_widget, gpointer user_data)
 
 void cb_doc(GtkWidget *p_widget,gpointer user_data)
 {
-	//const char* command = "make doc";
-	system("gnome-terminal -x bash -c \"make doc; exec bash\"");
+	GtkWidget *test_dialog = NULL;
 
+	test_dialog = gtk_dialog_new_with_buttons 
+					("Continue ?",
+					GTK_WINDOW(docs.p_main_window),
+					GTK_DIALOG_MODAL,
+					"Yes",GTK_RESPONSE_YES,
+					"No",GTK_RESPONSE_NO,
+					NULL);
+	GtkWidget *label = gtk_label_new (NULL);
+	gtk_label_set_markup (GTK_LABEL (label), 
+	"<b> If you start Doc program,\n you will not be able to use the UI, continue ?</b>");
+	gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(
+						GTK_DIALOG(test_dialog))),
+						label, TRUE, TRUE, 5);
+	gtk_widget_show_all (test_dialog);
+	switch (gtk_dialog_run (GTK_DIALOG (test_dialog)))
+	{
+		case GTK_RESPONSE_YES:
+			gtk_widget_destroy (test_dialog);
+			gtk_widget_hide(docs.p_main_window);
+			system("xterm -e make doc");
+			gtk_widget_show_all(docs.p_main_window);
+			return;
+		case GTK_RESPONSE_NO:
+			gtk_widget_destroy (test_dialog);
+			return;
+		break;
+	}
 	/* Unused parameter */
 	(void) p_widget;
 	(void) user_data;
@@ -549,7 +575,6 @@ static void open_file (gchar *file_name, GtkTextView *p_text_view)
  * \param *p_text_view : Text view widget.
  * \return void
  */
-
 static void open_ocr(gchar *file_name, neuNet *network)
 {
 	GtkTextView *p_text_view = NULL;
