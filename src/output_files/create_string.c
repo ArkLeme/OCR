@@ -17,7 +17,7 @@
  * \fn char *char_string(List *single_chr, neuNet *network)
  * \brief Create a char from a list of char
  *
- * \param single_char : List of character
+ * \param single_chr : List of character
  * \param network : NeuralNetwork
  *
  * \return pointer to the char
@@ -35,7 +35,6 @@ char *char_string(List *single_chr, neuNet *network)
     *c = n;
     *(c+1) = 0;
 	FreeM(norm);
-    if(start < end) start++;
 
     return c;
 }
@@ -101,7 +100,6 @@ char* line_string(List *single_line, neuNet *network)
 
         line = l_space;
 
-        start++;
         first_word = first_word->next;
     }
 
@@ -142,7 +140,6 @@ char* para_string(List* single_para, neuNet *network)
 
         para = l_n;
 
-        start++;
         first_line = first_line->next;
     }
 
@@ -175,7 +172,6 @@ char* text_string(List* list_para, neuNet *network)
         free(para);
         free(text);
 
-        start++;
         text = t_n;
         first_para = first_para->next;
     }
@@ -184,39 +180,17 @@ char* text_string(List* list_para, neuNet *network)
 }
 
 /**
- * \fn void write_files(char* path, List *l)
- * \brief Create a string from the list of paragraph.
+ * \fn char* generate_string(List *l, neuNet *network)
+ * \brief Get the string of all the segmented text, it use the Neural Network
+ * to find the good char.
  *
- * \param path : path to save the file
- * \param l : list of paragraph
+ * \param l : Segmented List of paragraph
+ * \param network : NeuralNetwork
+ *
+ * \return string of the text
  */
-void write_files(char* path, List *l)
-{
-    FILE *fp;
-    start = test;
-
-    end = test + LengthStr(test) - 1;
-
-    fp = fopen(path, "w");
-
-    char *string = text_string(l, NULL);
-
-    fprintf(fp, "%s", string);
-
-    free(string);
-
-    fclose(fp);
-}
-
-/**
- * \func char* generate_string(List *l, neuNet *network)
- *
 char* generate_string(List *l, neuNet *network)
 {
-    start = test;
-
-    end = test + LengthStr(test) - 1;
-
     char *s = text_string(l, network);
 
     return s;

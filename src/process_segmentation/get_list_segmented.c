@@ -39,7 +39,6 @@ List* get_list_segmented(char *path)
             while(lw != NULL)
             {
                 char_segm(lw);
-                List *lc = lw->child;
 
                 lw = lw->next;
                 //lw = NULL;
@@ -57,7 +56,7 @@ List* get_list_segmented(char *path)
 }
 
 /**
- * \func char* get_string(char *path, neuNet *network)
+ * \fn char* get_string(char *path, neuNet *network)
  * \brief This function get the string of the text, it is use to print the
  * text in the UI so the user can modifiy it if it's needed.
  *

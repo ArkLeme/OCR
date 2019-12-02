@@ -56,7 +56,7 @@ typedef struct PosM
     /**
      * mx is the lower x y position of a part of the matrix.
      */
-	int mx,;
+	int mx;
 
     /**
      * my is the lower y position of a part of the matrix.
