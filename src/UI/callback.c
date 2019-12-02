@@ -475,7 +475,7 @@ void cb_doc(GtkWidget *p_widget,gpointer user_data)
 void cb_readme(GtkWidget *p_widget, gpointer user_data)
 {
 	FILE *file = NULL;
-	file = fopen("src/UI/help.txt", "r");
+	file = fopen("src/UI/help", "r");
 	
 	char contents[250];
 	

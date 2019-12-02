@@ -1,0 +1,27 @@
+Welcome in our OCR application.
+
+To launch the OCR on your picture, click on the appropriate button (the first one) in the toolbar.
+You can also find this option in the menu bar at the top of the screen.
+Then, choose your picture and valid it after verification.
+Please wait during few seconds or minutes while OCR's algorithm is applied on your picture.
+At the end of the OCR, you can find the detected text in the Edit text's window and edit it as you want !
+
+Below are the different options that our OCR holds :
+
+-> Toolbar buttons :
+	- New file : Create an empty file that you can edit as you want.
+	- Open file : Open a window to select a text file that you want to edit in the Edit text's window.
+	- Save and Save as : Save the file open at its path if it does exist or ask to the user a path where to save it.
+	- Close : Close the active file, but ask to the user if he wants to save changes before.
+	- Quit : Quit the application, but ask to the user if he wants to save changes before.
+
+-> Menu toolbar :
+	- Menu : Hold all the toolbar buttons,but in a text format instead of icons.
+- Help : Contains 3 options to help the user about the project :
+
+	> Readme : You know it :)
+	> Doc : Open in a new terminal the "make doc" system command, which open our complete documentation in
+	your internet browser. Please wait the end of the generation of the HTML file before closing the terminal.
+	> About us : Show an "About us" window where the name, version and authors of the application are given.
+
+Thank you to use our OCR application and we hope you like it !
