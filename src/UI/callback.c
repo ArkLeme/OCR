@@ -165,7 +165,9 @@ void cb_open (GtkWidget *p_widget, gpointer user_data)
 	if (gtk_dialog_run (GTK_DIALOG (p_dialog)) == GTK_RESPONSE_ACCEPT)
 	{
 		gchar *file_name = NULL;
-	
+		
+		if(!docs.active->save)
+			cb_close(p_widget,user_data);
 		file_name = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (p_dialog));
 		open_file (file_name, GTK_TEXT_VIEW (user_data));
 	
@@ -283,7 +285,7 @@ void cb_modif (GtkWidget *p_widget, gpointer user_data)
 {
 	if (docs.active)
 	{
-	docs.active->save = FALSE;
+		docs.active->save = FALSE;
 	}
     
 	/* Unused parameter */
@@ -405,7 +407,7 @@ void cb_about (GtkWidget *p_widget, gpointer user_data)
 	GtkWidget *p_about_dialog = NULL;
 
 	p_about_dialog = gtk_about_dialog_new ();
-	gtk_about_dialog_set_version (GTK_ABOUT_DIALOG (p_about_dialog), "4.42.42.0");
+	gtk_about_dialog_set_version (GTK_ABOUT_DIALOG (p_about_dialog), "0.4.2.42");
 	gtk_about_dialog_set_program_name (GTK_ABOUT_DIALOG (p_about_dialog), 
 								"Optical Character Recognition");
 
@@ -453,6 +455,46 @@ void cb_doc(GtkWidget *p_widget,gpointer user_data)
 }
 
 /**
+ * \fn cb_readme(GtkWidget *p_widget, gpointer user_data)
+ * \brief Callback function called when pressing Readme button.
+ * Show the Readme's text in a window to help the user.
+ * \param *p_widget : Widget from the callback signal. (Unused parameter)
+ * \param user_data : Text view widget. (Unused parameter)
+ * \return void
+ */
+
+void cb_readme(GtkWidget *p_widget, gpointer user_data)
+{
+	FILE *file = NULL;
+	file = fopen("README.md", "r");
+	
+	char contents[256];
+	
+	
+	GtkWidget *dialog;
+	GtkWidget *dialog_contents;
+	GtkWidget *label;
+
+	dialog = gtk_dialog_new_with_buttons("README", GTK_WINDOW(docs.p_main_window),
+										GTK_DIALOG_MODAL,"_Close",GTK_RESPONSE_CLOSE,NULL);
+	dialog_contents = gtk_dialog_get_content_area (GTK_DIALOG(dialog));
+	
+	while(fgets(contents,sizeof(contents), file))
+	{
+			label = gtk_label_new (contents);
+			gtk_box_pack_start(GTK_BOX(dialog_contents),label,FALSE,FALSE,0);
+	}
+	gtk_widget_show_all(dialog);
+	gtk_dialog_run(GTK_DIALOG(dialog));
+
+	gtk_widget_destroy(dialog);
+	
+
+	(void) p_widget;
+	(void) user_data;
+}
+
+/**
  * \fn static void open_file (const gchar *file_name, GtkTextView *p_text_view)
  * \brief Function used by cb_open, when the user want to open a file, and to
  * put its content in the text view widget.
@@ -477,7 +519,7 @@ static void open_file (gchar *file_name, GtkTextView *p_text_view)
 
 
 			/* Copie of contents in GtkTextView */
-			gchar *utf8 = NULL;
+			//gchar *utf8 = NULL;
 			GtkTextIter iter;
 			GtkTextBuffer *p_text_buffer = NULL;
 
@@ -488,14 +530,8 @@ static void open_file (gchar *file_name, GtkTextView *p_text_view)
 			p_text_buffer = gtk_text_view_get_buffer (p_text_view);
 			gtk_text_buffer_get_iter_at_line (p_text_buffer, &iter, 0);
 
-			/* To avoid error with char encoding */
-			utf8 = g_locale_to_utf8 (contents, -1, NULL, NULL, NULL);
-			g_free (contents);
-			contents = NULL;
-			gtk_text_buffer_insert (p_text_buffer, &iter, utf8, -1);
-			g_free (utf8);
-			utf8 = NULL;
 			gtk_text_buffer_insert (p_text_buffer, &iter, contents, -1);
+
 			docs.active ->save = TRUE;
 		}
 		else
@@ -522,7 +558,7 @@ static void open_ocr(gchar *file_name, neuNet *network)
         gchar *contents = get_string(file_name,network);
 
 		docs.active = g_malloc (sizeof (*docs.active));
-		docs.active->path = g_strdup ("temp.txt");
+		docs.active->path = NULL;
 
 		docs.active->p_text_view = p_text_view;
 
@@ -530,15 +566,12 @@ static void open_ocr(gchar *file_name, neuNet *network)
 		GtkTextIter iter;
 		GtkTextBuffer *p_text_buffer = NULL;
 
-		//cb_new(NULL, p_text_view);
 		gtk_widget_set_sensitive (GTK_WIDGET (docs.active -> p_text_view), TRUE);
 
 		/* Get buffer of GtkTextView to change text */
 		p_text_buffer = gtk_text_view_get_buffer (p_text_view);
 		gtk_text_buffer_get_iter_at_line (p_text_buffer, &iter, 0);
 
-		/* To avoid error with char encoding */
-        //g_free (contents) , contents = NULL;
 		gtk_text_buffer_insert (p_text_buffer, &iter, contents, -1);
 
 		docs.active->save = FALSE;

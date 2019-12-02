@@ -43,7 +43,7 @@ GtkMenuBar *menu_new (gpointer user_data)
 	
 		p_help = gtk_menu_new ();
 		p_menu_item_2 = gtk_menu_item_new_with_mnemonic("_Help");
-		menu_item_new (GTK_MENU(p_help), "_Readme",G_CALLBACK(cb_about),user_data);
+		menu_item_new (GTK_MENU(p_help), "_Readme",G_CALLBACK(cb_readme),user_data);
 		menu_item_new (GTK_MENU(p_help), "_Doc", G_CALLBACK(cb_doc),user_data);
 		menu_item_new (GTK_MENU(p_help), "_About us", G_CALLBACK(cb_about),user_data);
 		gtk_menu_item_set_submenu(GTK_MENU_ITEM(p_menu_item_2),p_help);

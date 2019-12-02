@@ -9,7 +9,19 @@
 #include "toolbar.h"
 #include "../NeuNet/structNet.h"
 
-Docs docs = {NULL, NULL, NULL};
+UI docs= {NULL, NULL, NULL};
+
+static void cb_configure(GtkWindow *p_window, GdkEvent *event, gpointer data)
+{
+
+	gint width, height;
+	gtk_window_get_size (GTK_WINDOW(p_window),&width,&height);
+	gtk_window_set_default_size (GTK_WINDOW(p_window),width,height);
+	gtk_window_set_resizable(GTK_WINDOW(p_window),0);
+
+	(void) event;
+	(void) data;
+}
 
 int exec_UI(neuNet *network,int argc, char** argv)
 {
@@ -35,9 +47,9 @@ int exec_UI(neuNet *network,int argc, char** argv)
 	/* Create main window */
 	p_window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_title(GTK_WINDOW(p_window), "OCR");
-	gtk_window_set_default_size (GTK_WINDOW(p_window),1300,800);
-	gtk_window_set_resizable(GTK_WINDOW(p_window),0);
 	gtk_window_maximize (GTK_WINDOW(p_window));
+	g_signal_connect(G_OBJECT(p_window), "configure-event",
+					G_CALLBACK(cb_configure), NULL);
 
 	docs.p_main_window = p_window;
 	docs.s_start_window = s_window;

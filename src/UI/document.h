@@ -36,9 +36,9 @@ typedef struct
 
 
 /**
- * \struc Docs
- * \brief Docs strucure, chain list of docs.
- * \return new Docs structure.
+ * \struc UI
+ * \brief UI strucure, contains UI info .
+ * \return new UI structure.
  */
 
 typedef struct
@@ -57,9 +57,9 @@ typedef struct
 	 * Pointer on Start window widget.
 	 */
 	GtkWidget *s_start_window;
-} Docs;
+} UI;
 
 /* Global variable */
-extern Docs docs;
+extern UI docs;
 
 #endif
