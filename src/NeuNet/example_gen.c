@@ -5,7 +5,6 @@
 #include "../process_segmentation/process_segm.h"
 #include <string.h>
 #include "example_gen.h"
-#include "../../testsegm.h"
 #include "../string/string_operation.h"
 #include "structNet.h"
 #include "memory_handler.h"
