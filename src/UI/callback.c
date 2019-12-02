@@ -10,8 +10,25 @@
  * \author Alexandre.L
  */
 
+/**
+ * \fn static void open_file (const gchar *file_name, GtkTextView *p_text_view)
+ * \brief Function used by cb_open, when the user want to open a file, and to
+ * put its content in the text view widget.
+ * \param *file_name : Path of the file.
+ * \param *p_text_view : Text view widget.
+ * \return void
+ */
 
 static void open_file (gchar *, GtkTextView *);
+
+/**
+ * \fn static void open_ocr (gchar *file_name, GtkTextView *p_text_view)
+ * \brief Function used by cb_ocr, when the user want to launch the OCR, this
+ * function will put the text from OCR main function in the text view widget.
+ * \param *file_name : Path of the picture.
+ * \param *p_text_view : Text view widget.
+ * \return void
+ */
 
 static void open_ocr(gchar *, neuNet *network);
 
@@ -503,15 +520,6 @@ void cb_readme(GtkWidget *p_widget, gpointer user_data)
 	(void) user_data;
 }
 
-/**
- * \fn static void open_file (const gchar *file_name, GtkTextView *p_text_view)
- * \brief Function used by cb_open, when the user want to open a file, and to
- * put its content in the text view widget.
- * \param *file_name : Path of the file.
- * \param *p_text_view : Text view widget.
- * \return void
- */
-
 static void open_file (gchar *file_name, GtkTextView *p_text_view)
 {
 	g_return_if_fail (file_name && p_text_view);
@@ -549,14 +557,6 @@ static void open_file (gchar *file_name, GtkTextView *p_text_view)
 		}
 	}
 }
-/**
- * \fn static void open_ocr (gchar *file_name, GtkTextView *p_text_view)
- * \brief Function used by cb_ocr, when the user want to launch the OCR, this
- * function will put the text from OCR main function in the text view widget.
- * \param *file_name : Path of the picture.
- * \param *p_text_view : Text view widget.
- * \return void
- */
 static void open_ocr(gchar *file_name, neuNet *network)
 {
 	GtkTextView *p_text_view = NULL;
