@@ -42,8 +42,7 @@ void cb_ocr(GtkWidget* s_widget,gpointer user_data)
 		file_name = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER (p_dialog));
 		{
 			GtkWidget *test_dialog = NULL;
-			GtkWidget *test_label = NULL;
-			GtkWidget *test_image = NULL;
+			GtkWidget *image = NULL;
 
 			test_dialog = gtk_dialog_new_with_buttons ("Use this picture ?",
 							GTK_WINDOW(docs.p_main_window),
@@ -51,13 +50,15 @@ void cb_ocr(GtkWidget* s_widget,gpointer user_data)
 							"Yes",GTK_RESPONSE_YES,
 							"No",GTK_RESPONSE_NO,
 							NULL);
-			test_label = gtk_label_new("Use this picture ?");
+			GtkWidget *label = gtk_label_new (NULL);
+			gtk_label_set_markup (GTK_LABEL (label), "<b> Use this picture ?</b>");
 			gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(
 							GTK_DIALOG(test_dialog))),
-							test_label, TRUE, TRUE, 5);
-			test_image = gtk_image_new_from_file(file_name);
+							label, TRUE, TRUE, 5);
+			image = gtk_image_new_from_pixbuf(gdk_pixbuf_new_from_file_at_size(
+											file_name,800,600,NULL));
 			gtk_box_pack_start (GTK_BOX(gtk_dialog_get_content_area(
-						GTK_DIALOG(test_dialog))),test_image, TRUE, TRUE, 0);
+						GTK_DIALOG(test_dialog))),image, TRUE, TRUE, 0);
 
 			
 			gtk_widget_show_all (test_dialog);
