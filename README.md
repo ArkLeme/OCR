@@ -8,12 +8,25 @@
 `make help` is also the default rule of the makefile.
 If you type `make` you will get the same result as `make help`
 
+**You must** install [gtk 3.0](gtk.org/download/linux.php) or higher version to generate the executable.
+
+**You must** install [sdl 2.0](wiki.libsdl.org/Installation) to generate the executable.
+
 - Generate the executable
     - `make OCR`
+In the main menu, you have three options :
+
+- Launch OCR :
+    Launch the OCR on the selected picture and put its text on the Edit text's window.
+    Please wait during few seconds or minutes while OCR's algorithm is applied on your picture.*
+- Edit text :
+    Open the Edit text's window with an empty file. You can find more information on the help menu inside the editor.
+- Quit :
+    Quit the application.
 
 ## Documentation:
 
-Install [doxygen](http://www.doxygen.nl/manual/install.html) to generate the documentation.
+**You must** Install [doxygen](http://www.doxygen.nl/manual/install.html) to generate the documentation.
 
 - Generate the documentation:
     - `make doxygen`
