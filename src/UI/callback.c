@@ -447,7 +447,16 @@ void cb_about (GtkWidget *p_widget, gpointer user_data)
 
 void cb_doc(GtkWidget *p_widget,gpointer user_data)
 {
-	system("i3-sensible-terminal -e make doc &");
+	int i = system("i3-sensible-terminal -e make doc &");
+
+	if (i == -1 )
+	{
+		i = system("xterm -e make doc &");
+		if(i == -1)
+		{
+			i = system("gnome-terminal -e make doc &");
+		}
+	}
 
 	/* Unused parameter */
 	(void) p_widget;
