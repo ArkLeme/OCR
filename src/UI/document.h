@@ -36,7 +36,7 @@ typedef struct
 
 
 /**
- * \struc UI
+ * \struct UI
  * \brief UI strucure, contains UI info .
  * \return new UI structure.
  */
@@ -59,7 +59,10 @@ typedef struct
 	GtkWidget *s_start_window;
 } UI;
 
-/* Global variable */
+/**
+ * UI docs : Global Variable.
+ */
+
 extern UI docs;
 
 #endif
