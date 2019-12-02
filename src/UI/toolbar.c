@@ -2,6 +2,12 @@
 #include "callback.h"
 #include "toolbar.h"
 
+/**
+ * \file toolbar.c
+ * \brief This file contains all the function use to create the toolbar.
+ * \author Alexandre.L
+ */
+
 static void toolbar_item_new (GtkToolbar *, gchar *, gchar *,GCallback, gpointer);
 
 /**
