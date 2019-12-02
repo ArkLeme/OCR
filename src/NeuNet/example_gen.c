@@ -113,9 +113,7 @@ void GenerateExamples(char* path)
  */
 int GenExample(char* ImagePath, char* text, FILE*f)
 {
-	printf("avant parcours\n");
 	List* l = Parcours(ImagePath);
-	printf("apresè parcours\n");
 	List*save  = l;
 	int nbChar = 0;
 	int i = 0;

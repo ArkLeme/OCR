@@ -27,7 +27,7 @@ void forward_prop(neuNet* network, Matrix *input_data)
 	//Layer number 0
 	network->layers[i]->values = input_data;
 	network->layers[i]->outputs = Sig(network->layers[0]->values);
-	
+	network->layers[i]->errors =  NULL;
 	i+=1;
 	//Propage the input values in every layers of the network, startin from layer 1
 	while(i<network->nbLay-1)
@@ -44,8 +44,8 @@ void forward_prop(neuNet* network, Matrix *input_data)
 	    	FreeM(multiplication_weights);
 	    	input_data = current_layer->outputs;
 	  		
-		current_layer->errors = NULL; //needed if it is only 
 		i+=1;
+		current_layer->errors = NULL; //needed if it is only 
 	  }
 
 		
@@ -59,8 +59,8 @@ void forward_prop(neuNet* network, Matrix *input_data)
 	    	current_layer->outputs = Softmax(current_layer->values);
 		
 
+		current_layer->errors = NULL; //needed if it is only 
 	    	FreeM(multiplication_weights);
-	    	input_data = current_layer->outputs;
 }
 
 
