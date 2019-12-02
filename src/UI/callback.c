@@ -42,8 +42,7 @@ void cb_ocr(GtkWidget* s_widget,gpointer user_data)
 		file_name = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER (p_dialog));
 		{
 			GtkWidget *test_dialog = NULL;
-			GtkWidget *test_label = NULL;
-			GtkWidget *test_image = NULL;
+			GtkWidget *image = NULL;
 
 			test_dialog = gtk_dialog_new_with_buttons ("Use this picture ?",
 							GTK_WINDOW(docs.p_main_window),
@@ -51,14 +50,17 @@ void cb_ocr(GtkWidget* s_widget,gpointer user_data)
 							"Yes",GTK_RESPONSE_YES,
 							"No",GTK_RESPONSE_NO,
 							NULL);
-			test_label = gtk_label_new("Use this picture ?");
+			GtkWidget *label = gtk_label_new (NULL);
+			gtk_label_set_markup (GTK_LABEL (label), "<b> Use this picture ?</b>");
 			gtk_box_pack_start(GTK_BOX(gtk_dialog_get_content_area(
 							GTK_DIALOG(test_dialog))),
-							test_label, TRUE, TRUE, 5);
-			test_image = gtk_image_new_from_file(file_name); 
+							label, TRUE, TRUE, 5);
+			image = gtk_image_new_from_pixbuf(gdk_pixbuf_new_from_file_at_size(
+											file_name,800,600,NULL));
 			gtk_box_pack_start (GTK_BOX(gtk_dialog_get_content_area(
-						GTK_DIALOG(test_dialog))),test_image, TRUE, TRUE, 0);
+						GTK_DIALOG(test_dialog))),image, TRUE, TRUE, 0);
 
+			
 			gtk_widget_show_all (test_dialog);
 			switch (gtk_dialog_run (GTK_DIALOG (test_dialog)))
 			{
@@ -164,7 +166,9 @@ void cb_open (GtkWidget *p_widget, gpointer user_data)
 	if (gtk_dialog_run (GTK_DIALOG (p_dialog)) == GTK_RESPONSE_ACCEPT)
 	{
 		gchar *file_name = NULL;
-	
+		
+		if(!docs.active->save)
+			cb_close(p_widget,user_data);
 		file_name = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (p_dialog));
 		open_file (file_name, GTK_TEXT_VIEW (user_data));
 	
@@ -282,7 +286,7 @@ void cb_modif (GtkWidget *p_widget, gpointer user_data)
 {
 	if (docs.active)
 	{
-	docs.active->save = FALSE;
+		docs.active->save = FALSE;
 	}
     
 	/* Unused parameter */
@@ -404,7 +408,7 @@ void cb_about (GtkWidget *p_widget, gpointer user_data)
 	GtkWidget *p_about_dialog = NULL;
 
 	p_about_dialog = gtk_about_dialog_new ();
-	gtk_about_dialog_set_version (GTK_ABOUT_DIALOG (p_about_dialog), "4.42.42.0");
+	gtk_about_dialog_set_version (GTK_ABOUT_DIALOG (p_about_dialog), "0.4.2.42");
 	gtk_about_dialog_set_program_name (GTK_ABOUT_DIALOG (p_about_dialog), 
 								"Optical Character Recognition");
 
@@ -443,10 +447,58 @@ void cb_about (GtkWidget *p_widget, gpointer user_data)
 
 void cb_doc(GtkWidget *p_widget,gpointer user_data)
 {
-	//const char* command = "make doc";
-	system("gnome-terminal -x bash -c \"make doc; exec bash\"");
+	int i = system("i3-sensible-terminal -e make doc &");
+
+	if (i == -1 )
+	{
+		i = system("xterm -e make doc &");
+		if(i == -1)
+		{
+			i = system("gnome-terminal -e make doc &");
+		}
+	}
 
 	/* Unused parameter */
+	(void) p_widget;
+	(void) user_data;
+}
+
+/**
+ * \fn cb_readme(GtkWidget *p_widget, gpointer user_data)
+ * \brief Callback function called when pressing Readme button.
+ * Show the Readme's text in a window to help the user.
+ * \param *p_widget : Widget from the callback signal. (Unused parameter)
+ * \param user_data : Text view widget. (Unused parameter)
+ * \return void
+ */
+
+void cb_readme(GtkWidget *p_widget, gpointer user_data)
+{
+	FILE *file = NULL;
+	file = fopen("README.md", "r");
+	
+	char contents[256];
+	
+	
+	GtkWidget *dialog;
+	GtkWidget *dialog_contents;
+	GtkWidget *label;
+
+	dialog = gtk_dialog_new_with_buttons("README", GTK_WINDOW(docs.p_main_window),
+										GTK_DIALOG_MODAL,"_Close",GTK_RESPONSE_CLOSE,NULL);
+	dialog_contents = gtk_dialog_get_content_area (GTK_DIALOG(dialog));
+	
+	while(fgets(contents,sizeof(contents), file))
+	{
+			label = gtk_label_new (contents);
+			gtk_box_pack_start(GTK_BOX(dialog_contents),label,FALSE,FALSE,0);
+	}
+	gtk_widget_show_all(dialog);
+	gtk_dialog_run(GTK_DIALOG(dialog));
+
+	gtk_widget_destroy(dialog);
+	
+
 	(void) p_widget;
 	(void) user_data;
 }
@@ -476,7 +528,7 @@ static void open_file (gchar *file_name, GtkTextView *p_text_view)
 
 
 			/* Copie of contents in GtkTextView */
-			gchar *utf8 = NULL;
+			//gchar *utf8 = NULL;
 			GtkTextIter iter;
 			GtkTextBuffer *p_text_buffer = NULL;
 
@@ -487,16 +539,9 @@ static void open_file (gchar *file_name, GtkTextView *p_text_view)
 			p_text_buffer = gtk_text_view_get_buffer (p_text_view);
 			gtk_text_buffer_get_iter_at_line (p_text_buffer, &iter, 0);
 
-			/* To avoid error with char encoding */
-			utf8 = g_locale_to_utf8 (contents, -1, NULL, NULL, NULL);
-			g_free (contents);
-			contents = NULL;
-			gtk_text_buffer_insert (p_text_buffer, &iter, utf8, -1);
-			g_free (utf8);
-			utf8 = NULL;
 			gtk_text_buffer_insert (p_text_buffer, &iter, contents, -1);
+
 			docs.active ->save = TRUE;
-			g_object_unref(p_text_buffer);
 		}
 		else
 		{
@@ -512,17 +557,16 @@ static void open_file (gchar *file_name, GtkTextView *p_text_view)
  * \param *p_text_view : Text view widget.
  * \return void
  */
-
 static void open_ocr(gchar *file_name, neuNet *network)
 {
 	GtkTextView *p_text_view = NULL;
 	p_text_view = GTK_TEXT_VIEW(docs.active->p_text_view);
 	g_return_if_fail (file_name && p_text_view);
 	{
-        gchar *contents = get_string(file_name, network);
+        gchar *contents = get_string(file_name,network);
 
 		docs.active = g_malloc (sizeof (*docs.active));
-		docs.active->path = g_strdup ("temp.txt");
+		docs.active->path = NULL;
 
 		docs.active->p_text_view = p_text_view;
 
@@ -530,15 +574,12 @@ static void open_ocr(gchar *file_name, neuNet *network)
 		GtkTextIter iter;
 		GtkTextBuffer *p_text_buffer = NULL;
 
-		cb_new(NULL, p_text_view);
 		gtk_widget_set_sensitive (GTK_WIDGET (docs.active -> p_text_view), TRUE);
 
 		/* Get buffer of GtkTextView to change text */
 		p_text_buffer = gtk_text_view_get_buffer (p_text_view);
 		gtk_text_buffer_get_iter_at_line (p_text_buffer, &iter, 0);
 
-		/* To avoid error with char encoding */
-        //g_free (contents) , contents = NULL;
 		gtk_text_buffer_insert (p_text_buffer, &iter, contents, -1);
 
 		docs.active->save = FALSE;

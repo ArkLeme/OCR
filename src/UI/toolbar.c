@@ -31,8 +31,8 @@ GtkToolbar *toolbar_new (gpointer user_data)
 						"Close file", G_CALLBACK (cb_close), user_data);
 	toolbar_item_new(GTK_TOOLBAR (p_toolbar),"./image_data/UI/icon/png/door.png",
 						"Quit application",G_CALLBACK (cb_quit), user_data);
-	toolbar_item_new(GTK_TOOLBAR(p_toolbar),"./image_data/UI/icon/png/about.png",
-						"About us",G_CALLBACK (cb_about), user_data);
+	//toolbar_item_new(GTK_TOOLBAR(p_toolbar),"./image_data/UI/icon/png/about.png",
+	//					"About us",G_CALLBACK (cb_about), user_data);
 	return GTK_TOOLBAR (p_toolbar);
 }
 
