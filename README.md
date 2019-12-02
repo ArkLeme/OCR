@@ -18,15 +18,11 @@ If you type `make` you will get the same result as `make help`
 After launcing the OCR executable, you will find three options :
 
 - Launch OCR :
-
-    Launch the OCR on the selected picture and put its text on the Edit text's window.
-    Please wait during few seconds or minutes while OCR's algorithm is applied on your picture
-
+    - Launch the OCR on the selected picture and put its text on the Edit text's window. Please wait during few seconds or minutes while OCR's algorithm is applied on your picture
 - Edit text :
-    Open the Edit text's window with an empty file. You can find more information on the help menu inside the editor.
-
+    - Open the Edit text's window with an empty file. You can find more information on the help menu inside the editor.
 - Quit :
-    Quit the application.
+    - Quit the application.
 
 ## Documentation:
 
