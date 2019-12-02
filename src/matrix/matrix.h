@@ -54,10 +54,25 @@ typedef struct Matrix
 typedef struct PosM
 {
     /**
-     * mx and my are the lower x and y position of a part of the matrix.
-     * Mx and My are the higher x and y position of a part of the matrix.
+     * mx is the lower x y position of a part of the matrix.
      */
-	int mx, my, Mx, My;
+	int mx,;
+
+    /**
+     * my is the lower y position of a part of the matrix.
+     */
+    int my;
+
+    /**
+     * mX is the higher x position of a part of the matrix.
+     */
+    int Mx;
+
+    /**
+     * My is the higher y position of a part of the matrix.
+     */
+    int My;
+
 }PosM;
 
 /**

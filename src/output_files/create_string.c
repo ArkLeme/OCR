@@ -13,42 +13,12 @@
  * \author William.G
  */
 
-char *test = "Lorem ipsum dolor sit met\n"\
-              "consectetur adipiscing elit.\n"\
-              "Morbi rhoncus libero et\n"\
-              "\n"\
-              "Finibus hendrerit. Nunc\n"\
-              "bibendum dignissim justo, id\n"\
-              "sodales magna eleifend quis.\n"\
-              "\n"\
-              "Curabitur vel dui molestie,\n"\
-              "pulvinar nisi ut, tempor magna.\n"\
-              "Phasellus ut felis id augue\n"\
-              "elementum varius condimentum\n"\
-              "\n"\
-              "nec\n"\
-             "abcdefghijklmnopqrstuvwxyz"\
-             "abcdefghijklmnopqrstuvwxyz"\
-             "abcdefghijklmnopqrstuvwxyz"\
-             "abcdefghijklmnopqrstuvwxyz"\
-             "abcdefghijklmnopqrstuvwxyz"\
-             "abcdefghijklmnopqrstuvwxyz"\
-             "abcdefghijklmnopqrstuvwxyz"\
-             "abcdefghijklmnopqrstuvwxyz"\
-             "abcdefghijklmnopqrstuvwxyz"\
-             "abcdefghijklmnopqrstuvwxyz"\
-             "abcdefghijklmnopqrstuvwxyz"\
-             "abcdefghijklmnopqrstuvwxyz"\
-             "abcdefghijklmnopqrstuvwxyz"\
-             "abcdefghijklmnoprstuvwxyz";
-char *start;
-char *end;
-
 /**
- * \fn char *char_string(List *single_chr)
+ * \fn char *char_string(List *single_chr, neuNet *network)
  * \brief Create a char from a list of char
  *
  * \param single_char : List of character
+ * \param network : NeuralNetwork
  *
  * \return pointer to the char
  */
@@ -71,11 +41,12 @@ char *char_string(List *single_chr, neuNet *network)
 }
 
 /**
- * \fn char* word_string(List *single_word)
+ * \fn char* word_string(List *single_word, neuNet *network)
  * \brief Create a word from a list of word, it call the char_string function
  * for every char in the word.
  *
  * \param single_word : lsit of word
+ * \param network : Neuralnetwork
  *
  * \return pointer to the word
  */
@@ -103,11 +74,12 @@ char* word_string(List *single_word, neuNet *network)
 }
 
 /**
- * \fn char* line_string(List *single_line)
+ * \fn char* line_string(List *single_line, neuNet *network)
  * \brief Create a line from a list of line, it call the word function and
  * add space between every word but not the last.
  *
  * \param single_line : List of line
+ * \param network : NeuralNetwork
  *
  * \return pointer to the line
  */
@@ -143,11 +115,12 @@ char* line_string(List *single_line, neuNet *network)
 }
 
 /**
- * \fn char* para_string(List* single_para)
+ * \fn char* para_string(List* single_para, neuNet *network)
  * \brief Create a paragraph from a list of paragraph, it call the line_string
  * and add '\n' to every end of line.
  *
  * \param single_para : List of paragraph
+ * \param network : NeuralNetwork
  *
  * \return pointer to the paragraph
  */
@@ -177,11 +150,12 @@ char* para_string(List* single_para, neuNet *network)
 }
 
 /**
- * \fn char* text_string(List* list_para)
+ * \fn char* text_string(List* list_para, neuNet *network)
  * \brief Create the text from the initial list of paragraph, it call
  * para_string and add '\n' at theend of every paragraph
  *
  * \param list_para : List of paragraph
+ * \param network : NeuralNetwork
  *
  * \return pointer to the text
  */
@@ -234,6 +208,9 @@ void write_files(char* path, List *l)
     fclose(fp);
 }
 
+/**
+ * \func char* generate_string(List *l, neuNet *network)
+ *
 char* generate_string(List *l, neuNet *network)
 {
     start = test;
