@@ -7,6 +7,7 @@
 #include "neuNet.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include "save_net.h"
 
 
 void ShufflePool(Pool*p)
@@ -106,6 +107,8 @@ void Training(neuNet *n, int epoch, double learning_rate)
 		}
 		for(size_t i = 0; i < p->size/batchSize+1; i++)
 			FreePoolP(*(batches+i));
+		if(i+1 % 100 == 0)
+			SaveNeuNet(n);
 		free(batches);
 		printf("epoch %i : %i/%li\n", i, success, p->size);
 	}
