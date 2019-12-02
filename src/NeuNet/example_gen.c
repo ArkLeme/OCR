@@ -88,7 +88,7 @@ void GenerateExamples(char* path)
 	while(fscanf(f, "%s\n", filename) != EOF)
 	{
 		fgets(text, 10000, f);
-		printf("%s\n%s", filename, text);
+//		printf("%s\n%s", filename, text);
 		sum += GenExample(filename, text, fe);
 	}
 	free(filename);
