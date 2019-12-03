@@ -49,7 +49,7 @@ Matrix* CreateExpected(char c)
 
 Pool** CreateBatches(Pool* p, size_t batchSize)
 {
-	//ShufflePool(p);
+//	ShufflePool(p);
 	size_t batchNb = p->size/batchSize +1;
 	Pool** batches = malloc(sizeof(Pool*) * batchNb); 
 	size_t i = 0;
