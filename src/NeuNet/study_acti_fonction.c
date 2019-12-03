@@ -25,7 +25,7 @@ void Write_convergence(int epoch, char acti_fct,char path[] )
 	neuNet *network = init_network(layerSizes,3);
 
 	Training_Write(network, epoch, 2.5, acti_fct, path);
-	SaveNeuNet(network);
+	SaveNeuNet(network,"src/NeuNet/save_data/network_save");
         freeNeuNet(network);
 }
 
@@ -75,7 +75,7 @@ void Training_Write(neuNet *n, int epoch, double learning_rate, char acti_fct, c
 
 void Write_Accuracy(char acti_fct, char path[])
 {
-	neuNet *network = LoadNeuNet();
+	neuNet *network = LoadNeuNet("src/NeuNet/save_data/network_save");
 	Predict(network, acti_fct, path);
         freeNeuNet(network);
 }
