@@ -168,7 +168,7 @@ void image_lines_segmentation(SDL_Surface* img)
                 }
             }
             // trace the char_segmentation
-            image_char_segmentation(img, begin, end);
+            image_words_segmentation(img, begin, end);
         }
 
         black = 0; // black = false
