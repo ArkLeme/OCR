@@ -18,7 +18,14 @@
 
 
 
-
+/**
+ * \fn void Write_converge(int epoch, char acti_fct, char path[])
+ * \author jeanne.morin
+ * \brief init a network and train it with the chosen activation function
+ * \param epoch : number of epoch.
+ * \param acti_fct : activation function. t for Tanh, s for Sigmoid and r for reLU.
+ * \param path[] : path of the file to write in. 
+ */
 void Write_convergence(int epoch, char acti_fct,char path[] )
 {
 	int layerSizes[] = {28*28,20,26};
@@ -30,6 +37,16 @@ void Write_convergence(int epoch, char acti_fct,char path[] )
 }
 
 
+/**
+ * \fn void Training_Write(neuNet *n, int epoch, double learning_rate, char acti_fct, char path[])
+ * \author jeanne.morin
+ * \brief train the given network with the chosen activation function
+ * \param n : the network given.
+ * \param epoch : number of epoch.
+ * \param learning_rate : learning_rate wanted for the training.
+ * \param acti_fct : activation function. t for Tanh, s for Sigmoid and r for reLU.
+ * \param path[] : path of the file to write in. 
+ */
 void Training_Write(neuNet *n, int epoch, double learning_rate, char acti_fct, char path[])
 {
 	FILE* file;
@@ -73,6 +90,16 @@ void Training_Write(neuNet *n, int epoch, double learning_rate, char acti_fct, c
 	fclose(file);
 }
 
+
+
+
+/**
+ * \fn void Write_Accuracy(char acti_fct, char path[])
+ * \author jeanne.morin
+ * \brief load a training network and test what it learnt.
+ * \param acti_fct : activation function. t for Tanh, s for Sigmoid and r for reLU.
+ * \param path[] : path of the file to read from. 
+ */
 void Write_Accuracy(char acti_fct, char path[])
 {
 	neuNet *network = LoadNeuNet();
@@ -81,6 +108,15 @@ void Write_Accuracy(char acti_fct, char path[])
 }
 
 
+
+/**
+ * \fn void Predict(neuNet *n, char acti_fct, char path[])
+ * \author jeanne.morin
+ * \brief train the given network with the chosen activation function
+ * \param n : the network given.
+ * \param acti_fct : activation function. t for Tanh, s for Sigmoid and r for reLU.
+ * \param path[] : path of the file to read from. 
+ */
 void Predict(neuNet *n, char acti_fct, char path[])
 {
 	FILE* file;
