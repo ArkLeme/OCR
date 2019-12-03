@@ -562,6 +562,8 @@ static void open_ocr(gchar *file_name, neuNet *network)
 {
 	GtkTextView *p_text_view = NULL;
 	p_text_view = GTK_TEXT_VIEW(docs.active->p_text_view);
+	if(docs.active)
+		cb_close(NULL,p_text_view);
 	g_return_if_fail (file_name && p_text_view);
 	{
         gchar *contents = get_string(file_name,network);
