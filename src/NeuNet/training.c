@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "save_net.h"
+#include "parcours.h"
 
 
 void ShufflePool(Pool*p)
@@ -48,7 +49,7 @@ Matrix* CreateExpected(char c)
 
 Pool** CreateBatches(Pool* p, size_t batchSize)
 {
-	//ShufflePool(p);
+	ShufflePool(p);
 	size_t batchNb = p->size/batchSize +1;
 	Pool** batches = malloc(sizeof(Pool*) * batchNb); 
 	size_t i = 0;
@@ -75,6 +76,18 @@ Pool** CreateBatches(Pool* p, size_t batchSize)
 	return batches; 
 }
 
+void testTraining(neuNet *n)
+{
+	List* l = Parcours("image_data/png/ocr.png");
+	List* save = l;
+	while(l)
+	{
+		printf("%c", Calculate(l->mat, n));
+		l = l->next;
+	}
+	printf("\n");
+	DeleteL(save);
+}
 void Training(neuNet *n, int epoch, double learning_rate)
 {
 	int batchSize = 10; //Arbritrary value, needs of tests
@@ -107,8 +120,11 @@ void Training(neuNet *n, int epoch, double learning_rate)
 		}
 		for(size_t i = 0; i < p->size/batchSize+1; i++)
 			FreePoolP(*(batches+i));
-		if(i+1 % 100 == 0)
-			SaveNeuNet(n);
+		if((i+1) % 100 == 0)
+		{
+			SaveNeuNet(n,"neuralNetwork_data/network_saved");
+			testTraining(n);
+		}
 		free(batches);
 		printf("epoch %i : %i/%li\n", i, success, p->size);
 	}

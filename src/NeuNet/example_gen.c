@@ -51,8 +51,8 @@ Pool* ReadExamples(char* path)
 		fgetc(f);	
 		Matrix *m = InitMWithValues(28, 28, ch);
 		pool->examples[i] = m;
-		printf("%c\n", pool->results[i]);
-		DisplayM(m);
+//		printf("%c\n", pool->results[i]);
+//		DisplayM(m);
 	}
 	fclose(f);
 	printf("ok generation\n");
@@ -87,7 +87,7 @@ void GenerateExamples(char* path)
 	while(fscanf(f, "%s\n", filename) != EOF)
 	{
 		fgets(text, 10000, f);
-		printf("%s\n%s", filename, text);
+//		printf("%s\n%s", filename, text);
 		sum += GenExample(filename, text, fe);
 	}
 	free(filename);
@@ -112,9 +112,7 @@ void GenerateExamples(char* path)
  */
 int GenExample(char* ImagePath, char* text, FILE*f)
 {
-	printf("avant parcours\n");
 	List* l = Parcours(ImagePath);
-	printf("apresè parcours\n");
 	List*save  = l;
 	int nbChar = 0;
 	int i = 0;

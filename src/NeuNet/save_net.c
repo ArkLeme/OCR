@@ -16,11 +16,11 @@
  * \param network is the current network, needed to be saved.
  */
 
-void SaveNeuNet(neuNet *n)
+void SaveNeuNet(neuNet *n, char path[])
 {
   
 	FILE *file;
-	file = fopen("src/NeuNet/save_data/network_save", "w");
+	file = fopen(path, "w");
 	if(file == NULL)
 	  {
 	    printf("Erreur : SaveNeuNet : No stream opened");
@@ -74,8 +74,8 @@ neuNet *LoadNeuNet(char path[])
 	file = fopen(path, "r");
 	if (file == NULL)
 	  {
-	    printf("File does not exists");
-	    return NULL;
+		int LayerSize[] = {784,80,26};
+	    	return init_network(LayerSize,3);
 	  }
 
 	char line[100];
@@ -86,6 +86,7 @@ neuNet *LoadNeuNet(char path[])
 	int sizeLay[nb_lay];
 	fscanf(file, "%s\n", chaine);
 	size_t i = 0;
+
     
 	  while(chaine[0] != '}')
 	   {
