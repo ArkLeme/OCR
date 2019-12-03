@@ -84,7 +84,7 @@ layer *init_layer(int nbNeurons, int nbNeurons_prec)
      			// Layer->errors = InitM(nbNeurons,1);
       			
 		}
-
+	Layer->errors = NULL;
 		Layer->nbNeurons = nbNeurons;
 	}
     

@@ -2,8 +2,7 @@
 
 CC = gcc
 CPPFLAGS= `pkg-config --cflags sdl` `pkg-config --cflags gtk+-3.0` -MMD
-CFLAGS = -fsanitize=address -g -Wall -Wextra -std=c99
-LDFLAGS = -fsanitize=address
+CFLAGS = -Wall -Wextra -std=c99
 LDLIBS = -lSDL -lSDL_image -lm `pkg-config --libs sdl` `pkg-config --libs gtk+-3.0`
 
 # SRC contain all the file we must build
@@ -16,7 +15,7 @@ DEP = $(SRC:.c=.d)
 BMP = $(shell find ./image_data -type f -name "*.bmp") 
 
 # All exec we want to clean
-EXEC = main testsegm segmA testUI neuNet OCR
+EXEC = OCR
 
 # Shortcut name
 SHORTCUT = doc.html
@@ -41,6 +40,12 @@ define open_doc
 	@xdg-open $(SHORTCUT)
 endef
 
+# Move dependence and object
+define move
+	@mv $(OBJ) object/
+	@mv $(DEP) dependence/
+endef
+
 # doxygen documentation and shortcut
 .PHONY: doxygen
 doxygen:	## Generate html documentation and shortcut doc.html.
@@ -52,20 +57,15 @@ doxygen:	## Generate html documentation and shortcut doc.html.
 doc: doxygen	## Generate html documentation and open it in your default browser.
 	@$(call open_doc)
 
-main: main.c $(OBJ) ## Generate the executable, use ./main path_of_the_image to generate the text.
+OCR: $(EXEC).c $(OBJ) ## Generate the executable and launch the interface.
 
-testsegm: testsegm.c $(OBJ)
-
-segmA: segmA.c $(OBJ)
-
-neuNet: neuNet.c $(OBJ) ##t option to test in/out functions for example
-
-OCR: OCR.c $(OBJ)
+move:
+	@$(call move)
 
 # Help function to use the makefile
 # It "just" detect every rules in this makefile and the print it
 
-help:
+help:	## It... display help... obviously.
 	@grep -E '^[a-zA-Z0-9]+:.*##' makefile | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-15s\033[0m%s\n", $$1, $$2}'
 
 #default rules is help
@@ -74,7 +74,7 @@ help:
 # Clean
 
 clean:	## Clean every .o and .d.
-	@$(RM) $(OBJ) $(DEP) *.o *.d
+	@$(RM) object/* dependence/* $(OBJ) $(DEP) *.o *.d
 
 mrproper: clean 	## Clean every .o and .d as well as all generated files.
 	@$(RM) $(EXEC) $(BMP) $(SHORTCUT) 

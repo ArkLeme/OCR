@@ -2,6 +2,12 @@
 #include "callback.h"
 #include "toolbar.h"
 
+/**
+ * \file toolbar.c
+ * \brief This file contains all the function use to create the toolbar.
+ * \author Alexandre.L
+ */
+
 static void toolbar_item_new (GtkToolbar *, gchar *, gchar *,GCallback, gpointer);
 
 /**
@@ -31,16 +37,16 @@ GtkToolbar *toolbar_new (gpointer user_data)
 						"Close file", G_CALLBACK (cb_close), user_data);
 	toolbar_item_new(GTK_TOOLBAR (p_toolbar),"./image_data/UI/icon/png/door.png",
 						"Quit application",G_CALLBACK (cb_quit), user_data);
-	toolbar_item_new(GTK_TOOLBAR(p_toolbar),"./image_data/UI/icon/png/about.png",
-						"About us",G_CALLBACK (cb_about), user_data);
 	return GTK_TOOLBAR (p_toolbar);
 }
 
 /**
- * \fn static void toolbar_item_new (GtkToolbar *p_toolbar, gchar *title, GCallback callback, gpointer user_data)
+ * \fn static void toolbar_item_new (GtkToolbar *p_toolbar,gchar *stock_id, 
+ gchar *text, GCallback callback, gpointer user_data)
  * \brief Create toolbar item and add it to the toolbar widget.
  * \param *p_toolbar : Toolbar widget.
- * \param *title : Title of the item.
+ * \param *stock_id : Icon path.
+ * \param *text : Description of the item.
  * \param callback : Callback function to call when pressing the item.
  * \param user_data : Text view widget.
  * \return void

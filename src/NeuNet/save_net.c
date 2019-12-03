@@ -28,7 +28,7 @@ void SaveNeuNet(neuNet *n)
 	else
 	  {
 	    
-	    //fprintf(file,"%u \n",n->nbLay);
+	    fprintf(file,"%u \n",n->nbLay);
 	    for(int i = 0; i < n->nbLay;i++)
 	      {
 		fprintf(file,"%u \n",n->layers[i]->nbNeurons);
@@ -65,11 +65,11 @@ void SaveNeuNet(neuNet *n)
  * \return the network loaded.
  */
 
-neuNet *LoadNeuNet()
+neuNet *LoadNeuNet(char path[])
 {
 	
         FILE *file;
-	file = fopen("src/NeuNet/save_data/network_save", "r");
+	file = fopen(path, "r");
 	if (file == NULL)
 	  {
 	    printf("File does not exists");
@@ -78,27 +78,17 @@ neuNet *LoadNeuNet()
 
 	char line[100];
 	char chaine[5] = "";
-	size_t nb_lay= 0;	
-        	       
-    
-	/* for(size_t i =0; i<nb_lay;i++)
-	 {
-	      
-	      sizeLay[i] = atoi(line);
-	      nb_lay+=1;	      
-	    
-          }*/
-
-	 
-	 int sizeLay[nb_lay];
-	  
-	 //char chaine[5] = "";
-	 fscanf(file, "%s\n", chaine);
+	fscanf(file,"%s\n", chaine);
+	size_t nb_lay= atof(chaine);	
+        	      
+	int sizeLay[nb_lay];
+	fscanf(file, "%s\n", chaine);
+	size_t i = 0;
     
 	  while(chaine[0] != '}')
 	   {
-	         sizeLay[nb_lay] = atof(chaine);
-		 nb_lay +=1;
+	         sizeLay[i] = atof(chaine);
+		 i+=1;
 		 fscanf(file, "%s\n", chaine);
 		
 	    }
