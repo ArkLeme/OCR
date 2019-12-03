@@ -15,11 +15,11 @@
  * \param network is the current network, needed to be saved.
  */
 
-void SaveNeuNet(neuNet *n)
+void SaveNeuNet(neuNet *n, char path[])
 {
   
 	FILE *file;
-	file = fopen("src/NeuNet/save_data/network_save", "w");
+	file = fopen(path, "w");
 	if(file == NULL)
 	  {
 	    printf("Erreur : SaveNeuNet : No stream opened");
@@ -28,7 +28,7 @@ void SaveNeuNet(neuNet *n)
 	else
 	  {
 	    
-	    //fprintf(file,"%u \n",n->nbLay);
+	    fprintf(file,"%u \n",n->nbLay);
 	    for(int i = 0; i < n->nbLay;i++)
 	      {
 		fprintf(file,"%u \n",n->layers[i]->nbNeurons);
@@ -65,7 +65,7 @@ void SaveNeuNet(neuNet *n)
  * \return the network loaded.
  */
 
-neuNet *LoadNeuNet()
+neuNet *LoadNeuNet(char path[])
 {
 	
         FILE *file;
@@ -73,21 +73,23 @@ neuNet *LoadNeuNet()
 	if (file == NULL)
 	  {
 		int LayerSize[] = {784,80,26};
-	    	return init_network(LayerSize,3};
+	    	return init_network(LayerSize,3);
 	  }
 
 	char line[100];
 	char chaine[5] = "";
-	size_t nb_lay= 0;	
-        	       
-	 int sizeLay[nb_lay];
+	fscanf(file,"%s\n", chaine);
+	size_t nb_lay= atof(chaine);	
+        	      
+	int sizeLay[nb_lay];
+	fscanf(file, "%s\n", chaine);
+	size_t i = 0;
 
-	 fscanf(file, "%s\n", chaine);
     
 	  while(chaine[0] != '}')
 	   {
-	         sizeLay[nb_lay] = atof(chaine);
-		 nb_lay +=1;
+	         sizeLay[i] = atof(chaine);
+		 i+=1;
 		 fscanf(file, "%s\n", chaine);
 		
 	    }

@@ -12,33 +12,6 @@
  */
 
 /**
- * \fn static void SaveMat(List *l, int i, char *n)
- * \brief Save Matrix in the List as Image.
- * It is a debug function but it can be usef to save only a part of the text.
- *
- * \param l : List
- * \param i : index to create multiple image with different name
- * \param n : type of the Matrix we are saving (para, line, word or char)
- */
-
-
-static void SaveMat(List *l,  int i, char *n)
-{
-    char *sint = Itoa(i);
-    char *p = Concatene("image_data/rlsa/", n);
-    char *s = Concatene(p, sint);
-    char *sf = Concatene(s, ".bmp");
-
-    SaveMatAsIm(((Matrix*) (l->mat)),sf);
-
-    free(s);
-    free(sint);
-    free(sf);
-    free(p);
-}
-
-
-/**
  * \fn List* get_list_segmented(char *path)
  * \brief Create the matrix of the text and apply all the pretraitement.
  *  Create the list of every element in the the text and return a list of it.
@@ -53,41 +26,19 @@ List* get_list_segmented(char *path)
     List *lg = paragraph_segm(path);
     List *lp = lg;
 
-    int p = 0;
-    int l = 0;
-    int w = 0;
-    int c = 0;
-
-
     while(lp != NULL)
     {
         lines_segmentation(lp);
         List *ll = lp->child;
-        SaveMat(lp, p, "para");
-        p++;
 
         while(ll != NULL)
         {
             words_segmentation(ll);
             List *lw = ll->child;
-            SaveMat(ll, l, "line");
-            l++;
 
             while(lw != NULL)
             {
                 char_segm(lw);
-                List *lc = lw->child;
-                SaveMat(lw, w, "word");
-                w++;
-
-                while(lc != NULL)
-                {
-                    SaveMat(lc, c, "char");
-                    c++;
-
-                    lc = lc->next;
-                    //lc = NULL;
-                }
 
                 lw = lw->next;
                 //lw = NULL;
@@ -104,7 +55,17 @@ List* get_list_segmented(char *path)
     return lg;
 }
 
-char *get_string(char *path, neuNet *network)
+/**
+ * \fn char* get_string(char *path, neuNet *network)
+ * \brief This function get the string of the text, it is use to print the
+ * text in the UI so the user can modifiy it if it's needed.
+ *
+ * \param path : path of the image
+ * \param network : NeuralNetwork
+ *
+ * \return string detected by the segmentation.
+ */
+char* get_string(char *path, neuNet *network)
 {
     List *l = get_list_segmented(path);
 

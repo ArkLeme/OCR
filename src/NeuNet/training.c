@@ -49,7 +49,7 @@ Matrix* CreateExpected(char c)
 
 Pool** CreateBatches(Pool* p, size_t batchSize)
 {
-	//ShufflePool(p);
+//	ShufflePool(p);
 	size_t batchNb = p->size/batchSize +1;
 	Pool** batches = malloc(sizeof(Pool*) * batchNb); 
 	size_t i = 0;
@@ -122,7 +122,7 @@ void Training(neuNet *n, int epoch, double learning_rate)
 			FreePoolP(*(batches+i));
 		if((i+1) % 100 == 0)
 		{
-			SaveNeuNet(n);
+			SaveNeuNet(n,"neuralNetwork_data/network_saved");
 			testTraining(n);
 		}
 		free(batches);
