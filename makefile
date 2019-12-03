@@ -6,9 +6,14 @@ CFLAGS = -Wall -Wextra -std=c99
 LDLIBS = -lSDL -lSDL_image -lm `pkg-config --libs sdl` `pkg-config --libs gtk+-3.0`
 
 # SRC contain all the file we must build
-SRC = $(shell find ./src -type f -name "*.c")
-OBJ = $(SRC:.c=.o)
-DEP = $(SRC:.c=.d)
+SRC = $(shell find src -type f -name "*.c")
+
+OBJ_DEP_DIR = obj_dep
+OBJ = $(patsubst %.c, $(OBJ_DEP_DIR)/%.o, $(SRC))
+
+DEP_DIR = dependence
+DEP = $(OBJ:.o=.d)
+
 -include $(DEP)
 
 # All bmp file generate by the program
@@ -40,12 +45,6 @@ define open_doc
 	@xdg-open $(SHORTCUT)
 endef
 
-# Move dependence and object
-define move
-	@mv $(OBJ) object/
-	@mv $(DEP) dependence/
-endef
-
 # doxygen documentation and shortcut
 .PHONY: doxygen
 doxygen:	## Generate html documentation and shortcut doc.html.
@@ -59,8 +58,8 @@ doc: doxygen	## Generate html documentation and open it in your default browser.
 
 OCR: $(EXEC).c $(OBJ) ## Generate the executable and launch the interface.
 
-move:
-	@$(call move)
+$(OBJ_DEP_DIR)/%.o: %.c
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDLIBS) -o $@ -c $<
 
 # Help function to use the makefile
 # It "just" detect every rules in this makefile and the print it
@@ -74,7 +73,7 @@ help:	## It... display help... obviously.
 # Clean
 
 clean:	## Clean every .o and .d.
-	@$(RM) object/* dependence/* $(OBJ) $(DEP) *.o *.d
+	@$(RM) $(OBJ) $(DEP) $(EXEC).o $(EXEC).d
 
 mrproper: clean 	## Clean every .o and .d as well as all generated files.
 	@$(RM) $(EXEC) $(BMP) $(SHORTCUT) 
