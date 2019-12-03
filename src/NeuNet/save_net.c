@@ -9,7 +9,8 @@
 
 
 
-/*!
+/**
+ * \fn void SaveNeuNet(neuNet *n)
  * \author jeanne.morin
  * \Save the network in a binary file
  * \param network is the current network, needed to be saved.
@@ -59,7 +60,8 @@ void SaveNeuNet(neuNet *n)
 	  }
 }
 
-/*!
+/**
+ * \fn neuNet *LoadNeuNet(char path[])
  * \author jeanne.morin
  * \brief Load the network from the save file, written in binary.
  * \return the network loaded.
