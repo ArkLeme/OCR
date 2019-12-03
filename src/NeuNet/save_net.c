@@ -69,30 +69,19 @@ neuNet *LoadNeuNet()
 {
 	
         FILE *file;
-	file = fopen("src/NeuNet/save_data/network_save", "r");
+	file = fopen(path, "r");
 	if (file == NULL)
 	  {
-	    printf("File does not exists");
-	    return NULL;
+		int LayerSize[] = {784,80,26};
+	    	return init_network(LayerSize,3};
 	  }
 
 	char line[100];
 	char chaine[5] = "";
 	size_t nb_lay= 0;	
         	       
-    
-	/* for(size_t i =0; i<nb_lay;i++)
-	 {
-	      
-	      sizeLay[i] = atoi(line);
-	      nb_lay+=1;	      
-	    
-          }*/
-
-	 
 	 int sizeLay[nb_lay];
-	  
-	 //char chaine[5] = "";
+
 	 fscanf(file, "%s\n", chaine);
     
 	  while(chaine[0] != '}')
