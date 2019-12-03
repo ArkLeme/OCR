@@ -123,19 +123,19 @@ int main(int argc, char** argv)
                     c++;
 
                     lc = lc->next;
-                    lc = NULL;
+                    //lc = NULL;
                 }
 
                 lw = lw->next;
-                lw = NULL;
+                //lw = NULL;
             }
 
             ll = ll->next;
-            ll = NULL;
+            //ll = NULL;
         }
 
         lp = lp->next;
-        lp = NULL;
+        //lp = NULL;
     }
 
 	return 0;

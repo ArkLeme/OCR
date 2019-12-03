@@ -142,13 +142,13 @@ void lines_segmentation(List *listofparagraph)
 		{
 			line = 1; // line = true
 			begin = y; // conserve the index of the line
-		if(x - 1 > 0)
-			posX1 = x -1;
+			if(x - 1 > 0)
+				posX1 = x -1;
 		}
 		if((!black && line) || (line && y == ( m->line -1) )) // if previous line had black pixels but this one is white
 		{
 			line = 0; // line = false
-			end = y; // conserve the index of the end
+			end = y+1; // conserve the index of the end
 
 			posX2 = m -> col;
 			k =0;
