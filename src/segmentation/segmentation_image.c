@@ -1,5 +1,20 @@
 #include "segmentation_image.h"
 
+/**
+ * \file segmentation.c
+ * \brief This file contains the requires functions to made lines and words
+ * segmentation.
+ * \author Alexandre.L
+ */
+
+/**
+ * \fn float limit_image(SDL_Surface *img, int begin, int end)
+ * \brief Find the average of blank spaces between each words of a line.
+ * \param *img : The image.
+ * \param begin : Pos of the first line of the line.
+ * \param end : Pos of the last line of the line.
+ */
+
 float limit_image(SDL_Surface* img, int begin, int end)
 {
     int w = img -> w;// the limits of columns = width of img
@@ -75,6 +90,13 @@ float limit_image(SDL_Surface* img, int begin, int end)
     }
     return (white_count / nb_white);
 }
+
+/**
+ * \fn void image_lines_segmentation(SDL_Surface *img)
+ * \brief Make lines segmentation of the image and and print it on.
+ * \param *img : The image.
+ * \return void
+ */
 
 void image_lines_segmentation(SDL_Surface* img)
 {
@@ -153,7 +175,16 @@ void image_lines_segmentation(SDL_Surface* img)
     }
 }
 
-void image_char_segmentation(SDL_Surface* img, int begin, int end)
+/**
+ * \fn void image_words_segmentation(SDL_Surface *img, int begin, int end)
+ * \brief Make words segmentation of the image and and print it on.
+ * \param *img : The image.
+ * \param begin : Pos of the first line of the line.
+ * \param end : Pos of the last line of the line.
+ * \return void
+ */
+
+void image_words_segmentation(SDL_Surface* img, int begin, int end)
 {
     int w = img -> w;// the limits of columns = width of img
 
