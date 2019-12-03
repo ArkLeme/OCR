@@ -1,9 +1,9 @@
 #include "segmentation_image.h"
 
 /**
- * \file segmentation.c
+ * \file segmentation_image.c
  * \brief This file contains the requires functions to made lines and words
- * segmentation.
+ * segmentation on an image.
  * \author Alexandre.L
  */
 

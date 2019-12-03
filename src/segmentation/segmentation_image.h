@@ -10,8 +10,8 @@
 #include "../sdl_tools/sdl_tools.h"
 
 /**
- * \file segmentation.h
- * \brief header of segmentation.c
+ * \file segmentation_image.h
+ * \brief header of segmentation_image.c
  * \author Alexandre.L
  */
 
