@@ -19,6 +19,6 @@ List* line_segm(List* p);
 
 List* word_segm(List* p);
 
-List* char_segm(List *p);
+List* char_segm(List *w);
 
 #endif

@@ -98,4 +98,11 @@ void cb_about (GtkWidget*,gpointer);
  */
 void cb_doc (GtkWidget*,gpointer);
 
+/*
+ * Callback function for Readme button
+ * GtkWidget is the widget from the callback signal.
+ * gpointer is a widget the function can need.
+ */
+void cb_readme(GtkWidget*,gpointer);
+
 #endif

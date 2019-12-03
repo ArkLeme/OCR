@@ -20,8 +20,6 @@ char* para_string(List *para, neuNet *network);
 
 char* text_string(List *text, neuNet *network);
 
-void write_files(char* path, List *l);
-
 char* generate_string(List *l, neuNet *network);
 
 #endif

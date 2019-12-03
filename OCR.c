@@ -9,10 +9,8 @@
 
 int main(int argc, char** argv)
 {
-	int layersize[] = {28*28,20,26};
-	neuNet *network = init_network(layersize,3);
-	
-	//neuNet *network = LoadNeuNet();
+	neuNet *network = LoadNeuNet("src/NeuNet/save_data/network_saveNormal");
+
 	if(argc > 1)
 		testTrain();
 	else
