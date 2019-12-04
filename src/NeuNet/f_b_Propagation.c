@@ -22,9 +22,8 @@
 //Calulate values and outputs
 void forward_prop(neuNet* network, Matrix *input_data)
 {
-    	layer *current_layer;
+   	layer *current_layer;
 	int i =0;
-	
 	//Layer number 0
 	network->layers[i]->values = input_data;
 	network->layers[i]->outputs = Sig(network->layers[0]->values);
@@ -33,35 +32,30 @@ void forward_prop(neuNet* network, Matrix *input_data)
 	//Propage the input values in every layers of the network, startin from layer 1
 	while(i<network->nbLay-1)
 	//for(int i = 1; i < network->nbLay-1; i++)
-	  {
-	    	input_data = network->layers[i-1] -> outputs;
-	    	current_layer = network->layers[i];
+	{
+	   	input_data = network->layers[i-1] -> outputs;
+	   	current_layer = network->layers[i];
 
-	    	//Calculate the values and input Matrix of the current layer
-	    	Matrix *multiplication_weights = MultM(current_layer->weights,input_data);
-	    	current_layer->values = AddM(multiplication_weights,current_layer->biases);
-	    	current_layer->outputs = Sig(current_layer->values);
+    	//Calculate the values and input Matrix of the current layer
+    	Matrix *multiplication_weights = MultM(current_layer->weights,input_data);
+    	current_layer->values = AddM(multiplication_weights,current_layer->biases);
+    	current_layer->outputs = Sig(current_layer->values);
 
-	    	FreeM(multiplication_weights);
-	    	input_data = current_layer->outputs;
-	  		
+    	FreeM(multiplication_weights);
+    	input_data = current_layer->outputs;
+  		
 		i+=1;
 		current_layer->errors = NULL; //needed if it is only 
-	  }
+	 }
+	 input_data = network->layers[i-1] -> outputs;
+	current_layer = network->layers[i];
 
-		
-
-		input_data = network->layers[i-1] -> outputs;
-	    	current_layer = network->layers[i];
-
-	    	//Calculate the values and input Matrix of the current layer
-	    	Matrix *multiplication_weights = MultM(current_layer->weights,input_data);
-	    	current_layer->values = AddM(multiplication_weights,current_layer->biases);
-	    	current_layer->outputs = Softmax(current_layer->values);
-		
-
-		current_layer->errors = NULL; //needed if it is only 
-	    	FreeM(multiplication_weights);
+   	//Calculate the values and input Matrix of the current layer
+   	Matrix *multiplication_weights = MultM(current_layer->weights,input_data);
+   	current_layer->values = AddM(multiplication_weights,current_layer->biases);
+   	current_layer->outputs = Softmax(current_layer->values);
+	current_layer->errors = NULL; //needed if it is only 
+	FreeM(multiplication_weights);
 }
 
 

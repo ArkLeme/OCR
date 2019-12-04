@@ -83,7 +83,6 @@ Pool* InitPool(size_t size)
 	Pool *p = malloc(sizeof(Pool));
 	p->size = size;
 	p->examples = malloc(sizeof(Matrix*) * size);
-	//*p->examples = malloc(sizeof(Matrix) * size);
 	p->results = malloc(sizeof(char) * size);
 	return p;
 }
@@ -97,9 +96,7 @@ Pool* InitPool(size_t size)
 void FreePool(Pool*p)
 {
 	for(size_t i = 0; i < p->size; i++)
-	{
 		FreeM(*(p->examples+i));
-	}
 	free(p->examples);
 	free(p->results);
 	free(p);
