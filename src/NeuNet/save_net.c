@@ -69,8 +69,7 @@ void SaveNeuNet(neuNet *n, char path[])
 
 neuNet *LoadNeuNet(char path[])
 {
-	
-        FILE *file;
+    FILE *file;
 	file = fopen(path, "r");
 	if (file == NULL)
 	  {

@@ -2,6 +2,11 @@
 #include "../string/string_operation.h"
 #include "../segmentation/segmentation.h"
 #include "../output_files/create_string.h"
+#include "../NeuNet/memory_handler.h"
+#include "../NeuNet/neuNet.h"
+#include "../NeuNet/init_Network.h"
+#include "../NeuNet/save_net.h"
+#include "../NeuNet/structNet.h"
 
 /**
  * \file get_list_segmented.c
@@ -56,22 +61,25 @@ List* get_list_segmented(char *path)
 }
 
 /**
- * \fn char* get_string(char *path, neuNet *network)
+ * \fn char* get_string(char *path)
  * \brief This function get the string of the text, it is use to print the
  * text in the UI so the user can modifiy it if it's needed.
  *
  * \param path : path of the image
- * \param network : NeuralNetwork
  *
  * \return string detected by the segmentation.
  */
-char* get_string(char *path, neuNet *network)
+char* get_string(char *path)
 {
     List *l = get_list_segmented(path);
+
+    neuNet *network = LoadNeuNet("neuralNetwork_data/network_saved");
 
     char *c = generate_string(l, network);
 
     DeleteL(l);
+
+    freeNeuNet(network);
 
     return c;
 }

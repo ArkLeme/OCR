@@ -13,7 +13,7 @@
 
 static void open_file (gchar *, GtkTextView *);
 
-static void open_ocr(gchar *, neuNet *network);
+static void open_ocr(gchar *);
 
 /**
  * \fn void cb_ocr(GtkWidget *s_widget, gpointer user_data)
@@ -81,7 +81,7 @@ void cb_ocr(GtkWidget* s_widget,gpointer user_data)
 		gtk_widget_show_all(docs.p_main_window);
 		gtk_widget_hide(docs.s_start_window);
 
-		open_ocr (file_name,user_data);
+		open_ocr (file_name);
 
 		g_free (file_name);
 		file_name = NULL;
@@ -558,7 +558,7 @@ static void open_file (gchar *file_name, GtkTextView *p_text_view)
  * \return void
  */
 
-static void open_ocr(gchar *file_name, neuNet *network)
+static void open_ocr(gchar *file_name)
 {
 	GtkTextView *p_text_view = NULL;
 	p_text_view = GTK_TEXT_VIEW(docs.active->p_text_view);
@@ -566,7 +566,7 @@ static void open_ocr(gchar *file_name, neuNet *network)
 		cb_close(NULL,p_text_view);
 	g_return_if_fail (file_name && p_text_view);
 	{
-        gchar *contents = get_string(file_name,network);
+        gchar *contents = get_string(file_name);
 
 		docs.active = g_malloc (sizeof (*docs.active));
 		docs.active->path = NULL;

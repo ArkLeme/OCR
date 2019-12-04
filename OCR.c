@@ -12,14 +12,10 @@ int main(int argc, char** argv)
 	//int layersize[] = {28*28,20,26};
 	//neuNet *network = init_network(layersize,3);
 
-	neuNet *network = LoadNeuNet("src/NeuNet/save_data/network_save");
-
 	if(argc > 1)
 		testTrain();
 	else
-		exec_UI(network, argc, argv);
-
-	freeNeuNet(network);
+		exec_UI(argc, argv);
 
 	return 0;
 }
