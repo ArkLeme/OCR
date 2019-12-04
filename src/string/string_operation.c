@@ -29,7 +29,7 @@ int LengthStr(char* s)
 }
 
 /**
- * \fn char* Concatene(char *s1, char* s2)
+ * \fn char* Concatene(char *s1, char *s2)
  * \brief Concatene 2 string, it return a new one.
  *
  * \param s1 : first string
@@ -37,7 +37,7 @@ int LengthStr(char* s)
  *
  * \return pointer to the new string
  */
-char* Concatene(char *s1, char* s2)
+char* Concatene(char *s1, char *s2)
 {
 	int l1 = LengthStr(s1);
 	int l2 = LengthStr(s2);
