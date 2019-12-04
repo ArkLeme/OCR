@@ -8,7 +8,7 @@
  * \author Alexandre.L
  */ 
 
-double entire_part(double elt)
+int entire_part(double elt)
 {
 	int i = 0;
 	while(!(i <= elt && i + 1 > elt))
@@ -83,6 +83,7 @@ Matrix* resize_char(Matrix *m)
 			PutM(output,i,j,GetM(resize_m,i,j));
 		}
 	}
+	FreeM(resize_m);
 	return output;
 }
 

@@ -45,7 +45,7 @@ void cb_ocr(GtkWidget* s_widget,gpointer user_data)
 			GtkWidget *image = NULL;
 
 			test_dialog = gtk_dialog_new_with_buttons ("Use this picture ?",
-							GTK_WINDOW(docs.p_main_window),
+							GTK_WINDOW(p_dialog),
 							GTK_DIALOG_MODAL,
 							"Yes",GTK_RESPONSE_YES,
 							"No",GTK_RESPONSE_NO,
@@ -236,10 +236,7 @@ void cb_close (GtkWidget *p_widget, gpointer user_data)
 
 		g_free (docs.active->path);
 		docs.active->path = NULL;
-		docs.active->p_text_view = NULL;
-		g_free (docs.active);
-		docs.active = NULL;
-
+		docs.active->save = TRUE;
 	}
 	else
 	{
@@ -261,6 +258,9 @@ void cb_quit (GtkWidget *p_widget, gpointer user_data)
 	if (docs.active)
 	{
 		cb_close (p_widget, user_data);
+		docs.active->p_text_view = NULL;
+		g_free (docs.active);
+		docs.active = NULL;
 	}
 
 	if (!docs.active)
