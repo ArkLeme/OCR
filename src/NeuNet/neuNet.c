@@ -25,7 +25,6 @@ char Calculate(Matrix* c, neuNet * n)
 	//DisplayM(c);
 	forward_prop(n, c);
 	int result = GetOutput(n);
-	printf("%i\n", result);
 	ClearNeuNet(n);
 	return (char) ('a' + result);
 }
@@ -36,9 +35,14 @@ void testTrain()
 	if(1)
 	{
             int layerSizes[] = {28*28,20,26};
+			printf("Hidden layers nbNeurons :"); 
+			scanf("%d", &layerSizes[1]);
+			double learningRate;
+			printf("\nLearning rate :"); 
+			scanf("%lf", &learningRate);
             neuNet *network = init_network(layerSizes,3);
 			printf("Beigining the training\n");
-		Training(network, 100000000, 2.5);
+		Training(network, 100000000, learningRate);
 		printf("Training completed\n");
 
                 freeNeuNet(network);

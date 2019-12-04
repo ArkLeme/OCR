@@ -273,7 +273,7 @@ List* word_segm(List* p)
  * if the first matrix is a point return 1
  * if the second matrix is a point return 2
  *
- * \param m : List
+ * \param l : List
  *
  * \return different case
  */
@@ -402,15 +402,15 @@ static List* sort_list(List *c)
     return c;
 }
 /**
- * \fn List* char_segm(List* p)
+ * \fn List* char_segm(List *w)
  * \brief Apply the fourth segmentation, it take a word
  * and it set child of p as List of char.
  *
- * \param p : One word
+ * \param w : One word
  *
  * \return List of paragraph
  */
-List* char_segm(List* w)
+List* char_segm(List *w)
 {
     int ml = 0;
     Matrix *word = w->mat;

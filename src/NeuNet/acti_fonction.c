@@ -7,7 +7,21 @@
 #include "acti_fonction.h"
 
 
+/**
+ * \file acti_fonction.c
+ * \brief This files contains the different activation fonction for ours tests
+ * \author jeanne.morin
+ */
 
+
+/**
+ * \fn Matrix* Acti(Matrix *m, char fct)
+ * \author jeanne.morin
+ * \brief apply an activation function chosen on a given Matrix.
+ * \param *m : the matrix.
+ * \param ftc : char deisgnated the chosen activation function. t for Tanh, s for Sigmoide and r for reLU function.
+ * \return the matrix after activation.
+ */
 Matrix* Acti(Matrix *m, char fct)
 {
 	Matrix* m2 = InitM(m->line, m->col);
@@ -38,6 +52,16 @@ Matrix* Acti(Matrix *m, char fct)
 
 	return m2;
 }
+
+
+/**
+ * \fn Matrix* ActiPrime(Matrix *m, char fct)
+ * \author jeanne.morin
+ * \brief apply a derivated activation function chosen on a given Matrix.
+ * \param *m : the matrix.
+ * \param ftc : char deisgnated the chosen derivate of an activation function. t for Tanh, s for Sigmoide and r for reLU function.
+ * \return the matrix after derivate activation.
+ */
 
 Matrix* ActiPrime(Matrix *m, char fct)
 {
@@ -117,10 +141,11 @@ Matrix* SigPrime(Matrix *m)
 ///////////////////////////////S O F T P R I M E //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-/*!
+/**
+ * \fn Matrix* Softmax(Matrix *input)
  * \author jeanne.morin
  * \brief Calcul softmax for each component of the matrix input.
- * \param  input, the matrix use by softmax.
+ * \param  input : the matrix use by softmax.
  * \return Matrix(input->line,input->col).
  */
 Matrix* Softmax(Matrix *input)
@@ -165,10 +190,11 @@ Matrix* Softmax(Matrix *input)
 }
 
 
-/*!
+/**
+ * \fn Matrix softprime(Matrix *input)
  * \author jeanne.morin
- * \brief calculate softmax derivative of  given matrix
- * \param input, Matrix that will be use as parameter for softmax derivative
+ * \brief calculate softmax derivative of  given matrix.
+ * \param input : Matrix that will be use as parameter for softmax derivative.
  * \return Matrix(input->line,input->line), softmax derivative
  */
 Matrix *softprime(Matrix *input)
@@ -220,12 +246,13 @@ Matrix *softprime(Matrix *input)
 }
 
 
-/*!
+/**
+ * \fn double Soft(double sum, double z, double shift)
  * \author jeanne.morin
- * \brief apply Softmax function to a single value
- * \param sum summarizes exponential function of every component of a vector.
- * \param z element softmax will be applied to.
- * \param shift the maximum value of the component from a vector.
+ * \brief apply Softmax function to a given value
+ * \param sum : summarizes exponential function of every component of a vector.
+ * \param z : element softmax will be applied to.
+ * \param shift : the maximum value of the component from a vector.
  * \return double Softmax applied to z.
  */
 double Soft(double sum, double z, double shift)
@@ -234,13 +261,14 @@ double Soft(double sum, double z, double shift)
 
 }
 
-/*!
+/**
+ * \fn double Soft_prime(double sum, double z, int delta, double shift)
  * \author jeanne.morin
  * \brief apply Softmax derivate function to a single value
- * \param sum summarizes exponential function of every component of the vector.
- * \param z element softmax derivate will be applied to.
- * \param shift the maximum value of the component from the vector.
- * \param delta 1 or 0 depanding on the derivate case this element represents.
+ * \param sum : summarizes exponential function of every component of the vector.
+ * \param z : element softmax derivate will be applied to.
+ * \param shift : the maximum value of the component from the vector.
+ * \param delta : equal 1 or 0 depanding on the derivate case this element represents.
  * \return double Softmax derivates applied to z.
  */
 
@@ -254,23 +282,43 @@ double Soft_prime(double sum, double z, int delta, double shift)
 //////////////////////////////////////////////////// T A N G E A N T E  E X P O N E N T I E L L E //////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
+/**
+ * \fn double tan(double x)
+ * \author jeanne.morin
+ * \brief calculate tangente hyperbolique for a given value.
+ * \param x : given value.
+ * \return tanh(x).
+ */
 double tan(double x)
 {	
         return sinh(x)/cosh(x);
-        //return log(1 + exp(x)); // relu soft plus
-	//return (exp(2*x) - 1)/(exp(2*x) + 1);
+        
 }
 
+
+/**
+ * \fn double tanPrime(double x)
+ * \author jeanne.morin
+ * \brief calculate the derivate of tangente hyperbolique for a given value.
+ * \param x : given value.
+ * \return tanh_derivate(x).
+ */
 double tanPrime(double x)
 {
-    return 1/(cosh(x)*cosh(x));
-	//return 1/(1+exp(-x)); //relu prime
-	//return 1- ( sigmoid( x)* sigmoid( x));
+    	return 1/(cosh(x)*cosh(x));
+
 }
 
 ////////////////////////////////////////////////////////////// R E L U ////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * \fn double ReLU(double x)
+ * \author jeanne.morin
+ * \brief calculate f ReLU or a given value.
+ * \param x : given value.
+ * \return ReLU(x).
+ */
 double ReLU(double x)
 {
         if(x<0)
@@ -282,6 +330,14 @@ double ReLU(double x)
         
 }
 
+
+/**
+ * \fn double ReLU_prime(double x)
+ * \author jeanne.morin
+ * \brief calculate the derivate of ReLU_prime for a given value.
+ * \param x : given value.
+ * \return ReLU_derivate(x).
+ */
 double ReLU_prime(double x)
 {
 	if(x<0)
