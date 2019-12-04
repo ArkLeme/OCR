@@ -2,6 +2,11 @@
 #include "../string/string_operation.h"
 #include "../segmentation/segmentation.h"
 #include "../output_files/create_string.h"
+#include "../NeuNet/memory_handler.h"
+#include "../NeuNet/neuNet.h"
+#include "../NeuNet/init_Network.h"
+#include "../NeuNet/save_net.h"
+#include "../NeuNet/structNet.h"
 
 /**
  * \file get_list_segmented.c
@@ -65,13 +70,17 @@ List* get_list_segmented(char *path)
  *
  * \return string detected by the segmentation.
  */
-char* get_string(char *path, neuNet *network)
+char* get_string(char *path)
 {
     List *l = get_list_segmented(path);
+
+    neuNet *network = LoadNeuNet("neuralNetwork_data/network_saved");
 
     char *c = generate_string(l, network);
 
     DeleteL(l);
+
+    freeNeuNet(network);
 
     return c;
 }

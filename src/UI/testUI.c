@@ -23,7 +23,7 @@ static void cb_configure(GtkWindow *p_window, GdkEvent *event, gpointer data)
 	(void) data;
 }
 
-int exec_UI(neuNet *network,int argc, char** argv)
+int exec_UI(int argc, char** argv)
 {
 	GtkWidget *s_window = NULL;
 	GtkWidget *s_main_box = NULL;
@@ -120,7 +120,7 @@ int exec_UI(neuNet *network,int argc, char** argv)
 		gtk_button_set_always_show_image (GTK_BUTTON(s_button),TRUE);
 		gtk_button_set_image(GTK_BUTTON(s_button),image);
 		gtk_button_set_image_position (GTK_BUTTON(s_button),GTK_POS_TOP);
-		g_signal_connect (G_OBJECT (s_button), "clicked", G_CALLBACK (cb_ocr), network);
+		g_signal_connect (G_OBJECT (s_button), "clicked", G_CALLBACK (cb_ocr), NULL);
 		gtk_box_pack_start (GTK_BOX (s_button_box), s_button, FALSE, FALSE, 10);
 	}
 
