@@ -9,7 +9,7 @@
 
 int main(int argc, char** argv)
 {
-	neuNet *network = LoadNeuNet("src/NeuNet/save_data/network_saveNormal");
+	neuNet *network = LoadNeuNet("src/NeuNet/save_data/network_saved");
 
 	if(argc > 1)
 		testTrain();
