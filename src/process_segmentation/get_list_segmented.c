@@ -61,12 +61,11 @@ List* get_list_segmented(char *path)
 }
 
 /**
- * \fn char* get_string(char *path, neuNet *network)
+ * \fn char* get_string(char *path)
  * \brief This function get the string of the text, it is use to print the
  * text in the UI so the user can modifiy it if it's needed.
  *
  * \param path : path of the image
- * \param network : NeuralNetwork
  *
  * \return string detected by the segmentation.
  */

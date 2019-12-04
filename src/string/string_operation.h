@@ -20,7 +20,7 @@ int LengthStr(char* s);
  * s2 the second
  * return a new string
  */
-char* Concatene(char* s1, char* s2);
+char* Concatene(char *s1, char *s2);
 
 /*
  * Find the length of an int
