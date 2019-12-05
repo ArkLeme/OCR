@@ -1,7 +1,7 @@
 #include <gtk/gtk.h>
 #include "callback.h"
 #include "menu.h"
-
+#include "document.h"
 /**
  * \file menu.c
  * \brief This file contains all the function we need to create a menu.
@@ -20,7 +20,8 @@ static void menu_item_new (GtkMenu *, gchar *, GCallback, gpointer);
 GtkMenuBar *menu_new (gpointer user_data)
 {
 	GtkWidget *p_menu_bar = NULL;
-
+	GtkWidget *p_text_view = NULL;
+	p_text_view = GTK_WIDGET(docs.active->p_text_view);
 	p_menu_bar = gtk_menu_bar_new ();
 
 	{
@@ -32,7 +33,7 @@ GtkMenuBar *menu_new (gpointer user_data)
 		p_menu = gtk_menu_new ();
 		p_menu_item_1 = gtk_menu_item_new_with_mnemonic ("_Menu");
 		menu_item_new (GTK_MENU (p_menu), "_OCR", G_CALLBACK (cb_ocr), user_data);
-		menu_item_new (GTK_MENU (p_menu), "_New", G_CALLBACK (cb_new), user_data);
+		menu_item_new (GTK_MENU (p_menu), "_New", G_CALLBACK (cb_new), p_text_view);
 		menu_item_new (GTK_MENU (p_menu), "_Open", G_CALLBACK (cb_open), user_data);
 		menu_item_new (GTK_MENU (p_menu), "_Save", G_CALLBACK (cb_save), user_data);
 		menu_item_new (GTK_MENU (p_menu), "Save _as", G_CALLBACK (cb_saveas), user_data);

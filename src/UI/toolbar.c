@@ -1,6 +1,7 @@
 #include <gtk/gtk.h>
 #include "callback.h"
 #include "toolbar.h"
+#include "document.h"
 
 /**
  * \file toolbar.c
@@ -23,10 +24,11 @@ GtkToolbar *toolbar_new (gpointer user_data)
 
 	p_toolbar = gtk_toolbar_new ();
 	gtk_toolbar_set_style (GTK_TOOLBAR (p_toolbar), GTK_TOOLBAR_ICONS);
+	GtkWidget *p_text_view = GTK_WIDGET(docs.active->p_text_view);
 	toolbar_item_new(GTK_TOOLBAR(p_toolbar),"./image_data/UI/icon/png/ocr.png",
 						"Apply OCR on a picture", G_CALLBACK(cb_ocr),user_data);
 	toolbar_item_new(GTK_TOOLBAR (p_toolbar),"./image_data/UI/icon/png/file.png",
-						"Create an empty file",G_CALLBACK (cb_new), user_data);
+						"Create an empty file",G_CALLBACK (cb_new), p_text_view);
 	toolbar_item_new(GTK_TOOLBAR (p_toolbar),"./image_data/UI/icon/png/folder.png",
 						"Open a file", G_CALLBACK (cb_open), user_data);
 	toolbar_item_new(GTK_TOOLBAR (p_toolbar),"./image_data/UI/icon/png/save.png", 

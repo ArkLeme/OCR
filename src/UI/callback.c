@@ -129,12 +129,11 @@ void cb_new (GtkWidget *p_widget, gpointer user_data)
 	{
 		cb_close(p_widget,user_data);
 	}
-	if(!docs.active)
+	if(docs.active == NULL)
 		docs.active = g_malloc (sizeof (*docs.active));
 	docs.active->path = NULL;
 
-	docs.active->p_text_view = GTK_TEXT_VIEW (user_data);
-
+	docs.active->p_text_view = GTK_TEXT_VIEW(user_data);
 	docs.active->save = TRUE;
 	gtk_widget_set_sensitive (GTK_WIDGET (docs.active->p_text_view), TRUE);
 
