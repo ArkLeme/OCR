@@ -2,6 +2,8 @@
 #include "../process_segmentation/process_segm.h"
 #include "../segmentation/segmentation.h"
 #include <stddef.h>
+#include "../process_segmentation/resize_char.h"
+
 List* Parcours(char* path)
 {
     List* lg = paragraph_segm(path);
@@ -25,7 +27,7 @@ List* Parcours(char* path)
 
                 while(lc != NULL)
                 {
-					p = AppendL(p, normalize_dimension(lc->mat), NULL);
+					p = AppendL(p, resize_char(lc->mat), NULL);
 
                     lc = lc->next;
                     //lc = NULL;

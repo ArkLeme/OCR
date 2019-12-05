@@ -78,7 +78,7 @@ Pool** CreateBatches(Pool* p, size_t batchSize)
 
 void testTraining(neuNet *n)
 {
-	List* l = Parcours("image_data/png/ocr.png");
+	List* l = Parcours("image_data/png/image.png");
 	List* save = l;
 	while(l)
 	{

@@ -120,7 +120,7 @@ int GenExample(char* ImagePath, char* text, FILE*f)
 	{
 		if(text[i] == ' ') 
 			i++; //to 'remove' space in the string, à optimiser
-		if(text[i] > 'a' && text[i] < 'z') //letter 
+		if(text[i] >= 'a' && text[i] <= 'z') //letter 
 		{
 			fputc(text[i], f);
 			fputc('\n', f);

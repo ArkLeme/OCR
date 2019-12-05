@@ -69,17 +69,17 @@ List* get_list_segmented(char *path)
  *
  * \return string detected by the segmentation.
  */
-char* get_string(char *path)
+char* get_string(char *path,neuNet *network)
 {
     List *l = get_list_segmented(path);
 
-    neuNet *network = LoadNeuNet("neuralNetwork_data/network_saved");
+    //neuNet *network = LoadNeuNet("neuralNetwork_data/network_saved");
 
     char *c = generate_string(l, network);
 
     DeleteL(l);
 
-    freeNeuNet(network);
+    //freeNeuNet(network);
 
     return c;
 }

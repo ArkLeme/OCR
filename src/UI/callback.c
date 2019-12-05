@@ -13,7 +13,7 @@
 
 static void open_file (gchar *, GtkTextView *);
 
-static void open_ocr(gchar *);
+static void open_ocr(gchar *,neuNet *network);
 
 /**
  * \fn void cb_ocr(GtkWidget *s_widget, gpointer user_data)
@@ -22,7 +22,7 @@ static void open_ocr(gchar *);
  * picture choice, and finally call the OCR main function to put Picture's text
  * in the text view box. Hide start window and show the Edit Text's window.
  * 
- * \param s_widget : Widget from the callback signal. (Unused parameter)
+ * \param s_widget : Widget from the callback signal.
  * \param user_data : Text view widget.
  *
  * \return void
@@ -81,7 +81,7 @@ void cb_ocr(GtkWidget* s_widget,gpointer user_data)
 		gtk_widget_show_all(docs.p_main_window);
 		gtk_widget_hide(docs.s_start_window);
 
-		open_ocr (file_name);
+		open_ocr (file_name,user_data);
 
 		g_free (file_name);
 		file_name = NULL;
@@ -92,8 +92,6 @@ void cb_ocr(GtkWidget* s_widget,gpointer user_data)
 		return;
 	}
 
-	/* Unused parameter */
-	(void) s_widget;
 }
 
 
@@ -235,7 +233,6 @@ void cb_close (GtkWidget *p_widget, gpointer user_data)
 		gtk_widget_set_sensitive (GTK_WIDGET (docs.active->p_text_view), FALSE);
 
 		g_free (docs.active->path);
-		docs.active->path = NULL;
 		docs.active->save = TRUE;
 	}
 	else
@@ -558,7 +555,7 @@ static void open_file (gchar *file_name, GtkTextView *p_text_view)
  * \return void
  */
 
-static void open_ocr(gchar *file_name)
+static void open_ocr(gchar *file_name, neuNet *network)
 {
 	GtkTextView *p_text_view = NULL;
 	p_text_view = GTK_TEXT_VIEW(docs.active->p_text_view);
@@ -566,7 +563,7 @@ static void open_ocr(gchar *file_name)
 		cb_close(NULL,p_text_view);
 	g_return_if_fail (file_name && p_text_view);
 	{
-        gchar *contents = get_string(file_name);
+        gchar *contents = get_string(file_name,network);
 
 		docs.active = g_malloc (sizeof (*docs.active));
 		docs.active->path = NULL;

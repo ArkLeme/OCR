@@ -8,6 +8,8 @@
 #include "menu.h"
 #include "toolbar.h"
 #include "../NeuNet/structNet.h"
+#include "../NeuNet/training.h"
+#include "../NeuNet/save_net.h"
 
 UI docs= {NULL, NULL, NULL};
 
@@ -32,7 +34,9 @@ int exec_UI(int argc, char** argv)
 	GtkWidget *p_window = NULL;
 	GtkWidget *p_main_box = NULL;
 	GtkWidget *p_text_view = NULL;
-    
+   
+	neuNet *network = LoadNeuNet("./neuralNetwork_data/network_saved");
+
 	/* Init GTK+ */
 	gtk_init(&argc,&argv);
 
@@ -71,10 +75,10 @@ int exec_UI(int argc, char** argv)
 	p_text_view = gtk_text_view_new ();
 
 	/* Create the menu */
-	gtk_box_pack_start(GTK_BOX(p_main_box),GTK_WIDGET(menu_new (p_text_view)),
+	gtk_box_pack_start(GTK_BOX(p_main_box),GTK_WIDGET(menu_new (network)),
 						FALSE, FALSE, 0);
 	/* Create toolbar */
-	gtk_box_pack_start(GTK_BOX(p_main_box),GTK_WIDGET(toolbar_new(p_text_view)),
+	gtk_box_pack_start(GTK_BOX(p_main_box),GTK_WIDGET(toolbar_new(network)),
 						FALSE, FALSE, 0);
 
 
@@ -120,7 +124,7 @@ int exec_UI(int argc, char** argv)
 		gtk_button_set_always_show_image (GTK_BUTTON(s_button),TRUE);
 		gtk_button_set_image(GTK_BUTTON(s_button),image);
 		gtk_button_set_image_position (GTK_BUTTON(s_button),GTK_POS_TOP);
-		g_signal_connect (G_OBJECT (s_button), "clicked", G_CALLBACK (cb_ocr), NULL);
+		g_signal_connect (G_OBJECT (s_button), "clicked", G_CALLBACK (cb_ocr), network);
 		gtk_box_pack_start (GTK_BOX (s_button_box), s_button, FALSE, FALSE, 10);
 	}
 

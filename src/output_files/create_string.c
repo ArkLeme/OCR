@@ -7,6 +7,7 @@
 #include "../NeuNet/neuNet.h"
 #include "../process_segmentation/resize_char.h"
 
+
 /**
  * \file create_string.c
  * \brief This files contains all the function to get the string from the list
