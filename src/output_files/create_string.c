@@ -35,6 +35,7 @@ char *char_string(List *single_chr, neuNet *network)
 
     *c = n;
     *(c+1) = 0;
+
 	FreeM(norm);
 
     return c;

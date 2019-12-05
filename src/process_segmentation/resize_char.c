@@ -8,7 +8,7 @@
  * \author Alexandre.L
  */ 
 
-double entire_part(double elt)
+int entire_part(double elt)
 {
 	int i = 0;
 	while(!(i <= elt && i + 1 > elt))
@@ -65,11 +65,6 @@ Matrix* resize_char(Matrix *m)
 			area3 = (x-x1) * ((y1+1)-y);
 			area4 = ((x1+1)-x) * ((y1+1)-y);
 
-			area1 = area1 < 0 ? -area1 : area1;
-			area2 = area2 < 0 ? -area2 : area2;
-			area3 = area3 < 0 ? -area3 : area3;
-			area4 = area4 < 0 ? -area4 : area4;
-
 			delta1 = GetM(m,y1,x1) * area4;
 			delta2 = GetM(m,y2,x2) * area1;
 			delta3 = GetM(m,y1,x2) * area2;
@@ -85,9 +80,10 @@ Matrix* resize_char(Matrix *m)
 	{
 		for (int j = 0; j < width ; j++)
 		{
-			PutM(output,i,j,GetM(resize_m,i,j)!=0);
+			PutM(output,i,j,GetM(resize_m,i,j));
 		}
 	}
+	FreeM(resize_m);
 	return output;
 }
 
