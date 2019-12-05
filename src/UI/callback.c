@@ -129,7 +129,8 @@ void cb_new (GtkWidget *p_widget, gpointer user_data)
 	{
 		cb_close(p_widget,user_data);
 	}
-	docs.active = g_malloc (sizeof (*docs.active));
+	if(!docs.active)
+		docs.active = g_malloc (sizeof (*docs.active));
 	docs.active->path = NULL;
 
 	docs.active->p_text_view = GTK_TEXT_VIEW (user_data);
@@ -168,7 +169,7 @@ void cb_open (GtkWidget *p_widget, gpointer user_data)
 		if(!docs.active->save)
 			cb_close(p_widget,user_data);
 		file_name = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (p_dialog));
-		open_file (file_name, GTK_TEXT_VIEW (user_data));
+		open_file (file_name, docs.active->p_text_view);
 	
 		g_free (file_name);
 		file_name = NULL;
@@ -232,7 +233,6 @@ void cb_close (GtkWidget *p_widget, gpointer user_data)
 		gtk_text_buffer_delete (p_text_buffer, &start, &end);
 		gtk_widget_set_sensitive (GTK_WIDGET (docs.active->p_text_view), FALSE);
 
-		g_free (docs.active->path);
 		docs.active->save = TRUE;
 	}
 	else
@@ -516,7 +516,8 @@ static void open_file (gchar *file_name, GtkTextView *p_text_view)
 
 		if (g_file_get_contents (file_name, &contents, NULL, NULL))
 		{
-			docs.active = g_malloc (sizeof (*docs.active));
+			if(!docs.active)
+				docs.active = g_malloc (sizeof (*docs.active));
 			docs.active->path = g_strdup (file_name);
 
 			docs.active->p_text_view = p_text_view;
@@ -565,7 +566,8 @@ static void open_ocr(gchar *file_name, neuNet *network)
 	{
         gchar *contents = get_string(file_name,network);
 
-		docs.active = g_malloc (sizeof (*docs.active));
+		if(!docs.active)
+			docs.active = g_malloc (sizeof (*docs.active));
 		docs.active->path = NULL;
 
 		docs.active->p_text_view = p_text_view;
@@ -581,6 +583,7 @@ static void open_ocr(gchar *file_name, neuNet *network)
 		gtk_text_buffer_get_iter_at_line (p_text_buffer, &iter, 0);
 
 		gtk_text_buffer_insert (p_text_buffer, &iter, contents, -1);
+		g_free(contents);
 
 		docs.active->save = FALSE;
     }
