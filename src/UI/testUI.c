@@ -57,7 +57,6 @@ int exec_UI(int argc, char** argv)
 
 	docs.p_main_window = p_window;
 	docs.s_start_window = s_window;
-    
 	/* Callback quit if window is destroy */
 
 	g_signal_connect(G_OBJECT(p_window), "destroy", G_CALLBACK(cb_quit), NULL); 
@@ -74,6 +73,8 @@ int exec_UI(int argc, char** argv)
 
 	p_text_view = gtk_text_view_new ();
 
+	cb_new(s_window,p_text_view);
+	
 	/* Create the menu */
 	gtk_box_pack_start(GTK_BOX(p_main_box),GTK_WIDGET(menu_new (network)),
 						FALSE, FALSE, 0);
@@ -97,7 +98,6 @@ int exec_UI(int argc, char** argv)
 		gtk_container_add (GTK_CONTAINER (p_scrolled_window), p_text_view);
 	}
 
-	cb_new(s_window,p_text_view);
 
 	GtkWidget *image = NULL;
 	
